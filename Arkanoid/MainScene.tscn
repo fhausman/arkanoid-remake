@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Resources/Ball/Ball.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Src/Ball.cs" type="Script" id=2]
+[ext_resource path="res://Resources/Board/Board.tscn" type="PackedScene" id=3]
+
+[sub_resource type="GDScript" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 216, 710 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 960, 40 )
+
+[node name="Main" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Ball" parent="." instance=ExtResource( 1 )]
+position = Vector2( 921, 760 )
+scale = Vector2( 2, 2 )
+script = ExtResource( 2 )
+
+[node name="Board" parent="." instance=ExtResource( 3 )]
+position = Vector2( 940, 925 )
+scale = Vector2( 2, 2 )
+Speed = 500.0
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="left_col" type="StaticBody2D" parent="Environment"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/left_col"]
+position = Vector2( 216, 709 )
+shape = SubResource( 2 )
+
+[node name="right_col" type="StaticBody2D" parent="Environment"]
+editor/display_folded = true
+position = Vector2( 1920, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/right_col"]
+position = Vector2( -216, 710 )
+shape = SubResource( 2 )
+
+[node name="upper_col" type="StaticBody2D" parent="Environment"]
+editor/display_folded = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/upper_col"]
+position = Vector2( 960, 10 )
+shape = SubResource( 3 )
+
+[node name="bottom_col" type="StaticBody2D" parent="Environment"]
+position = Vector2( 0, 42 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/bottom_col"]
+position = Vector2( 962, 1035 )
+shape = SubResource( 3 )

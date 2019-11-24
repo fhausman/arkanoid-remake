@@ -1,0 +1,125 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://resources/board/sprites/arkanoid.png" type="Texture" id=1]
+
+[sub_resource type="CSharpScript" id=3]
+script/source = "using Godot;
+using System;
+
+#region Ball States
+public class Moving : IState
+{
+    private Ball ball;
+    private StateMachine stateMachine;
+    public Vector2 Dir { get; set; } = new Vector2(-1, -1);
+
+    public Moving(Ball ball, StateMachine stateMachine)
+    {
+        this.ball = ball;
+        this.stateMachine = stateMachine;
+    }
+
+    public void Init() {}
+    public void Exit() {}
+    public void HandleInput() {}
+    public void Process(float dt) {}
+
+    public void PhysicsProcess(float dt)
+    {
+        var col = ball.MoveAndCollide(Dir*ball.CurrentSpeed*dt);
+        if(col != null)
+        {
+            Dir = Dir.Bounce(col.GetNormal());
+        }
+    }
+}
+
+public class Attached : IState
+{
+    private Ball ball;
+    private Board board;
+    private StateMachine stateMachine;
+    public Vector2 Dir { get; set; } = new Vector2(-1, -1);
+
+    public Attached(Ball ball, Board board, StateMachine stateMachine)
+    {
+        this.ball = ball;
+        this.board = board;
+        this.stateMachine = stateMachine;
+    }
+
+    public void Init() {}
+    public void Exit() {}
+    public void PhysicsProcess(float dt) {}
+
+    public void HandleInput()
+    {
+        if(Input.IsActionPressed(\"ui_accept\"))
+        {
+            var movingState = stateMachine.ChangeState(\"Moving\") as Moving;
+            movingState.Dir = new Vector2(board.Velocity.x > 0 ? 1 : -1,-1);
+        }
+    }
+    public void Process(float dt)
+    {
+        var board_pos = board.GetPosition();
+        //TODO: calculate offset from sprite height?
+        ball.SetPosition(new Vector2(board_pos.x, board_pos.y-15));
+    }
+}
+#endregion
+
+public class Ball : KinematicBody2D
+{
+    [Export]
+    public float InitialSpeed { get; set; } = 300.0f;
+    [Export]
+    public float MaxSpeed { get; set; } = 1000.0f;
+    public float CurrentSpeed { get; set; } = 0.0f;
+
+    private StateMachine stateMachine = new StateMachine();
+    private Board board = null;
+
+
+    public override void _Ready()
+    {
+        board = GetNode(\"/root/main/board\") as Board;
+        if(board == null)
+            throw new Exception(\"Something went wrong, board shouldn't be null\");
+
+        stateMachine.Add(\"Moving\", new Moving(this, stateMachine));
+        stateMachine.Add(\"Attached\", new Attached(this, board, stateMachine));
+        stateMachine.ChangeState(\"Attached\");
+
+        CurrentSpeed = InitialSpeed;
+    }
+
+    public override void _Process(float dt)
+    {
+        stateMachine.HandleInput();
+        stateMachine.Process(dt);
+    }
+
+    public override void _PhysicsProcess(float dt)
+    {
+        stateMachine.PhysicsProcess(dt);
+    }
+}
+"
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 2, 2 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0.0356922, 39.7308, 5.14049, 4.62644 )
+
+[node name="ball" type="KinematicBody2D"]
+script = SubResource( 3 )
+
+[node name="col" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="sprite" type="Sprite" parent="."]
+texture = SubResource( 2 )
