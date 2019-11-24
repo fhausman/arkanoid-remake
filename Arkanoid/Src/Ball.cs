@@ -25,6 +25,11 @@ public class Moving : IState
         if(col != null)
         {
             Dir = Dir.Bounce(col.GetNormal());
+            GD.Print(col.Collider.GetClass());
+            if(col.Collider is IHittable obj)
+            {
+                obj.OnHit();
+            }
         }
     }
 }
