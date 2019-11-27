@@ -88,7 +88,7 @@ public class Attached : IState
         if(Input.IsActionPressed("ui_accept"))
         {
             var movingState = stateMachine.ChangeState("Moving") as Moving;
-            movingState.Dir = Bounce.AngleToDir(60);
+            movingState.Dir = Bounce.AngleToDir(Bounce.FirstAngle);
         }
     }
 

@@ -3,9 +3,9 @@ using System;
 
 public static class Bounce
 {
-    const float FirstAngle = 60.0f;
-    const float SecondAngle = 40.0f;
-    const float ThirdAngle = 20.0f;
+    public const float FirstAngle = 60.0f;
+    public const float SecondAngle = 40.0f;
+    public const float ThirdAngle = 20.0f;
 
     public static Vector2 AngleToDir(float angle)
     {
