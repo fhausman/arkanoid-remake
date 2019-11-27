@@ -33,7 +33,21 @@ public class Idle : IState
     }
 }
 
-public class MoveLeft : IState
+public class MoveBase
+{
+    protected void Move(Board board, Vector2 dir, float dt)
+    {
+        board.Dir = dir;
+
+        var col = board.MoveAndCollide(board.Velocity*dt);
+        if(col != null && col.Collider is StaticBody2D)
+        {
+            board.Dir = Vector2.Zero;
+        }
+    }
+}
+
+public class MoveLeft : MoveBase, IState
 {
     private Board board;
     private StateMachine stateMachine;
@@ -60,11 +74,11 @@ public class MoveLeft : IState
 
     public void PhysicsProcess(float dt)
     {
-        board.MoveAndCollide(board.Velocity*dt);
+        base.Move(board, dir, dt);
     }
 }
 
-public class MoveRight : IState
+public class MoveRight : MoveBase, IState
 {
     private Board board;
     private StateMachine stateMachine;
@@ -91,7 +105,7 @@ public class MoveRight : IState
 
     public void PhysicsProcess(float dt)
     {
-        board.MoveAndCollide(board.Velocity*dt);
+        base.Move(board, dir, dt);
     }
 }
 #endregion
