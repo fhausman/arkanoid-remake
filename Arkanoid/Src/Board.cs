@@ -5,6 +5,8 @@ public class Idle : IState
 {
     private Board board;
     private StateMachine stateMachine;
+    private Vector2 dir { get; } = new Vector2(0,0);
+
 
     public Idle(Board board, StateMachine stateMachine)
     {
@@ -12,10 +14,10 @@ public class Idle : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init() {}
+    public void Init() { board.Dir = dir; }
     public void Exit() {}
-    public void PhysicsProcess(float dt) {}
     public void Process(float dt) {}
+    public void PhysicsProcess(float dt) {}
 
     public void HandleInput()
     {
@@ -35,7 +37,7 @@ public class MoveLeft : IState
 {
     private Board board;
     private StateMachine stateMachine;
-    private Vector2 dir = new Vector2(-1, 0);
+    private Vector2 dir { get; } = new Vector2(-1, 0);
 
     public MoveLeft(Board board, StateMachine stateMachine)
     {
@@ -66,7 +68,7 @@ public class MoveRight : IState
 {
     private Board board;
     private StateMachine stateMachine;
-    private Vector2 dir = new Vector2(1, 0);
+    private Vector2 dir { get; } = new Vector2(1, 0);
 
     public MoveRight(Board board, StateMachine stateMachine)
     {
