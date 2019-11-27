@@ -36,7 +36,9 @@ public class Moving : IState
 public class Attached : IState
 {
     private Ball ball;
+    private RectangleShape2D ball_shape;
     private Board board;
+    private RectangleShape2D board_shape;
     private StateMachine stateMachine;
     public Vector2 Dir { get; set; } = new Vector2(-1, -1);
 
@@ -47,9 +49,21 @@ public class Attached : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init() {}
     public void Exit() {}
     public void PhysicsProcess(float dt) {}
+
+    public void Init()
+    {
+        if (ball.GetNode<CollisionShape2D>("col").GetShape() is RectangleShape2D ball_shape)
+        {
+            this.ball_shape = ball_shape;
+        }
+
+        if (board.GetNode<CollisionShape2D>("col").GetShape() is RectangleShape2D board_shape)
+        {
+            this.board_shape = board_shape;
+        }
+    }
 
     public void HandleInput()
     {
@@ -59,11 +73,14 @@ public class Attached : IState
             movingState.Dir = new Vector2(board.Velocity.x > 0 ? 1 : -1,-1);
         }
     }
+
     public void Process(float dt)
     {
         var board_pos = board.GetPosition();
-        //TODO: calculate offset from sprite height?
-        ball.SetPosition(new Vector2(board_pos.x, board_pos.y-15));
+        var board_width = board_shape.GetExtents().x;
+        var ball_height = ball_shape.GetExtents().y;
+        ball.SetPosition(
+            new Vector2(board_pos.x + board_width, board_pos.y - ball_height*2));
     }
 }
 #endregion
