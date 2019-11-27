@@ -5,6 +5,8 @@ public class Idle : IState
 {
     private Board board;
     private StateMachine stateMachine;
+    private Vector2 dir { get; } = new Vector2(0,0);
+
 
     public Idle(Board board, StateMachine stateMachine)
     {
@@ -12,10 +14,10 @@ public class Idle : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init() {}
+    public void Init() { board.Dir = dir; }
     public void Exit() {}
-    public void PhysicsProcess(float dt) {}
     public void Process(float dt) {}
+    public void PhysicsProcess(float dt) {}
 
     public void HandleInput()
     {
@@ -31,11 +33,25 @@ public class Idle : IState
     }
 }
 
-public class MoveLeft : IState
+public class MoveBase
+{
+    protected void Move(Board board, Vector2 dir, float dt)
+    {
+        board.Dir = dir;
+
+        var col = board.MoveAndCollide(board.Velocity*dt);
+        if(col != null && col.Collider is StaticBody2D)
+        {
+            board.Dir = Vector2.Zero;
+        }
+    }
+}
+
+public class MoveLeft : MoveBase, IState
 {
     private Board board;
     private StateMachine stateMachine;
-    private Vector2 dir = new Vector2(-1, 0);
+    private Vector2 dir { get; } = new Vector2(-1, 0);
 
     public MoveLeft(Board board, StateMachine stateMachine)
     {
@@ -58,15 +74,15 @@ public class MoveLeft : IState
 
     public void PhysicsProcess(float dt)
     {
-        board.MoveAndCollide(board.Velocity*dt);
+        base.Move(board, dir, dt);
     }
 }
 
-public class MoveRight : IState
+public class MoveRight : MoveBase, IState
 {
     private Board board;
     private StateMachine stateMachine;
-    private Vector2 dir = new Vector2(1, 0);
+    private Vector2 dir { get; } = new Vector2(1, 0);
 
     public MoveRight(Board board, StateMachine stateMachine)
     {
@@ -89,7 +105,7 @@ public class MoveRight : IState
 
     public void PhysicsProcess(float dt)
     {
-        board.MoveAndCollide(board.Velocity*dt);
+        base.Move(board, dir, dt);
     }
 }
 #endregion
