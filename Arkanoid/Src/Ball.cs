@@ -5,16 +5,25 @@ using System;
 public class Moving : IState
 {
     private Ball ball;
+    private Board board;
+    private RectangleShape2D board_shape;
     private StateMachine stateMachine;
     public Vector2 Dir { get; set; } = new Vector2(-1, -1);
 
-    public Moving(Ball ball, StateMachine stateMachine)
+    public Moving(Ball ball, Board board, StateMachine stateMachine)
     {
         this.ball = ball;
+        this.board = board;
         this.stateMachine = stateMachine;
     }
 
-    public void Init() {}
+    public void Init()
+    {
+        if (board.GetNode<CollisionShape2D>("col").GetShape() is RectangleShape2D board_shape)
+        {
+            this.board_shape = board_shape;
+        }
+    }
     public void Exit() {}
     public void HandleInput() {}
     public void Process(float dt) {}
@@ -24,7 +33,15 @@ public class Moving : IState
         var col = ball.MoveAndCollide(Dir*ball.CurrentSpeed*dt);
         if(col != null)
         {
-            Dir = Dir.Bounce(col.GetNormal());
+            if(col.Collider is Board)
+            {
+                Dir = Bounce.BoardBounce(board.Position, board_shape.GetExtents(), col.Position);
+            }
+            else
+            {
+                Dir = Dir.Bounce(col.GetNormal());
+            }
+
             if(col.Collider is IHittable obj)
             {
                 obj.OnHit();
@@ -71,7 +88,7 @@ public class Attached : IState
         if(Input.IsActionPressed("ui_accept"))
         {
             var movingState = stateMachine.ChangeState("Moving") as Moving;
-            movingState.Dir = new Vector2(1,1);
+            movingState.Dir = Bounce.AngleToDir(Bounce.FirstAngle);
         }
     }
 
@@ -81,7 +98,7 @@ public class Attached : IState
         var board_width = board_shape.GetExtents().x;
         var ball_height = ball_shape.GetExtents().y;
 
-        var new_y = board_pos.y - ball_height*2 - 1.0f;
+        var new_y = board_pos.y - ball_height*2 - 2.0f;
         var new_x = ball.Position.LinearInterpolate(
             new Vector2(board_pos.x + board_width - GetVelocityOffset, new_y),
             dt*ball.SlideSpeed).x;
@@ -111,7 +128,7 @@ public class Ball : KinematicBody2D
         if(board == null)
             throw new Exception("Something went wrong, board shouldn't be null");
 
-        stateMachine.Add("Moving", new Moving(this, stateMachine));
+        stateMachine.Add("Moving", new Moving(this, board, stateMachine));
         stateMachine.Add("Attached", new Attached(this, board, stateMachine));
         stateMachine.ChangeState("Attached");
 
