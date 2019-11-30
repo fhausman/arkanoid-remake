@@ -98,7 +98,7 @@ public class Attached : IState
         var board_width = board_shape.GetExtents().x;
         var ball_height = ball_shape.GetExtents().y;
 
-        var new_y = board_pos.y - ball_height*2 - 2.0f;
+        var new_y = board_pos.y - ball_height*2 + 8.0f;
         var new_x = ball.Position.LinearInterpolate(
             new Vector2(board_pos.x + board_width - GetVelocityOffset, new_y),
             dt*ball.SlideSpeed).x;
