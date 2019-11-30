@@ -53,7 +53,7 @@ public class Moving : IState
 public class Attached : IState
 {
     private Ball ball;
-    private RectangleShape2D ball_shape;
+    private CircleShape2D ball_shape;
     private Board board;
     private RectangleShape2D board_shape;
     private StateMachine stateMachine;
@@ -72,7 +72,7 @@ public class Attached : IState
 
     public void Init()
     {
-        if (ball.GetNode<CollisionShape2D>("col").GetShape() is RectangleShape2D ball_shape)
+        if (ball.GetNode<CollisionShape2D>("col").GetShape() is CircleShape2D ball_shape)
         {
             this.ball_shape = ball_shape;
         }
@@ -96,9 +96,9 @@ public class Attached : IState
     {
         var board_pos = board.GetPosition();
         var board_width = board_shape.GetExtents().x;
-        var ball_height = ball_shape.GetExtents().y;
+        var ball_height = ball_shape.GetRadius();
 
-        var new_y = board_pos.y - ball_height*2 - 2.0f;
+        var new_y = board_pos.y - ball_height*2 + 8.0f;
         var new_x = ball.Position.LinearInterpolate(
             new Vector2(board_pos.x + board_width - GetVelocityOffset, new_y),
             dt*ball.SlideSpeed).x;
