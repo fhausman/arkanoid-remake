@@ -16,9 +16,7 @@ public class Moving : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init()
-    {
-    }
+    public void Init() {}
     public void Exit() {}
     public void HandleInput() {}
     public void Process(float dt) {}
@@ -48,7 +46,6 @@ public class Moving : IState
 public class Attached : IState
 {
     private Ball ball;
-    private RectangleShape2D ball_shape;
     private Board board;
     private StateMachine stateMachine;
     private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.GetExtents.x * 0.15f; }}
@@ -64,13 +61,7 @@ public class Attached : IState
     public void Exit() {}
     public void Process(float dt) {}
 
-    public void Init()
-    {
-        if (ball.GetNode<CollisionShape2D>("col").GetShape() is RectangleShape2D ball_shape)
-        {
-            this.ball_shape = ball_shape;
-        }
-    }
+    public void Init() {}
 
     public void HandleInput()
     {
@@ -85,7 +76,7 @@ public class Attached : IState
     {
         var board_pos = board.GetPosition();
         var board_width = board.GetExtents.x;
-        var ball_height = ball_shape.GetExtents().y;
+        var ball_height = ball.GetExtents.y;
 
         var new_y = board_pos.y - ball_height*2 + 8.0f;
         var new_x = ball.Position.LinearInterpolate(
@@ -106,11 +97,13 @@ public class Ball : KinematicBody2D
     [Export]
     public float SlideSpeed { get; set; } = 25.0f;
     public float CurrentSpeed { get; set; } = 0.0f;
+    public Vector2 GetExtents { get => shape.GetExtents(); }
     [Signal]
     public delegate void CheckWin();
 
     private StateMachine stateMachine = new StateMachine();
-    private Board board = null;
+    private Board board;
+    private RectangleShape2D shape;
 
     public void CheckWinConditions()
     {
@@ -120,7 +113,7 @@ public class Ball : KinematicBody2D
     public void ResetState()
     {
         CurrentSpeed = InitialSpeed;
-        Position = board.Position;
+        Position = new Vector2(board.Position.x + board.GetExtents.x, board.Position.y);
         stateMachine.ChangeState("Attached");
     }
 
@@ -132,6 +125,7 @@ public class Ball : KinematicBody2D
         stateMachine.ChangeState("Attached");
 
         CurrentSpeed = InitialSpeed;
+        shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
     }
 
     public override void _Process(float dt)
