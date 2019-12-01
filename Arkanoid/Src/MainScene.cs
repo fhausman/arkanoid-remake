@@ -7,7 +7,7 @@ public class MainScene : Node2D
     public int NumberOfLives { get; set; } = 2;
     private Node2D blocks;
     private Control ui;
-    private Control lifeContainer;
+    private Control livesContainer;
     private PackedScene boardIcon;
     void CheckIfPlayerDestroyedAllBlocks()
     {
@@ -19,17 +19,20 @@ public class MainScene : Node2D
         }
     }
 
-    void DecreaseNumberOfLives()
+    void DecreaseNumberOfIcons()
     {
-
+        var children = livesContainer.GetChildren().Cast<TextureRect>().ToArray();
+        children[children.Length - 1].QueueFree();
     }
+
     public void OnDeathAreaEntered(PhysicsBody2D body)
     {
         if (body is Ball ball)
         {
-            DecreaseNumberOfLives();
+            NumberOfLives--;
             if(NumberOfLives >= 0)
             {
+                DecreaseNumberOfIcons();
                 ball.ResetState();
                 GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
             }
@@ -48,10 +51,10 @@ public class MainScene : Node2D
         blocks = GetNode<Node2D>("Blocks");
         GetNode("Ball").Connect("CheckWin", this, nameof(CheckIfPlayerDestroyedAllBlocks));
         ui = GetNode<Control>("UI");
-        lifeContainer = ui.GetNode<Control>("LivesContainer");
+        livesContainer = ui.GetNode<Control>("LivesContainer");
         foreach(var i in Enumerable.Range(1, NumberOfLives))
         {
-            lifeContainer.AddChild(boardIcon.Instance());
+            livesContainer.AddChild(boardIcon.Instance());
         }
     }
 }
