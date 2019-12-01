@@ -30,7 +30,7 @@ z_index = -1
 texture = ExtResource( 2 )
 
 [node name="Ball" parent="." instance=ExtResource( 3 )]
-position = Vector2( 921, 760 )
+position = Vector2( 960.226, 948.703 )
 script = ExtResource( 4 )
 InitialSpeed = 500.0
 
