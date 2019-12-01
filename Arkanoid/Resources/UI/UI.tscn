@@ -8,7 +8,7 @@ __meta__ = {
 "_edit_vertical_guides_": [ 544.0, 1376.0 ]
 }
 
-[node name="LifeContainer" type="HBoxContainer" parent="."]
+[node name="LivesContainer" type="HBoxContainer" parent="."]
 margin_left = 544.0
 margin_top = 1024.0
 margin_right = 2208.0
