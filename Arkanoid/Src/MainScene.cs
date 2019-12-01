@@ -3,6 +3,7 @@ using System;
 
 public class MainScene : Node2D
 {
+    public int NumberOfLives { get; set; } = 2; 
     private Node2D blocks;
     void CheckIfPlayerDestroyedAllBlocks()
     {
@@ -17,8 +18,17 @@ public class MainScene : Node2D
     {
         if (body is Ball ball)
         {
-            ball.ResetState();
-            GD.Print("Ball entered death zone");
+            NumberOfLives--;
+            if(NumberOfLives >= 0)
+            {
+                ball.ResetState();
+                GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
+            }
+            else
+            {
+                GD.Print("Game over");
+                GetTree().ReloadCurrentScene();
+            }
         }
     }
 
