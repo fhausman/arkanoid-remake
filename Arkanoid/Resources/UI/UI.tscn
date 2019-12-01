@@ -1,0 +1,20 @@
+[gd_scene format=2]
+
+[node name="UI" type="Control"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+__meta__ = {
+"_edit_horizontal_guides_": [  ],
+"_edit_vertical_guides_": [ 544.0, 1376.0 ]
+}
+
+[node name="LivesContainer" type="HBoxContainer" parent="."]
+margin_left = 544.0
+margin_top = 1024.0
+margin_right = 2208.0
+margin_bottom = 1056.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_scale = Vector2( 0.5, 0.5 )
+size_flags_stretch_ratio = 0.0
+custom_constants/separation = 1
