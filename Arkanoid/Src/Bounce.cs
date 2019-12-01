@@ -25,18 +25,21 @@ public static class Bounce
             if(col_pos.x < board_middle + board_extents.x * 0.60f)
             {
                 GD.Print("First Angle");
+                GD.Print("Board position: ", board_pos, " collision position: ", col_pos);
                 bounce_dir = AngleToDir(FirstAngle);
             }
             //second angle
             else if(col_pos.x < board_middle + board_extents.x)
             {
                 GD.Print("Second Angle");
+                GD.Print("Board position: ", board_pos, " collision position: ", col_pos);
                 bounce_dir = AngleToDir(SecondAngle);
             }
             //thrid angle (hit in side of board)
             else
             {
                 GD.Print("Third Angle");
+                GD.Print("Board position: ", board_pos, " collision position: ", col_pos);
                 bounce_dir = AngleToDir(ThirdAngle);
             }
         }
@@ -47,18 +50,21 @@ public static class Bounce
             if(col_pos.x > board_middle - board_extents.x * 0.60f)
             {
                 GD.Print("First Angle");
+                GD.Print("Board position: ", board_pos, " collision position: ", col_pos);
                 bounce_dir = AngleToDir(180.0f - FirstAngle);
             }
             //second angle
             else if(col_pos.x > board_pos.x)
             {
                 GD.Print("Second Angle");
+                GD.Print("Board position: ", board_pos, " collision position: ", col_pos);
                 bounce_dir = AngleToDir(180.0f - SecondAngle);
             }
             //thrid angle (hit in side of board)
             else
             {
                 GD.Print("Third Angle");
+                GD.Print("Board position: ", board_pos, " collision position: ", col_pos);
                 bounce_dir = AngleToDir(180.0f - ThirdAngle);
             }
         }
