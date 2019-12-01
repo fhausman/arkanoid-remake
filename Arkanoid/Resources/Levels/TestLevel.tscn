@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Resources/Blocks/Block1.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Resources/Blocks/Block2.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Resources/Blocks/Block3.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Resources/Blocks/Block10.tscn" type="PackedScene" id=4]
 
 [node name="Blocks" type="Node2D"]
+position = Vector2( 0, 32 )
 __meta__ = {
 "_edit_horizontal_guides_": [ 320.0 ],
 "_edit_vertical_guides_": [ 832.0 ]
@@ -125,3 +127,45 @@ position = Vector2( 704, 64 )
 
 [node name="Block39" parent="." instance=ExtResource( 3 )]
 position = Vector2( 768, 64 )
+
+[node name="Block40" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -32 )
+
+[node name="Block41" parent="." instance=ExtResource( 4 )]
+position = Vector2( 64, -32 )
+
+[node name="Block42" parent="." instance=ExtResource( 4 )]
+position = Vector2( 128, -32 )
+
+[node name="Block43" parent="." instance=ExtResource( 4 )]
+position = Vector2( 192, -32 )
+
+[node name="Block44" parent="." instance=ExtResource( 4 )]
+position = Vector2( 256, -32 )
+
+[node name="Block45" parent="." instance=ExtResource( 4 )]
+position = Vector2( 320, -32 )
+
+[node name="Block46" parent="." instance=ExtResource( 4 )]
+position = Vector2( 384, -32 )
+
+[node name="Block47" parent="." instance=ExtResource( 4 )]
+position = Vector2( 448, -32 )
+
+[node name="Block48" parent="." instance=ExtResource( 4 )]
+position = Vector2( 512, -32 )
+
+[node name="Block49" parent="." instance=ExtResource( 4 )]
+position = Vector2( 576, -32 )
+
+[node name="Block50" parent="." instance=ExtResource( 4 )]
+position = Vector2( 640, -32 )
+
+[node name="Block51" parent="." instance=ExtResource( 4 )]
+position = Vector2( 704, -32 )
+
+[node name="Block52" parent="." instance=ExtResource( 4 )]
+position = Vector2( 768, -32 )
+
+[node name="Block53" parent="." instance=ExtResource( 4 )]
+position = Vector2( 768, -32 )

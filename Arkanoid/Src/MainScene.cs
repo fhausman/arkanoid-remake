@@ -11,7 +11,7 @@ public class MainScene : Node2D
     private PackedScene boardIcon;
     void CheckIfPlayerDestroyedAllBlocks()
     {
-        var blocks_count = blocks.GetChildCount();
+        var blocks_count = blocks.GetChildren().Cast<Block>().Count(b => b.Destructable);
         GD.Print("Checkin... ", blocks_count);
         if(blocks_count == 0)
         {
