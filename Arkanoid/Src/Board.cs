@@ -116,7 +116,9 @@ public class Board : KinematicBody2D
     public float Speed { get; set; } = 0.0f;
     public Vector2 Dir { get; set; } = new Vector2(0,0);
     public Vector2 Velocity { get => Speed*Dir; }
+    public Vector2 GetExtents { get => shape.GetExtents(); }
     private StateMachine stateMachine = new StateMachine();
+    private RectangleShape2D shape;
 
     public override void _Ready()
     {
@@ -124,6 +126,8 @@ public class Board : KinematicBody2D
         stateMachine.Add("MoveLeft", new MoveLeft(this, stateMachine));
         stateMachine.Add("MoveRight", new MoveRight(this, stateMachine));
         stateMachine.ChangeState("Idle");
+
+        shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
     }
 
     public override void _Process(float dt)

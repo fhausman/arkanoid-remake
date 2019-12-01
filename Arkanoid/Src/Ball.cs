@@ -6,7 +6,6 @@ public class Moving : IState
 {
     private Ball ball;
     private Board board;
-    private RectangleShape2D board_shape;
     private StateMachine stateMachine;
     public Vector2 Dir { get; set; } = new Vector2(-1, -1);
 
@@ -19,10 +18,6 @@ public class Moving : IState
 
     public void Init()
     {
-        if (board.GetNode<CollisionShape2D>("col").GetShape() is RectangleShape2D board_shape)
-        {
-            this.board_shape = board_shape;
-        }
     }
     public void Exit() {}
     public void HandleInput() {}
@@ -35,7 +30,7 @@ public class Moving : IState
         {
             if(col.Collider is Board)
             {
-                Dir = Bounce.BoardBounce(board.Position, board_shape.GetExtents(), col.Position);
+                Dir = Bounce.BoardBounce(board.Position, board.GetExtents, col.Position);
             }
             else
             {
@@ -55,9 +50,8 @@ public class Attached : IState
     private Ball ball;
     private RectangleShape2D ball_shape;
     private Board board;
-    private RectangleShape2D board_shape;
     private StateMachine stateMachine;
-    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board_shape.GetExtents().x * 0.15f; }}
+    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.GetExtents.x * 0.15f; }}
     public Vector2 Dir { get; set; } = new Vector2(-1, -1);
 
     public Attached(Ball ball, Board board, StateMachine stateMachine)
@@ -76,11 +70,6 @@ public class Attached : IState
         {
             this.ball_shape = ball_shape;
         }
-
-        if (board.GetNode<CollisionShape2D>("col").GetShape() is RectangleShape2D board_shape)
-        {
-            this.board_shape = board_shape;
-        }
     }
 
     public void HandleInput()
@@ -95,7 +84,7 @@ public class Attached : IState
     public void PhysicsProcess(float dt)
     {
         var board_pos = board.GetPosition();
-        var board_width = board_shape.GetExtents().x;
+        var board_width = board.GetExtents.x;
         var ball_height = ball_shape.GetExtents().y;
 
         var new_y = board_pos.y - ball_height*2 + 8.0f;
@@ -117,17 +106,27 @@ public class Ball : KinematicBody2D
     [Export]
     public float SlideSpeed { get; set; } = 25.0f;
     public float CurrentSpeed { get; set; } = 0.0f;
+    [Signal]
+    public delegate void CheckWin();
 
     private StateMachine stateMachine = new StateMachine();
     private Board board = null;
 
+    public void CheckWinConditions()
+    {
+        EmitSignal(nameof(CheckWin));
+    }
+
+    public void ResetState()
+    {
+        CurrentSpeed = InitialSpeed;
+        Position = board.Position;
+        stateMachine.ChangeState("Attached");
+    }
 
     public override void _Ready()
     {
-        board = GetNode("../Board") as Board;
-        if(board == null)
-            throw new Exception("Something went wrong, board shouldn't be null");
-
+        board = (Board) GetNode("../Board");
         stateMachine.Add("Moving", new Moving(this, board, stateMachine));
         stateMachine.Add("Attached", new Attached(this, board, stateMachine));
         stateMachine.ChangeState("Attached");
