@@ -38,6 +38,7 @@ public class Moving : IState
             if(col.Collider is IHittable obj)
             {
                 obj.OnHit();
+                ball.CheckWinConditions();
             }
         }
     }
