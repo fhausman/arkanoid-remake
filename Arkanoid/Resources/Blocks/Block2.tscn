@@ -8,6 +8,7 @@ extents = Vector2( 32, 16 )
 
 [node name="Block" type="StaticBody2D"]
 script = ExtResource( 1 )
+Points = 60
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
