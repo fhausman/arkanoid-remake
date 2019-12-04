@@ -5,9 +5,11 @@ using System.Linq;
 public class MainScene : Node2D
 {
     public int NumberOfLives { get; set; } = 2;
+    public int Score { get; set; } = 0;
     private Node2D blocks;
     private Control ui;
     private Control livesContainer;
+    private RichTextLabel scoreLabel;
     private PackedScene boardIcon;
     void CheckIfPlayerDestroyedAllBlocks()
     {
@@ -56,5 +58,12 @@ public class MainScene : Node2D
         {
             livesContainer.AddChild(boardIcon.Instance());
         }
+
+        scoreLabel = ui.GetNode<RichTextLabel>("Score");
+    }
+
+    public override void _Process(float delta)
+    {
+        scoreLabel.Text = GD.Str("Score: ", Score);
     }
 }
