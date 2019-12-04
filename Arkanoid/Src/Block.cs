@@ -12,9 +12,11 @@ public class Block : StaticBody2D, IHittable
     [Export]
     public int Points { get; set; } = 100;
 
+    public MainScene scene;
+
     public override void _Ready()
     {
-        //todo: get high score reference
+        scene = GetNode<MainScene>("/root/Main");
     }
 
     public void OnHit()
@@ -27,7 +29,7 @@ public class Block : StaticBody2D, IHittable
         NumOfHits--;
         if(NumOfHits <= 0)
         {
-            //todo: increase points
+            scene.Score += Points;
             Free();
         }
     }
