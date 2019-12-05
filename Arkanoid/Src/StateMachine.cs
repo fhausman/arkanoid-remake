@@ -4,7 +4,7 @@ using Godot;
 
 public interface IState
 {
-    void Init();
+    void Init(params object[] args);
     void HandleInput();
     void Process(float dt);
     void PhysicsProcess(float dt);
@@ -13,7 +13,7 @@ public interface IState
 
 public class EmptyState : IState
 {
-    public void Init() {}
+    public void Init(params object[] args) {}
     public void HandleInput() {}
     public void Process(float dt) {}
 
@@ -28,12 +28,12 @@ public class StateMachine
     public void Process(float dt) { currentState.Process(dt); }
     public void PhysicsProcess(float dt) { currentState.PhysicsProcess(dt); }
 
-    public IState ChangeState(String stateName)
+    public IState ChangeState(String stateName, params object[] args)
     {
         currentState.Exit();
 
         currentState = states[stateName];
-        currentState.Init();
+        currentState.Init(args);
         return currentState;
     }
     private Dictionary<String, IState> states = new Dictionary<string, IState>();

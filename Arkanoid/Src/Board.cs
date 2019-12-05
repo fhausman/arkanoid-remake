@@ -14,7 +14,7 @@ public class Idle : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init() { board.Dir = dir; }
+    public void Init(params object[] args) { board.Dir = dir; }
     public void Exit() {}
     public void Process(float dt) {}
     public void PhysicsProcess(float dt) {}
@@ -59,7 +59,7 @@ public class MoveLeft : MoveBase, IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init() { board.Dir = dir; }
+    public void Init(params object[] args) { board.Dir = dir; }
     public void Exit() {}
     public void Process(float dt) {}
 
@@ -90,7 +90,7 @@ public class MoveRight : MoveBase, IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init() { board.Dir = dir; }
+    public void Init(params object[] args) { board.Dir = dir; }
     public void Exit() {}
     public void Process(float dt) {}
 
