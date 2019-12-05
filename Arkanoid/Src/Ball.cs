@@ -16,7 +16,7 @@ public class Moving : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init() {}
+    public void Init(params object[] args) {}
     public void Exit() {}
     public void HandleInput() {}
     public void Process(float dt) {}
@@ -62,7 +62,7 @@ public class Attached : IState
     public void Exit() {}
     public void Process(float dt) {}
 
-    public void Init() {}
+    public void Init(params object[] args) {}
 
     public void HandleInput()
     {

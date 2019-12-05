@@ -23,6 +23,7 @@ public class MainScene : Node2D
     private RichTextLabel scoreLabel;
     private PackedScene boardIcon;
     private Vector2 levelLoadingPoint { get => new Vector2(544,160); }
+    private StateMachine stateMachine;
     
     private Dictionary<Lvl, string> levels = new Dictionary<Lvl, string>()
     {
@@ -34,11 +35,12 @@ public class MainScene : Node2D
     };
     void LoadLevel(Lvl level)
     {
-        GD.Print("Loading level ", string.Format("res://Resources/Levels/{0}", levels[level]));
         var levelScene = GD.Load<PackedScene>(string.Format("res://Resources/Levels/{0}", levels[level]));
         var levelInstance = (Node2D) levelScene.Instance();
         levelInstance.Position = levelLoadingPoint;
         AddChild(levelInstance);
+
+        blocks = GetNode<Node2D>("Blocks");
     }
     void CheckIfPlayerDestroyedAllBlocks()
     {
@@ -91,7 +93,6 @@ public class MainScene : Node2D
         scoreLabel = ui.GetNode<RichTextLabel>("Score");
         
         LoadLevel(Level);
-        blocks = GetNode<Node2D>("Blocks");
     }
 
     public override void _Process(float delta)
