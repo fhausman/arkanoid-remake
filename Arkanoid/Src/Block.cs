@@ -18,7 +18,10 @@ public class Block : StaticBody2D, IHittable
     {
         scene = GetNode<MainScene>("/root/Main");
         if(NumOfHits > 1)
+        {
             NumOfHits += (int) scene.CurrentLevel;
+            Points = (NumOfHits-1)*Points;
+        }
     }
 
     public void OnHit()
