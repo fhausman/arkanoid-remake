@@ -100,7 +100,7 @@ public class MainScene : Node2D
 {
     [Export]
     public Lvl Level { get; set; } = Lvl.LEVEL1;
-    public Lvl CurrentLevel { get; set; } = Lvl.LEVEL1;
+    public Lvl CurrentLevel { get; set; }
     public int NumberOfLives { get; set; } = 2;
     public int Score { get; set; } = 0;
     public Node2D Blocks { private get; set; }
