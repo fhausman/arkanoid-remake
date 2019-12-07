@@ -160,6 +160,7 @@ public class MainScene : Node2D
             livesContainer.AddChild(boardIcon.Instance());
         }
 
+        CurrentLevel = Level;
         stateMachine.ChangeState(nameof(LevelLoading), Level);
     }
 
