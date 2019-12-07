@@ -17,6 +17,12 @@ public class Block : StaticBody2D, IHittable
     public override void _Ready()
     {
         scene = GetNode<MainScene>("/root/Main");
+        if(NumOfHits > 1)
+        {
+            var currentLevel = (int) scene.CurrentLevel;
+            NumOfHits += currentLevel;
+            Points += currentLevel*Points;
+        }
     }
 
     public void OnHit()
