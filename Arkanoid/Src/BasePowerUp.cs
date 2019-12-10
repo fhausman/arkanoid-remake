@@ -1,10 +1,12 @@
 using Godot;
 using System;
 
-public class BasePowerUp : KinematicBody2D
+public abstract class BasePowerUp : KinematicBody2D
 {
     [Export]
     public int Speed { get; set; } = 200;
+
+    public abstract void OnCollect();
 
     public override void _PhysicsProcess(float delta)
     {
@@ -12,6 +14,7 @@ public class BasePowerUp : KinematicBody2D
         if(col != null && col.Collider is Board)
         {
             GD.Print("Power up collected!");
+            OnCollect();
             Free();
         }
     }
