@@ -119,10 +119,21 @@ public class MainScene : Node2D
         }
     }
 
-    void DecreaseNumberOfIcons()
+    void DecreaseNumberOfLifeIcons()
     {
         var children = livesContainer.GetChildren().Cast<TextureRect>().ToArray();
         children[children.Length - 1].QueueFree();
+    }
+    
+    void IncreaseNumberOfLifeIcons()
+    {
+        livesContainer.AddChild(boardIcon.Instance());
+    }
+
+    public void AddExtraLife()
+    {
+        NumberOfLives++;
+        IncreaseNumberOfLifeIcons();
     }
 
     public void OnDeathAreaEntered(PhysicsBody2D body)
@@ -132,7 +143,7 @@ public class MainScene : Node2D
             NumberOfLives--;
             if(NumberOfLives >= 0)
             {
-                DecreaseNumberOfIcons();
+                DecreaseNumberOfLifeIcons();
                 ball.ResetState();
                 GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
             }
@@ -157,7 +168,7 @@ public class MainScene : Node2D
         livesContainer = ui.GetNode<Control>("LivesContainer");
         foreach(var i in Enumerable.Range(1, NumberOfLives))
         {
-            livesContainer.AddChild(boardIcon.Instance());
+            IncreaseNumberOfLifeIcons();
         }
 
         CurrentLevel = Level;
