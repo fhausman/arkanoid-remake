@@ -3,13 +3,15 @@ using System;
 
 public class ExtraLife : BasePowerUp
 {
+    MainScene scene;
+
     public override void OnCollect()
     {
-        throw new NotImplementedException();
+        scene.AddExtraLife();
     }
 
     public override void _Ready()
     {
-        
+        scene = GetNode<MainScene>("/root/Main");
     }
 }
