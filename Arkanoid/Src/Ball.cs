@@ -118,6 +118,12 @@ public class Ball : KinematicBody2D
         stateMachine.ChangeState("Attached");
     }
 
+    public void ResetSpeed()
+    {
+        GD.Print("Resetting speed");
+        CurrentSpeed = InitialSpeed;
+    }
+
     public override void _Ready()
     {
         board = (Board) GetNode("../Board");
