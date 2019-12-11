@@ -132,7 +132,10 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6 ]
 }
 
-[node name="ball" type="KinematicBody2D"]
+[node name="ball" type="KinematicBody2D" groups=[
+"BALLS",
+]]
+collision_mask = 5
 script = SubResource( 1 )
 
 [node name="col" type="CollisionShape2D" parent="."]
