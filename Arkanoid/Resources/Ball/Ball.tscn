@@ -135,6 +135,7 @@ tracks/0/keys = {
 [node name="ball" type="KinematicBody2D" groups=[
 "BALLS",
 ]]
+collision_layer = 4
 collision_mask = 5
 script = SubResource( 1 )
 
