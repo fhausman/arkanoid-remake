@@ -16,7 +16,7 @@ public class Moving : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init(params object[] args) {}
+    public void Init(params object[] args) { Dir = (Vector2) args[0]; }
     public void Exit() {}
     public void HandleInput() {}
     public void Process(float dt) {}
@@ -122,6 +122,16 @@ public class Ball : KinematicBody2D
     {
         GD.Print("Resetting speed");
         CurrentSpeed = InitialSpeed;
+    }
+
+    public void SetMoving(Vector2 dir)
+    {
+        stateMachine.ChangeState(nameof(Moving), dir);
+    }
+
+    public void SetAttached()
+    {
+        stateMachine.ChangeState(nameof(Attached));
     }
 
     public override void _Ready()
