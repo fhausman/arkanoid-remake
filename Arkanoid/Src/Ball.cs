@@ -28,7 +28,7 @@ public class Moving : IState
         {
             if(col.Collider is Board)
             {
-                Dir = Bounce.BoardBounce(board.Position, board.GetExtents, col.Position);
+                Dir = Bounce.BoardBounce(ball, board.Position, board.GetExtents, col.Position);
             }
             else
             {
@@ -97,6 +97,15 @@ public class Ball : KinematicBody2D
     public float MaxSpeed { get; set; } = 1000.0f;
     [Export]
     public float SlideSpeed { get; set; } = 25.0f;
+    [Export]
+    public float FirstAngleSpeedUp { get; set; } = 0.0f;
+    [Export]
+    public float SecondAngleSpeedUp { get; set; } = 0.0f;
+    [Export]
+    public float ThirdAngleSpeedUp { get; set; } = 0.0f;
+    [Export]
+    public float BlockHitSpeedUp { get; set; } = 0.0f;
+
     public float CurrentSpeed { get; set; } = 0.0f;
     public Vector2 GetExtents { get => shape.GetExtents(); }
     [Signal]
@@ -105,6 +114,12 @@ public class Ball : KinematicBody2D
     private StateMachine stateMachine = new StateMachine();
     private Board board;
     private RectangleShape2D shape;
+
+    public void SpeedUp(float speedUp)
+    {
+        GD.Print("Speeding up! ", speedUp);
+        CurrentSpeed += speedUp;
+    }
 
     public void CheckWinConditions()
     {
