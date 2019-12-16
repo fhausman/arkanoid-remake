@@ -127,11 +127,16 @@ public class Ball : KinematicBody2D
         EmitSignal(nameof(CheckWin));
     }
 
+    public void SetAttached()
+    {
+        stateMachine.ChangeState(nameof(Attached));
+    }
+
     public void ResetState()
     {
         CurrentSpeed = InitialSpeed;
         Position = new Vector2(board.Position.x + board.GetExtents.x, board.Position.y);
-        stateMachine.ChangeState("Attached");
+        SetAttached();
     }
 
     public void ResetSpeed()
@@ -143,9 +148,9 @@ public class Ball : KinematicBody2D
     public override void _Ready()
     {
         board = (Board) GetNode("../Board");
-        stateMachine.Add("Moving", new Moving(this, board, stateMachine));
-        stateMachine.Add("Attached", new Attached(this, board, stateMachine));
-        stateMachine.ChangeState("Attached");
+        stateMachine.Add(nameof(Moving), new Moving(this, board, stateMachine));
+        stateMachine.Add(nameof(Attached), new Attached(this, board, stateMachine));
+        SetAttached();
 
         CurrentSpeed = InitialSpeed;
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
