@@ -63,13 +63,16 @@ public class Attached : IState
     public void Exit() {}
     public void Process(float dt) {}
 
-    public void Init(params object[] args) {}
+    public void Init(params object[] args)
+    {
+        Dir = (Vector2) args[0];
+    }
 
     public void HandleInput()
     {
         if(Input.IsActionPressed("ui_accept"))
         {
-            stateMachine.ChangeState("Moving", Bounce.AngleToDir(Bounce.FirstAngle));
+            stateMachine.ChangeState("Moving", Dir);
         }
     }
 
@@ -107,7 +110,8 @@ public class Ball : KinematicBody2D
     public float BlockHitSpeedUp { get; set; } = 0.0f;
 
     public float CurrentSpeed { get; set; } = 0.0f;
-    public Vector2 Dir { private get; set; } = new Vector2(-1, -1);
+    public Vector2 StartingDir { private get; set; } = Vector2.Zero;
+    public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; }
     public Vector2 GetExtents { get => shape.GetExtents(); }
     public bool MovingAtStart { get; set; } = false;
     [Signal]
@@ -132,7 +136,7 @@ public class Ball : KinematicBody2D
     {
         CurrentSpeed = InitialSpeed;
         Position = new Vector2(board.Position.x + board.GetExtents.x, board.Position.y);
-        stateMachine.ChangeState("Attached");
+        SetAttached(StartingDir);
     }
 
     public void ResetSpeed()
@@ -146,23 +150,23 @@ public class Ball : KinematicBody2D
         stateMachine.ChangeState(nameof(Moving), dir);
     }
 
-    public void SetAttached()
+    public void SetAttached(Vector2 dir)
     {
-        stateMachine.ChangeState(nameof(Attached));
+        stateMachine.ChangeState(nameof(Attached), dir);
     }
 
     public override void _Ready()
     {
         board = (Board) GetNode("../Board");
-        stateMachine.Add("Moving", new Moving(this, board, stateMachine));
-        stateMachine.Add("Attached", new Attached(this, board, stateMachine));
+        stateMachine.Add(nameof(Moving), new Moving(this, board, stateMachine));
+        stateMachine.Add(nameof(Attached), new Attached(this, board, stateMachine));
         if(MovingAtStart)
         {
-            stateMachine.ChangeState("Moving", Dir);
+            SetMoving(StartingDir);
         }
         else
         {
-            stateMachine.ChangeState("Attached");
+            SetAttached(Bounce.AngleToDir(Bounce.FirstAngle));
         }
 
         CurrentSpeed = InitialSpeed;
