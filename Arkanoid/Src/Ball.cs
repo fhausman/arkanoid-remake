@@ -69,8 +69,7 @@ public class Attached : IState
     {
         if(Input.IsActionPressed("ui_accept"))
         {
-            var movingState = stateMachine.ChangeState("Moving") as Moving;
-            movingState.Dir = Bounce.AngleToDir(Bounce.FirstAngle);
+            stateMachine.ChangeState("Moving", Bounce.AngleToDir(Bounce.FirstAngle));
         }
     }
 
@@ -108,7 +107,9 @@ public class Ball : KinematicBody2D
     public float BlockHitSpeedUp { get; set; } = 0.0f;
 
     public float CurrentSpeed { get; set; } = 0.0f;
+    public Vector2 Dir { private get; set; } = new Vector2(-1, -1);
     public Vector2 GetExtents { get => shape.GetExtents(); }
+    public bool MovingAtStart { get; set; } = false;
     [Signal]
     public delegate void CheckWin();
 
@@ -155,7 +156,14 @@ public class Ball : KinematicBody2D
         board = (Board) GetNode("../Board");
         stateMachine.Add("Moving", new Moving(this, board, stateMachine));
         stateMachine.Add("Attached", new Attached(this, board, stateMachine));
-        stateMachine.ChangeState("Attached");
+        if(MovingAtStart)
+        {
+            stateMachine.ChangeState("Moving", Dir);
+        }
+        else
+        {
+            stateMachine.ChangeState("Attached");
+        }
 
         CurrentSpeed = InitialSpeed;
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
