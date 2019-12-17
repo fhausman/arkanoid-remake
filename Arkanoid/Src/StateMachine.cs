@@ -27,6 +27,7 @@ public class StateMachine
     public void HandleInput() { currentState.HandleInput(); }
     public void Process(float dt) { currentState.Process(dt); }
     public void PhysicsProcess(float dt) { currentState.PhysicsProcess(dt); }
+    public T GetState<T>() where T : IState { return (T) currentState; }
 
     public IState ChangeState(String stateName, params object[] args)
     {
