@@ -16,7 +16,7 @@ public class LevelLoading : IState
     Lvl levelToLoad;
     MainScene scene;
     StateMachine stateMachine;
-    Vector2 levelLoadingPoint { get => new Vector2(544,160); }
+    Vector2 levelLoadingPoint { get; set; }
     private Dictionary<Lvl, string> levels = new Dictionary<Lvl, string>()
     {
         {Lvl.LEVEL1, "1 level.tscn"},
@@ -43,6 +43,7 @@ public class LevelLoading : IState
     public void Init(params object[] args)
     {
         levelToLoad = (Lvl) args[0];
+        levelLoadingPoint = (Vector2) args[1];
     }
 
     public void PhysicsProcess(float dt)
@@ -100,6 +101,8 @@ public class MainScene : Node2D
 {
     [Export]
     public Lvl Level { get; set; } = Lvl.LEVEL1;
+    [Export]
+    public Vector2 LevelLoadingPoint { get; set; } =  new Vector2(544,160);
     public Lvl CurrentLevel { get; set; }
     public int NumberOfLives { get; set; } = 2;
     public int Score { get; set; } = 0;
@@ -179,7 +182,7 @@ public class MainScene : Node2D
         }
 
         CurrentLevel = Level;
-        stateMachine.ChangeState(nameof(LevelLoading), Level);
+        stateMachine.ChangeState(nameof(LevelLoading), Level, LevelLoadingPoint);
     }
 
     public override void _Process(float delta)
