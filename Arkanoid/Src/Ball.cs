@@ -109,7 +109,7 @@ public class Ball : KinematicBody2D
     [Export]
     public float BlockHitSpeedUp { get; set; } = 0.0f;
 
-    public float CurrentSpeed { get; set; } = 0.0f;
+    public float CurrentSpeed { get; private set; } = 0.0f;
     public Vector2 StartingDir { private get; set; } = Vector2.Zero;
     public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; }
     public Vector2 GetExtents { get => shape.GetExtents(); }
@@ -125,6 +125,11 @@ public class Ball : KinematicBody2D
     {
         GD.Print("Speeding up! ", speedUp);
         CurrentSpeed += speedUp;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        CurrentSpeed = speed;
     }
 
     public void CheckWinConditions()
