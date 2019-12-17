@@ -7,10 +7,27 @@ public static class Bounce
     public const float SecondAngle = 40.0f;
     public const float ThirdAngle = 20.0f;
 
+    public static float DegreesToRadians(float angle)
+    {
+        return Mathf.Pi * angle / 180.0f;
+    }
+
     public static Vector2 AngleToDir(float angle)
     {
-        var radians = Mathf.Pi * angle / 180.0f;
+        var radians = DegreesToRadians(angle);
         return new Vector2(Mathf.Cos(radians), -Mathf.Sin(radians));
+    }
+
+    public static Vector2 RotateVector(Vector2 vec, float angle)
+    {
+        var radians = DegreesToRadians(angle);
+        var x = Mathf.Cos(radians)*vec.x - Mathf.Sin(radians)*vec.y;
+        var y = Mathf.Sin(radians)*vec.x + Mathf.Cos(radians)*vec.y;
+
+        var newVec = new Vector2(x,y);
+        GD.Print("Old dir: ", vec, " New dir: ", newVec);
+
+        return newVec;
     }
 
     public static Vector2 BoardBounce(Ball ball, Vector2 board_pos, Vector2 board_extents, Vector2 col_pos)
