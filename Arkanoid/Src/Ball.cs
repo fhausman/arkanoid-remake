@@ -23,6 +23,7 @@ public class Moving : IState
 
     public void PhysicsProcess(float dt)
     {
+        GD.Print(ball.CurrentSpeed);
         var col = ball.MoveAndCollide(Dir*ball.CurrentSpeed*dt);
         if(col != null)
         {
@@ -141,7 +142,7 @@ public class Ball : KinematicBody2D
     {
         CurrentSpeed = InitialSpeed;
         Position = new Vector2(board.Position.x + board.GetExtents.x, board.Position.y);
-        SetAttached(StartingDir);
+        SetAttached(Bounce.AngleToDir(Bounce.FirstAngle));
     }
 
     public void ResetSpeed()
