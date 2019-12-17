@@ -7,16 +7,32 @@ public class Multiball : BasePowerUp
     Ball ball;
     PackedScene ballScene;
 
+    [Export]
+    public float AngleBetweenBalls = 10.0f;
+
+    void SpawnBall(Ball existingBall, float angleOffset)
+    {
+        var extraBall = (Ball) ballScene.Instance();
+        extraBall.MovingAtStart = true;
+        extraBall.StartingDir = Bounce.RotateVector(ball.CurrentDir, angleOffset);
+        extraBall.Position = ball.Position;
+        scene.AddChild(extraBall);
+        extraBall.SetSpeed(ball.CurrentSpeed);
+    }
+
+    void SpawnBalls()
+    {
+        foreach(var i in new int[]{-1, 1})
+        {
+            SpawnBall(ball, AngleBetweenBalls*i);
+        }
+    }
+
     public override void OnCollect()
     {
         ball = (Ball) GetTree().GetNodesInGroup("BALLS")[0];
-        var extra_ball1 = (Ball) ballScene.Instance();
-        extra_ball1.MovingAtStart = true;
-        extra_ball1.StartingDir = Bounce.RotateVector(ball.CurrentDir, 10);
-        scene.AddChild(extra_ball1);
-        extra_ball1.Position = ball.Position;
-        extra_ball1.CurrentSpeed = ball.CurrentSpeed;
 
+        SpawnBalls();
         GD.Print(GetTree().GetNodesInGroup("BALLS").Count);
     }
 
