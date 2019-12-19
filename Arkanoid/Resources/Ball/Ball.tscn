@@ -1,117 +1,13 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Art/ball/ball_2.png" type="Texture" id=1]
-
-[sub_resource type="CSharpScript" id=1]
-script/source = "using Godot;
-using System;
-
-#region Ball States
-public class Moving : IState
-{
-    private Ball ball;
-    private StateMachine stateMachine;
-    public Vector2 Dir { get; set; } = new Vector2(-1, -1);
-
-    public Moving(Ball ball, StateMachine stateMachine)
-    {
-        this.ball = ball;
-        this.stateMachine = stateMachine;
-    }
-
-    public void Init(params object[] args) {}
-    public void Exit() {}
-    public void HandleInput() {}
-    public void Process(float dt) {}
-
-    public void PhysicsProcess(float dt)
-    {
-        var col = ball.MoveAndCollide(Dir*ball.CurrentSpeed*dt);
-        if(col != null)
-        {
-            Dir = Dir.Bounce(col.GetNormal());
-        }
-    }
-}
-
-public class Attached : IState
-{
-    private Ball ball;
-    private Board board;
-    private StateMachine stateMachine;
-    public Vector2 Dir { get; set; } = new Vector2(-1, -1);
-
-    public Attached(Ball ball, Board board, StateMachine stateMachine)
-    {
-        this.ball = ball;
-        this.board = board;
-        this.stateMachine = stateMachine;
-    }
-
-    public void Init(params object[] args) {}
-    public void Exit() {}
-    public void PhysicsProcess(float dt) {}
-
-    public void HandleInput()
-    {
-        if(Input.IsActionPressed(\"ui_accept\"))
-        {
-            var movingState = stateMachine.ChangeState(\"Moving\") as Moving;
-            movingState.Dir = new Vector2(board.Velocity.x > 0 ? 1 : -1,-1);
-        }
-    }
-    public void Process(float dt)
-    {
-        var board_pos = board.GetPosition();
-        //TODO: calculate offset from sprite height?
-        ball.SetPosition(new Vector2(board_pos.x, board_pos.y-15));
-    }
-}
-#endregion
-
-public class Ball : KinematicBody2D
-{
-    [Export]
-    public float InitialSpeed { get; set; } = 300.0f;
-    [Export]
-    public float MaxSpeed { get; set; } = 1000.0f;
-    public float CurrentSpeed { get; set; } = 0.0f;
-
-    private StateMachine stateMachine = new StateMachine();
-    private Board board = null;
-
-
-    public override void _Ready()
-    {
-        board = GetNode(\"/root/main/board\") as Board;
-        if(board == null)
-            throw new Exception(\"Something went wrong, board shouldn't be null\");
-
-        stateMachine.Add(\"Moving\", new Moving(this, stateMachine));
-        stateMachine.Add(\"Attached\", new Attached(this, board, stateMachine));
-        stateMachine.ChangeState(\"Attached\");
-
-        CurrentSpeed = InitialSpeed;
-    }
-
-    public override void _Process(float dt)
-    {
-        stateMachine.HandleInput();
-        stateMachine.Process(dt);
-    }
-
-    public override void _PhysicsProcess(float dt)
-    {
-        stateMachine.PhysicsProcess(dt);
-    }
-}
-"
+[ext_resource path="res://Src/Ball.cs" type="Script" id=1]
+[ext_resource path="res://Art/ball/ball_2.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=2]
 
 [sub_resource type="AtlasTexture" id=3]
 flags = 4
-atlas = ExtResource( 1 )
+atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 128, 64 )
 
 [sub_resource type="Animation" id=4]
@@ -137,7 +33,7 @@ tracks/0/keys = {
 ]]
 collision_layer = 8
 collision_mask = 5
-script = SubResource( 1 )
+script = ExtResource( 1 )
 InitialSpeed = 500.0
 
 [node name="col" type="CollisionShape2D" parent="."]
