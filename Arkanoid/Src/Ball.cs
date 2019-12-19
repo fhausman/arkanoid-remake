@@ -23,7 +23,6 @@ public class Moving : IState
 
     public void PhysicsProcess(float dt)
     {
-        GD.Print(ball.CurrentSpeed);
         var col = ball.MoveAndCollide(Dir*ball.CurrentSpeed*dt);
         if(col != null)
         {
