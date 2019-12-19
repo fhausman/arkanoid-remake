@@ -82,7 +82,7 @@ public class Attached : IState
         var board_width = board.GetExtents.x;
         var ball_height = ball.GetExtents.y;
 
-        var new_y = board_pos.y - ball_height*2 + 8.0f;
+        var new_y = board_pos.y - ball_height*2 + 8.0f; //todo: dispose magic numbers
         var new_x = ball.Position.LinearInterpolate(
             new Vector2(board_pos.x + board_width - GetVelocityOffset, new_y),
             dt*ball.SlideSpeed).x;
@@ -124,11 +124,12 @@ public class Ball : KinematicBody2D
     public void SpeedUp(float speedUp)
     {
         GD.Print("Speeding up! ", speedUp);
-        CurrentSpeed += speedUp;
+        SetSpeed(CurrentSpeed + speedUp);
     }
 
     public void SetSpeed(float speed)
     {
+        GD.Print("Current speed: ", speed);
         CurrentSpeed = speed;
     }
 
@@ -144,7 +145,7 @@ public class Ball : KinematicBody2D
 
     public void ResetState()
     {
-        CurrentSpeed = InitialSpeed;
+        ResetSpeed();
         Position = new Vector2(board.Position.x + board.GetExtents.x, board.Position.y);
         SetAttached(Bounce.AngleToDir(Bounce.FirstAngle));
     }
@@ -152,7 +153,7 @@ public class Ball : KinematicBody2D
     public void ResetSpeed()
     {
         GD.Print("Resetting speed");
-        CurrentSpeed = InitialSpeed;
+        SetSpeed(InitialSpeed);
     }
 
     public void SetMoving(Vector2 dir)
@@ -179,7 +180,7 @@ public class Ball : KinematicBody2D
             SetAttached(Bounce.AngleToDir(Bounce.FirstAngle));
         }
 
-        CurrentSpeed = InitialSpeed;
+        SetSpeed(InitialSpeed);
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
     }
 
