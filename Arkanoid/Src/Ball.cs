@@ -16,13 +16,14 @@ public class Moving : IState
         this.stateMachine = stateMachine;
     }
 
-    public void Init(params object[] args) {}
+    public void Init(params object[] args) { Dir = (Vector2) args[0]; }
     public void Exit() {}
     public void HandleInput() {}
     public void Process(float dt) {}
 
     public void PhysicsProcess(float dt)
     {
+        GD.Print(ball.CurrentSpeed);
         var col = ball.MoveAndCollide(Dir*ball.CurrentSpeed*dt);
         if(col != null)
         {
@@ -63,14 +64,16 @@ public class Attached : IState
     public void Exit() {}
     public void Process(float dt) {}
 
-    public void Init(params object[] args) {}
+    public void Init(params object[] args)
+    {
+        Dir = (Vector2) args[0];
+    }
 
     public void HandleInput()
     {
         if(Input.IsActionPressed("ui_accept"))
         {
-            var movingState = stateMachine.ChangeState("Moving") as Moving;
-            movingState.Dir = Bounce.AngleToDir(Bounce.FirstAngle);
+            stateMachine.ChangeState("Moving", Dir);
         }
     }
 
@@ -107,8 +110,11 @@ public class Ball : KinematicBody2D
     [Export]
     public float BlockHitSpeedUp { get; set; } = 0.0f;
 
-    public float CurrentSpeed { get; set; } = 0.0f;
+    public float CurrentSpeed { get; private set; } = 0.0f;
+    public Vector2 StartingDir { private get; set; } = Vector2.Zero;
+    public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; }
     public Vector2 GetExtents { get => shape.GetExtents(); }
+    public bool MovingAtStart { get; set; } = false;
     [Signal]
     public delegate void CheckWin();
 
@@ -120,6 +126,11 @@ public class Ball : KinematicBody2D
     {
         GD.Print("Speeding up! ", speedUp);
         CurrentSpeed += speedUp;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        CurrentSpeed = speed;
     }
 
     public void CheckWinConditions()
@@ -136,7 +147,7 @@ public class Ball : KinematicBody2D
     {
         CurrentSpeed = InitialSpeed;
         Position = new Vector2(board.Position.x + board.GetExtents.x, board.Position.y);
-        SetAttached();
+        SetAttached(Bounce.AngleToDir(Bounce.FirstAngle));
     }
 
     public void ResetSpeed()
@@ -145,12 +156,29 @@ public class Ball : KinematicBody2D
         CurrentSpeed = InitialSpeed;
     }
 
+    public void SetMoving(Vector2 dir)
+    {
+        stateMachine.ChangeState(nameof(Moving), dir);
+    }
+
+    public void SetAttached(Vector2 dir)
+    {
+        stateMachine.ChangeState(nameof(Attached), dir);
+    }
+
     public override void _Ready()
     {
         board = (Board) GetNode("../Board");
         stateMachine.Add(nameof(Moving), new Moving(this, board, stateMachine));
         stateMachine.Add(nameof(Attached), new Attached(this, board, stateMachine));
-        SetAttached();
+        if(MovingAtStart)
+        {
+            SetMoving(StartingDir);
+        }
+        else
+        {
+            SetAttached(Bounce.AngleToDir(Bounce.FirstAngle));
+        }
 
         CurrentSpeed = InitialSpeed;
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
