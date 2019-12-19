@@ -28,6 +28,12 @@ public class Moving : IState
         {
             if(col.Collider is Board)
             {
+                if(ball.GlueToBoard)
+                {
+                    ball.SetAttached();
+                    return;
+                }
+
                 Dir = Bounce.BoardBounce(ball, board.Position, board.GetExtents, col.Position);
             }
             else
@@ -50,7 +56,7 @@ public class Attached : IState
     private Ball ball;
     private Board board;
     private StateMachine stateMachine;
-    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.GetExtents.x * 0.15f; }}
+    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.GetExtents.x * 0.05f; }}
     public Vector2 Dir { get; set; } = new Vector2(-1, -1);
 
     public Attached(Ball ball, Board board, StateMachine stateMachine)
@@ -65,14 +71,15 @@ public class Attached : IState
 
     public void Init(params object[] args)
     {
-        Dir = (Vector2) args[0];
+        if(args.Length > 0)
+            Dir = (Vector2) args[0];
     }
 
     public void HandleInput()
     {
         if(Input.IsActionPressed("ui_accept"))
         {
-            stateMachine.ChangeState("Moving", Dir);
+            stateMachine.ChangeState("Moving", GetDispatchDir());
         }
     }
 
@@ -88,6 +95,18 @@ public class Attached : IState
             dt*ball.SlideSpeed).x;
  
         ball.SetPosition(new Vector2(new_x, new_y));
+    }
+
+    private Vector2 GetDispatchDir()
+    {
+        if(ball.GlueToBoard)
+        {
+            return Bounce.BoardBounce(ball, board.GetPosition(), board.GetExtents, ball.GetPosition());
+        }
+        else
+        {
+            return Dir;
+        }
     }
 }
 #endregion
@@ -114,6 +133,8 @@ public class Ball : KinematicBody2D
     public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; }
     public Vector2 GetExtents { get => shape.GetExtents(); }
     public bool MovingAtStart { get; set; } = false;
+    public bool GlueToBoard { get; set; } = false;
+
     [Signal]
     public delegate void CheckWin();
 
@@ -142,9 +163,15 @@ public class Ball : KinematicBody2D
     {
         stateMachine.ChangeState(nameof(Attached));
     }
+    
+    public void SetAttached(Vector2 dir)
+    {
+        stateMachine.ChangeState(nameof(Attached), dir);
+    }
 
     public void ResetState()
     {
+        ResetPowerups();
         ResetSpeed();
         Position = new Vector2(board.Position.x + board.GetExtents.x, board.Position.y);
         SetAttached(Bounce.AngleToDir(Bounce.FirstAngle));
@@ -156,14 +183,14 @@ public class Ball : KinematicBody2D
         SetSpeed(InitialSpeed);
     }
 
+    public void ResetPowerups()
+    {
+        GlueToBoard = false;
+    }
+
     public void SetMoving(Vector2 dir)
     {
         stateMachine.ChangeState(nameof(Moving), dir);
-    }
-
-    public void SetAttached(Vector2 dir)
-    {
-        stateMachine.ChangeState(nameof(Attached), dir);
     }
 
     public override void _Ready()
