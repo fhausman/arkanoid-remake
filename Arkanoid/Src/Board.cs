@@ -116,7 +116,8 @@ public class Board : KinematicBody2D
     public float Speed { get; set; } = 0.0f;
     public Vector2 Dir { get; set; } = new Vector2(0,0);
     public Vector2 Velocity { get => Speed*Dir; }
-    public Vector2 GetExtents { get => shape.GetExtents(); }
+    public Vector2 Extents { get => shape.GetExtents(); }
+    public Vector2 Middle { get => Position + shape.GetExtents(); }
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
 
