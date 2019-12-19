@@ -6,14 +6,12 @@ public class Moving : IState
 {
     private Ball ball;
     private Board board;
-    private StateMachine stateMachine;
     public Vector2 Dir { get; set; } = new Vector2(-1, -1);
 
-    public Moving(Ball ball, Board board, StateMachine stateMachine)
+    public Moving(Ball ball, Board board)
     {
         this.ball = ball;
         this.board = board;
-        this.stateMachine = stateMachine;
     }
 
     public void Init(params object[] args) { Dir = (Vector2) args[0]; }
@@ -55,15 +53,13 @@ public class Attached : IState
 {
     private Ball ball;
     private Board board;
-    private StateMachine stateMachine;
     private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.GetExtents.x * 0.05f; }}
     public Vector2 Dir { get; set; } = new Vector2(-1, -1);
 
-    public Attached(Ball ball, Board board, StateMachine stateMachine)
+    public Attached(Ball ball, Board board)
     {
         this.ball = ball;
         this.board = board;
-        this.stateMachine = stateMachine;
     }
 
     public void Exit() {}
@@ -79,7 +75,7 @@ public class Attached : IState
     {
         if(Input.IsActionPressed("ui_accept"))
         {
-            stateMachine.ChangeState("Moving", GetDispatchDir());
+            ball.SetMoving(GetDispatchDir());
         }
     }
 
@@ -196,8 +192,8 @@ public class Ball : KinematicBody2D
     public override void _Ready()
     {
         board = (Board) GetNode("../Board");
-        stateMachine.Add(nameof(Moving), new Moving(this, board, stateMachine));
-        stateMachine.Add(nameof(Attached), new Attached(this, board, stateMachine));
+        stateMachine.Add(nameof(Moving), new Moving(this, board));
+        stateMachine.Add(nameof(Attached), new Attached(this, board));
         if(MovingAtStart)
         {
             SetMoving(StartingDir);
