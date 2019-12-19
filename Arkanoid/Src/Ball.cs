@@ -171,7 +171,8 @@ public class Ball : KinematicBody2D
     {
         ResetPowerups();
         ResetSpeed();
-        SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), board.Middle);
+        Position = board.Middle;
+        SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), Position);
     }
 
     public void ResetSpeed()
