@@ -45,7 +45,13 @@ class LevelManager
     {
         currentLevel = level;
         ballInstance = (Ball) ball.Instance();
+
         boardInstance = (Board) board.Instance();
+
+        // ballInstance = (Ball) ball.Instance();
+        // ballInstance.Board = boardInstance;
+        // scene.AddChild(ballInstance);
+
 
         var levelScene = GD.Load<PackedScene>(string.Format("res://Resources/Levels/{0}", levels[level]));
         levelInstance = (Node2D) levelScene.Instance();
