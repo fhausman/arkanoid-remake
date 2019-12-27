@@ -29,10 +29,9 @@ class LevelManager
         {Lvl.LEVEL5, "5 level.tscn"}
     };
 
-    public LevelManager(MainScene scene, Vector2 levelLoadingPoint)
+    public LevelManager(MainScene scene)
     {
         this.scene = scene;
-        this.levelLoadingPoint = levelLoadingPoint;
     }
 
     public void Init()
@@ -51,10 +50,10 @@ class LevelManager
         ballInstance = (Ball) ball.Instance();
         ballInstance.Board = boardInstance;
         ballInstance.Position = scene.GetNode<Node2D>("BallSpawnPoint").Position;
-        
+
         var levelScene = GD.Load<PackedScene>(string.Format("res://Resources/Levels/{0}", levels[level]));
         levelInstance = (Node2D) levelScene.Instance();
-        levelInstance.Position = levelLoadingPoint;
+        levelInstance.Position = scene.GetNode<Node2D>("LevelSpawnPoint").Position;;
 
         scene.AddChild(boardInstance);
         scene.AddChild(ballInstance);

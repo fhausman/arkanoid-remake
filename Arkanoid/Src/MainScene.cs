@@ -72,7 +72,7 @@ public class MainScene : Node2D
 
     public override void _Ready()
     {
-        levelManager = new LevelManager(this, LevelLoadingPoint);
+        levelManager = new LevelManager(this);
         levelManager.Init();
 
         boardIcon = GD.Load<PackedScene>("res://Resources/UI/BoardIcon.tscn");
