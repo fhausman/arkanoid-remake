@@ -76,5 +76,9 @@ class LevelManager
         {
             ball.Free();
         }
+        foreach(Node2D powerup in scene.GetTree().GetNodesInGroup("POWERUPS"))
+        {
+            powerup.Free();
+        }
     }
 }

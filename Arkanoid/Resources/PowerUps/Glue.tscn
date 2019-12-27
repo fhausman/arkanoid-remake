@@ -6,7 +6,9 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 14 )
 
-[node name="PowerUp" type="KinematicBody2D"]
+[node name="PowerUp" type="KinematicBody2D" groups=[
+"POWERUPS",
+]]
 collision_layer = 2
 script = ExtResource( 1 )
 
