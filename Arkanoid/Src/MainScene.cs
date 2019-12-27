@@ -75,6 +75,7 @@ public class MainScene : Node2D
         levelManager = new LevelManager(this);
         levelManager.Init();
 
+        //todo: UI manager should handle it
         boardIcon = GD.Load<PackedScene>("res://Resources/UI/BoardIcon.tscn");
 
         ui = GetNode<Control>("UI");
