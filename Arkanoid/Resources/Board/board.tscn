@@ -13,10 +13,10 @@ script = ExtResource( 1 )
 Speed = 500.0
 
 [node name="col" type="CollisionShape2D" parent="."]
-position = Vector2( 64, 1 )
+position = Vector2( 0, 1 )
 shape = SubResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 64, 16 )
+position = Vector2( 0, 16 )
 z_index = -1
 texture = ExtResource( 2 )

@@ -26,7 +26,7 @@ z_index = -1
 texture = ExtResource( 2 )
 
 [node name="BoardSpawnPoint" type="Node2D" parent="."]
-position = Vector2( 896, 960 )
+position = Vector2( 960, 960 )
 
 [node name="LevelSpawnPoint" type="Node2D" parent="."]
 position = Vector2( 544, 160 )
