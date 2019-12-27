@@ -35,6 +35,7 @@ public class Block : StaticBody2D, IHittable
         {
             scene.Score += Points;
             Free();
+            scene.CheckIfPlayerDestroyedAllBlocks();
         }
     }
 }
