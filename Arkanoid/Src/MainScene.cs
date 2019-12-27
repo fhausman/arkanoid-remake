@@ -119,6 +119,7 @@ public class MainScene : Node2D
         if(blocks_count == 0)
         {
             GD.Print("Woohoo, level won, going to the next stage");
+            stateMachine.ChangeState(nameof(LevelLoading), ++CurrentLevel, LevelLoadingPoint);
         }
     }
 
