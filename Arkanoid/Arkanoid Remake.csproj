@@ -59,6 +59,7 @@
     <Compile Include="Src\Block.cs" />
     <Compile Include="Src\Board.cs" />
     <Compile Include="Src\Bounce.cs" />
+    <Compile Include="Src\LevelManager.cs" />
     <Compile Include="Src\MainScene.cs" />
     <Compile Include="Src\StateMachine.cs" />
     <Compile Include="Src\IHittable.cs" />
