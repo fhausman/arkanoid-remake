@@ -69,6 +69,11 @@ class LevelManager
 
     private void Cleanup()
     {
-
+        boardInstance.Free();
+        levelInstance.Free();
+        foreach(Node2D ball in scene.GetTree().GetNodesInGroup("BALLS"))
+        {
+            ball.Free();
+        }
     }
 }
