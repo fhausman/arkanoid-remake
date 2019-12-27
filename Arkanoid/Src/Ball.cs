@@ -44,7 +44,6 @@ public class Moving : IState
             {
                 obj.OnHit();
                 ball.SpeedUp(ball.BlockHitSpeedUp);
-                ball.CheckWinConditions();
             }
         }
     }
@@ -133,9 +132,6 @@ public class Ball : KinematicBody2D
     public bool MovingAtStart { get; set; } = false;
     public bool GlueToBoard { get; set; } = false;
 
-    [Signal]
-    public delegate void CheckWin();
-
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
 
@@ -149,11 +145,6 @@ public class Ball : KinematicBody2D
     {
         GD.Print("Current speed: ", speed);
         CurrentSpeed = speed;
-    }
-
-    public void CheckWinConditions()
-    {
-        EmitSignal(nameof(CheckWin));
     }
 
     public Attached SetAttached(Vector2 dir, Vector2 attachPos)
