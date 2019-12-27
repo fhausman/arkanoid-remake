@@ -65,6 +65,7 @@ class LevelManager
     public void AdvanceToNextLevel()
     {
         this.Cleanup();
+        this.LoadLevel(++currentLevel);
     }
 
     private void Cleanup()
