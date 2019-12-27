@@ -5,8 +5,6 @@ public class MainScene : Node2D
 {
     [Export]
     public Lvl Level { get; set; } = Lvl.LEVEL1;
-    [Export]
-    public Vector2 LevelLoadingPoint { get; set; } =  new Vector2(544,160);
     public Lvl CurrentLevel { get; set; }
     public int NumberOfLives { get; set; } = 2;
     public int Score { get; set; } = 0;
@@ -17,16 +15,6 @@ public class MainScene : Node2D
     private RichTextLabel scoreLabel;
     private StateMachine stateMachine = new StateMachine();    
     private LevelManager levelManager;
-    void CheckIfPlayerDestroyedAllBlocks()
-    {
-        var blocks_count = Blocks.GetChildren().Cast<Block>().Count(b => b.Destructable);
-        GD.Print("Checkin... ", blocks_count);
-        if(blocks_count == 0)
-        {
-            GD.Print("Woohoo, level won, going to the next stage");
-            levelManager.AdvanceToNextLevel();
-        }
-    }
 
     void DecreaseNumberOfLifeIcons()
     {
@@ -43,6 +31,17 @@ public class MainScene : Node2D
     {
         NumberOfLives++;
         IncreaseNumberOfLifeIcons();
+    }
+
+    public void CheckIfPlayerDestroyedAllBlocks()
+    {
+        var blocks_count = Blocks.GetChildren().Cast<Block>().Count(b => b.Destructable);
+        GD.Print("Checkin... ", blocks_count);
+        if(blocks_count == 0)
+        {
+            GD.Print("Woohoo, level won, going to the next stage");
+            levelManager.AdvanceToNextLevel();
+        }
     }
 
     public void OnDeathAreaEntered(PhysicsBody2D body)

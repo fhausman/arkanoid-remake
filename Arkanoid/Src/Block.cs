@@ -34,6 +34,7 @@ public class Block : StaticBody2D, IHittable
         if(NumOfHits <= 0)
         {
             scene.Score += Points;
+            scene.CheckIfPlayerDestroyedAllBlocks();
             Free();
         }
     }
