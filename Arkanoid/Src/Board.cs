@@ -121,6 +121,15 @@ public class Board : KinematicBody2D
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
 
+    public void Extend()
+    {
+        GD.Print("I'll be extended");
+    }
+
+    public void Shrink()
+    {
+    }
+
     public override void _Ready()
     {
         stateMachine.Add("Idle", new Idle(this, stateMachine));
