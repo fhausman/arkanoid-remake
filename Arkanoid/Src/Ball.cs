@@ -125,7 +125,7 @@ public class Ball : KinematicBody2D
     public float ThirdAngleSpeedUp { get; set; } = 0.0f;
     [Export]
     public float BlockHitSpeedUp { get; set; } = 0.0f;
-
+    public Board Board { get; set; }
     public float CurrentSpeed { get; private set; } = 0.0f;
     public Vector2 StartingDir { private get; set; } = Vector2.Zero;
     public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; }
@@ -137,7 +137,6 @@ public class Ball : KinematicBody2D
     public delegate void CheckWin();
 
     private StateMachine stateMachine = new StateMachine();
-    private Board board;
     private RectangleShape2D shape;
 
     public void SpeedUp(float speedUp)
@@ -171,7 +170,7 @@ public class Ball : KinematicBody2D
     {
         ResetPowerups();
         ResetSpeed();
-        Position = board.Middle;
+        Position = Board.Middle;
         SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), Position);
     }
 
@@ -188,16 +187,15 @@ public class Ball : KinematicBody2D
 
     public override void _Ready()
     {
-        board = (Board) GetNode("../Board");
-        stateMachine.Add(nameof(Moving), new Moving(this, board));
-        stateMachine.Add(nameof(Attached), new Attached(this, board));
+        stateMachine.Add(nameof(Moving), new Moving(this, Board));
+        stateMachine.Add(nameof(Attached), new Attached(this, Board));
         if(MovingAtStart)
         {
             SetMoving(StartingDir);
         }
         else
         {
-            SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), board.Middle);
+            SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), Board.Middle);
         }
 
         SetSpeed(InitialSpeed);

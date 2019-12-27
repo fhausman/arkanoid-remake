@@ -44,19 +44,22 @@ class LevelManager
     public void LoadLevel(Lvl level)
     {
         currentLevel = level;
-        ballInstance = (Ball) ball.Instance();
 
         boardInstance = (Board) board.Instance();
+        boardInstance.Position = scene.GetNode<Node2D>("BoardSpawnPoint").Position;
 
-        // ballInstance = (Ball) ball.Instance();
-        // ballInstance.Board = boardInstance;
-        // scene.AddChild(ballInstance);
-
-
+        ballInstance = (Ball) ball.Instance();
+        ballInstance.Board = boardInstance;
+        ballInstance.Position = scene.GetNode<Node2D>("BallSpawnPoint").Position;
+        
         var levelScene = GD.Load<PackedScene>(string.Format("res://Resources/Levels/{0}", levels[level]));
         levelInstance = (Node2D) levelScene.Instance();
         levelInstance.Position = levelLoadingPoint;
+
+        scene.AddChild(boardInstance);
+        scene.AddChild(ballInstance);
         scene.AddChild(levelInstance);
+
         scene.Blocks = scene.GetNode<Node2D>("Blocks");
     }
 
