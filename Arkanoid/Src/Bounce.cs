@@ -33,7 +33,7 @@ public static class Bounce
     public static Vector2 BoardBounce(Ball ball, Vector2 board_pos, Vector2 board_extents, Vector2 col_pos)
     {
         Vector2 bounce_dir;
-        var board_middle = board_pos.x + board_extents.x;
+        var board_middle = board_pos.x;
 
         //right
         if(col_pos.x > board_middle)

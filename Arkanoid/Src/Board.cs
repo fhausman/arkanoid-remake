@@ -116,10 +116,38 @@ public class Board : KinematicBody2D
     public float Speed { get; set; } = 0.0f;
     public Vector2 Dir { get; set; } = new Vector2(0,0);
     public Vector2 Velocity { get => Speed*Dir; }
-    public Vector2 Extents { get => shape.GetExtents(); }
-    public Vector2 Middle { get => Position + shape.GetExtents(); }
+    public Vector2 Extents { get => shape.GetExtents()*Transform.Scale; }
+    public Vector2 Middle { get => Position; }
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
+    private bool extended { get; set; } = false;
+
+    public void Extend()
+    {
+        this.ChangeSize(2.0f, 1.0f);
+        extended = true;
+    }
+
+    public void Shrink()
+    {
+        this.ChangeSize(0.5f, 1.0f);
+        extended = false;
+    }
+
+    public void ResetState()
+    {
+        if(extended)
+            this.Shrink();
+        
+        Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
+    }
+
+    private void ChangeSize(float xScale, float yScale)
+    {
+        var newTransform = GetTransform();
+        newTransform.Scale = new Vector2(newTransform.Scale.x*xScale, newTransform.Scale.y*yScale);
+        SetTransform(newTransform);
+    }
 
     public override void _Ready()
     {
