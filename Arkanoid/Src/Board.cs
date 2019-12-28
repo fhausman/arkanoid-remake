@@ -121,6 +121,7 @@ public class Board : KinematicBody2D
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
     private bool extended { get; set; } = false;
+    private bool laser { get; set; } = false;
 
     public void Extend()
     {
@@ -134,10 +135,27 @@ public class Board : KinematicBody2D
         extended = false;
     }
 
+    public void TransformToLaser()
+    {
+        //implement animation
+    }
+
+    public void ShootLaser()
+    {
+        if(Input.IsActionPressed("ui_accept")
+            //&& less than 3 lasers shooted
+        )
+        {
+            //spawn lasers
+        }
+    }
+
     public void ResetState()
     {
         if(extended)
             this.Shrink();
+
+        laser = false;
         
         Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
     }
@@ -161,6 +179,11 @@ public class Board : KinematicBody2D
 
     public override void _Process(float dt)
     {
+        if(laser)
+        {
+            ShootLaser();
+        }
+
         stateMachine.HandleInput();
         stateMachine.Process(dt);
     }
