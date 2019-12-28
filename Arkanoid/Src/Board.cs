@@ -120,15 +120,26 @@ public class Board : KinematicBody2D
     public Vector2 Middle { get => Position; }
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
+    private bool extended { get; set; } = false;
 
     public void Extend()
     {
         this.ChangeSize(2.0f, 1.0f);
+        extended = true;
     }
 
     public void Shrink()
     {
         this.ChangeSize(0.5f, 1.0f);
+        extended = false;
+    }
+
+    public void ResetState()
+    {
+        if(extended)
+            this.Shrink();
+        
+        Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
     }
 
     private void ChangeSize(float xScale, float yScale)
