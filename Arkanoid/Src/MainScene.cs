@@ -57,14 +57,19 @@ public class MainScene : Node2D
                 NumberOfLives--;
                 if(NumberOfLives >= 0)
                 {
+                    var board = GetNode<Board>("Board");
+
                     DecreaseNumberOfLifeIcons();
+                    board.ResetState();
                     ball.ResetState();
+
                     GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
                 }
                 else
                 {
-                    GD.Print("Game over");
                     GetTree().ReloadCurrentScene();
+
+                    GD.Print("Game over");
                 }
             }
         }
