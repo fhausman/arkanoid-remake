@@ -123,11 +123,19 @@ public class Board : KinematicBody2D
 
     public void Extend()
     {
-        GD.Print("I'll be extended");
+        this.ChangeSize(2.0f, 1.0f);
     }
 
     public void Shrink()
     {
+        this.ChangeSize(0.5f, 1.0f);
+    }
+
+    private void ChangeSize(float xScale, float yScale)
+    {
+        var newTransform = GetTransform();
+        newTransform.Scale = new Vector2(newTransform.Scale.x*xScale, newTransform.Scale.y*yScale);
+        SetTransform(newTransform);
     }
 
     public override void _Ready()
