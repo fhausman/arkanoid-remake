@@ -110,6 +110,46 @@ public class MoveRight : MoveBase, IState
 }
 #endregion
 
+public class BlastManager
+{
+    private Board board;
+    private PackedScene blast;
+    private MainScene scene;
+    private Timer laserDelay;
+    private bool laserReady = true;
+
+    public void LaserReady()
+    {
+        laserReady = true;
+    }
+    public BlastManager(Board board, Timer laserDelay)
+    {
+        this.board = board;
+        this.laserDelay = laserDelay;
+    }
+
+    public void Prepare()
+    {
+        blast = GD.Load<PackedScene>("res://Resources/Board/Blast.tscn");
+        scene = board.GetNode<MainScene>("/root/Main");
+    }
+
+    public bool CanShoot()
+    {
+        return laserReady;
+    }
+
+    public void Shoot()
+    {
+        laserReady = false;
+        laserDelay.Start();
+
+        var blastInstance = (Blast) blast.Instance();
+        blastInstance.Position = board.Middle;
+        scene.AddChild(blastInstance);
+    }
+}
+
 public class Board : KinematicBody2D
 {
     [Export]
@@ -119,13 +159,11 @@ public class Board : KinematicBody2D
     public Vector2 Extents { get => shape.GetExtents()*Transform.Scale; }
     public Vector2 Middle { get => Position; }
     private StateMachine stateMachine = new StateMachine();
+    private BlastManager blastManager;
     private RectangleShape2D shape;
-    private MainScene scene;
-    private PackedScene blast;
     private Timer laserDelay;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
-    private bool laserReady { get; set; } = true;
 
     public void Extend()
     {
@@ -153,21 +191,16 @@ public class Board : KinematicBody2D
 
     public void LaserReady()
     {
-        laserReady = true;
+        blastManager.LaserReady();
     }
 
     public void ShootLaser()
     {
         if(Input.IsActionJustPressed("ui_accept")
-            && laserReady
-            //&& less than 3 lasers shooted
+            && blastManager.CanShoot()
         )
         {
-            laserReady = false;
-            laserDelay.Start();
-            var blastInstance = (Blast) blast.Instance();
-            blastInstance.Position = this.Middle;
-            scene.AddChild(blastInstance);
+            blastManager.Shoot();
             GD.Print("Psium, psium!");
         }
     }
@@ -178,8 +211,7 @@ public class Board : KinematicBody2D
             this.Shrink();
 
         laserActivated = false;
-        laserReady = true;
-        
+        blastManager.LaserReady();
         Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
     }
 
@@ -198,10 +230,9 @@ public class Board : KinematicBody2D
         stateMachine.ChangeState("Idle");
 
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
-        laserDelay = this.GetNode<Timer>("LaserDelay");
-        scene = this.GetNode<MainScene>("/root/Main");
 
-        blast = GD.Load<PackedScene>("res://Resources/Board/Blast.tscn");
+        blastManager = new BlastManager(this, this.GetNode<Timer>("LaserDelay"));
+        blastManager.Prepare();
     }
 
     public override void _Process(float dt)
