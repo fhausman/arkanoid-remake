@@ -62,6 +62,8 @@ public class MainScene : Node2D
                     DecreaseNumberOfLifeIcons();
                     board.ResetState();
                     ball.ResetState();
+                    levelManager.CleanGroup("POWERUPS");
+                    levelManager.CleanGroup("BLASTS");
 
                     GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
                 }

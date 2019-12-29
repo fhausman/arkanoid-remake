@@ -68,17 +68,34 @@ class LevelManager
         this.LoadLevel(++currentLevel);
     }
 
+    public void SoftReload()
+    {
+        boardInstance.ResetState();
+        FreeAllGroups();
+    }
+    
+    public void CleanGroup(string group)
+    {
+        var tree = scene.GetTree();
+        foreach(Node2D obj in tree.GetNodesInGroup(group))
+        {
+            obj.QueueFree();
+        }
+    }
+
     private void Cleanup()
     {
         boardInstance.Free();
         levelInstance.Free();
-        foreach(Node2D ball in scene.GetTree().GetNodesInGroup("BALLS"))
+        FreeAllGroups();
+    }
+
+    private void FreeAllGroups()
+    {
+        var groups = new string[]{"BALLS", "POWERUPS", "BLASTS"};
+        foreach(var group in groups)
         {
-            ball.Free();
-        }
-        foreach(Node2D powerup in scene.GetTree().GetNodesInGroup("POWERUPS"))
-        {
-            powerup.Free();
+            CleanGroup(group);
         }
     }
 }

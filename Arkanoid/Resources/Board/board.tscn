@@ -20,3 +20,7 @@ shape = SubResource( 1 )
 position = Vector2( 0, 16 )
 z_index = -1
 texture = ExtResource( 2 )
+
+[node name="LaserDelay" type="Timer" parent="."]
+wait_time = 0.1
+[connection signal="timeout" from="LaserDelay" to="." method="LaserReady"]
