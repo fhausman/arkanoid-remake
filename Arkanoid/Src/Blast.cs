@@ -8,9 +8,10 @@ public class Blast : KinematicBody2D
     public override void _PhysicsProcess(float delta)
     {
         var col = MoveAndCollide(Vector2.Up*Speed*delta);
-        if(col != null && col.Collider is IHittable obj)
+        if(col != null)
         {
-            obj.OnHit();
+            if(col.Collider is IHittable obj)
+                obj.OnHit();
             Free();
         }
     }
