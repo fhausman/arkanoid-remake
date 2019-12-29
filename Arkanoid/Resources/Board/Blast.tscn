@@ -5,6 +5,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 
 [node name="Blast" type="KinematicBody2D"]
+collision_layer = 16
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
