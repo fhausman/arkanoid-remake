@@ -60,6 +60,7 @@
     <Compile Include="Src\Block.cs" />
     <Compile Include="Src\Board.cs" />
     <Compile Include="Src\Bounce.cs" />
+    <Compile Include="Src\Laser.cs" />
     <Compile Include="Src\LevelManager.cs" />
     <Compile Include="Src\MainScene.cs" />
     <Compile Include="Src\StateMachine.cs" />

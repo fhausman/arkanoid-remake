@@ -135,8 +135,15 @@ public class Board : KinematicBody2D
         extended = false;
     }
 
-    public void TransformToLaser()
+    public void EnableLaser()
     {
+        laserActivated = true;
+        //implement animation
+    }
+
+    public void DisableLaser()
+    {
+        laserActivated = false;
         //implement animation
     }
 
@@ -146,6 +153,7 @@ public class Board : KinematicBody2D
             //&& less than 3 lasers shooted
         )
         {
+            GD.Print("Psium, psium!");
             //spawn lasers
         }
     }
