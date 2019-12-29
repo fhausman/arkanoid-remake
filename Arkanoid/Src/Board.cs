@@ -117,6 +117,8 @@ public class BlastManager
     private MainScene scene;
     private Timer laserDelay;
     private bool laserReady = true;
+    private int xOffset = 25;
+    private int yOffset = 10;
 
     public void LaserReady()
     {
@@ -136,7 +138,8 @@ public class BlastManager
 
     public bool CanShoot()
     {
-        return laserReady;
+        return laserReady &&
+            scene.GetTree().GetNodesInGroup("BLASTS").Count < 5;
     }
 
     public void Shoot()
@@ -144,8 +147,15 @@ public class BlastManager
         laserReady = false;
         laserDelay.Start();
 
+        var middle = board.Middle;
+        InstanceBlast(new Vector2(middle.x + xOffset, middle.y + yOffset));
+        InstanceBlast(new Vector2(middle.x - xOffset, middle.y + yOffset));
+    }
+
+    private void InstanceBlast(Vector2 position)
+    {
         var blastInstance = (Blast) blast.Instance();
-        blastInstance.Position = board.Middle;
+        blastInstance.Position = position;
         scene.AddChild(blastInstance);
     }
 }
