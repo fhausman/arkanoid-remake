@@ -120,6 +120,8 @@ public class Board : KinematicBody2D
     public Vector2 Middle { get => Position; }
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
+    private MainScene scene;
+    private PackedScene blast;
     private Timer laserDelay;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
@@ -163,8 +165,10 @@ public class Board : KinematicBody2D
         {
             laserReady = false;
             laserDelay.Start();
+            var blastInstance = (Blast) blast.Instance();
+            blastInstance.Position = this.Middle;
+            scene.AddChild(blastInstance);
             GD.Print("Psium, psium!");
-            //spawn lasers
         }
     }
 
@@ -195,6 +199,9 @@ public class Board : KinematicBody2D
 
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
         laserDelay = this.GetNode<Timer>("LaserDelay");
+        scene = this.GetNode<MainScene>("/root/Main");
+
+        blast = GD.Load<PackedScene>("res://Resources/Board/Blast.tscn");
     }
 
     public override void _Process(float dt)

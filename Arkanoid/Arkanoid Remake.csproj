@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\BoardExtend.cs" />
+    <Compile Include="Src\Blast.cs" />
     <Compile Include="Src\Glue.cs" />
     <Compile Include="Src\Multiball.cs" />
     <Compile Include="Src\Slowdown.cs" />
