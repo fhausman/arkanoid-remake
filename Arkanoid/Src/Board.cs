@@ -120,8 +120,10 @@ public class Board : KinematicBody2D
     public Vector2 Middle { get => Position; }
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
+    private Timer laserDelay;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
+    private bool laserReady { get; set; } = true;
 
     public void Extend()
     {
@@ -147,12 +149,20 @@ public class Board : KinematicBody2D
         //implement animation
     }
 
+    public void LaserReady()
+    {
+        laserReady = true;
+    }
+
     public void ShootLaser()
     {
         if(Input.IsActionPressed("ui_accept")
+            && laserReady
             //&& less than 3 lasers shooted
         )
         {
+            laserReady = false;
+            laserDelay.Start();
             GD.Print("Psium, psium!");
             //spawn lasers
         }
@@ -164,6 +174,7 @@ public class Board : KinematicBody2D
             this.Shrink();
 
         laserActivated = false;
+        laserReady = true;
         
         Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
     }
@@ -183,6 +194,7 @@ public class Board : KinematicBody2D
         stateMachine.ChangeState("Idle");
 
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
+        laserDelay = this.GetNode<Timer>("LaserDelay");
     }
 
     public override void _Process(float dt)
