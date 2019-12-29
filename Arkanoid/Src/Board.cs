@@ -158,7 +158,7 @@ public class Board : KinematicBody2D
 
     public void ShootLaser()
     {
-        if(Input.IsActionPressed("ui_accept")
+        if(Input.IsActionJustPressed("ui_accept")
             && laserReady
             //&& less than 3 lasers shooted
         )
