@@ -5,10 +5,13 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 
-[node name="Blast" type="KinematicBody2D"]
+[node name="Blast" type="KinematicBody2D" groups=[
+"BLASTS",
+]]
 collision_layer = 16
 collision_mask = 4
 script = ExtResource( 1 )
+Speed = 500
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
