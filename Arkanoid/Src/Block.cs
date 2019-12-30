@@ -34,6 +34,7 @@ public class Block : StaticBody2D, IHittable
         if(NumOfHits <= 0)
         {
             scene.Score += Points;
+            PowerupManager.SpawnPowerup(Position + new Vector2(32, 16));
             Free();
             scene.CheckIfPlayerDestroyedAllBlocks();
         }
