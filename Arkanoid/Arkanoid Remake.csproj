@@ -54,6 +54,7 @@
     <Compile Include="Src\Blast.cs" />
     <Compile Include="Src\Glue.cs" />
     <Compile Include="Src\Multiball.cs" />
+    <Compile Include="Src\PowerupManager.cs" />
     <Compile Include="Src\Slowdown.cs" />
     <Compile Include="Src\ExtraLife.cs" />
     <Compile Include="Src\Ball.cs" />
