@@ -7,5 +7,6 @@ public class Glue : BasePowerUp
     {
         var ball = (Ball) GetTree().GetNodesInGroup("BALLS")[0];
         ball.GlueToBoard = true;
+        base.OnCollect();
     }
 }

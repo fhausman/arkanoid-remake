@@ -6,7 +6,10 @@ public abstract class BasePowerUp : KinematicBody2D
     [Export]
     public int Speed { get; set; } = 200;
 
-    public abstract void OnCollect();
+    public virtual void OnCollect()
+    {
+        Free();
+    }
 
     public override void _PhysicsProcess(float delta)
     {
@@ -15,7 +18,6 @@ public abstract class BasePowerUp : KinematicBody2D
         {
             GD.Print("Power up collected!");
             OnCollect();
-            Free();
         }
     }
 }

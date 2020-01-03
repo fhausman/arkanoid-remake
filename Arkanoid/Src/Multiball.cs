@@ -34,6 +34,8 @@ public class Multiball : BasePowerUp
 
         SpawnBalls();
         GD.Print(GetTree().GetNodesInGroup("BALLS").Count);
+
+        base.OnCollect();
     }
 
     public override void _Ready()

@@ -6,5 +6,6 @@ public class Laser : BasePowerUp
     {
         var board = GetNode<Board>("/root/Main/Board");
         board.EnableLaser();
+        base.OnCollect();
     }
 }

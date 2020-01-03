@@ -7,5 +7,6 @@ public class BoardExtend : BasePowerUp
     {
         var board = GetNode<Board>("/root/Main/Board");
         board.Extend();
+        base.OnCollect();
     }
 }
