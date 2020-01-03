@@ -12,6 +12,7 @@ public class PowerupManager : Node2D
     private PackedScene slowdown;
     private PackedScene glue;
     //todo private PackedScene teleport;
+    private List<PackedScene> powerUps;
     private bool IsMultiballActive { get => scene.GetTree().GetNodesInGroup("BALLS").Count > 1; }
     private bool IsAnyPowerUpOnScene { get => scene.GetTree().GetNodesInGroup("POWERUPS").Count > 0; }
 
@@ -27,7 +28,24 @@ public class PowerupManager : Node2D
             powerupManager.IsMultiballActive == false &&
             powerupManager.IsAnyPowerUpOnScene == false)
         {
-            var instance = powerupManager.laser.Instance() as Node2D;
+            PackedScene powerUp = null;
+
+            var num = randGen.RandfRange(0.0f, 1.0f);
+            var range = 1.0f / powerupManager.powerUps.Count;
+            for(int i = 0; i < powerupManager.powerUps.Count; ++i)
+            {
+                if(i*range <= num && num < (i+1)*range)
+                {
+                    powerUp = powerupManager.powerUps[i];
+                }
+            }
+
+            var instance = powerUp.Instance() as Node2D;
+            if(instance is ExtraLife)
+            {
+                powerupManager.powerUps.Remove(powerUp);
+            }
+            
             instance.Position = levelSpawnPosition + blockPosition;
             scene.AddChild(instance);
         }
@@ -51,6 +69,7 @@ public class PowerupManager : Node2D
         slowdown = GD.Load<PackedScene>("res://Resources/PowerUps/Slowdown.tscn");
         glue = GD.Load<PackedScene>("res://Resources/PowerUps/Glue.tscn");
 
+        powerUps = new List<PackedScene>() {laser, multiball, extraLife, boardExtension, slowdown, glue};
 
         levelSpawnPosition = GetNode<Node2D>("/root/Main/LevelSpawnPoint").Position;
     }
