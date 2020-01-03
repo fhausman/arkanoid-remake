@@ -40,9 +40,14 @@ public class MoveBase
         board.Dir = dir;
 
         var col = board.MoveAndCollide(board.Velocity*dt);
-        if(col != null && col.Collider is StaticBody2D)
+        if(col != null)
         {
-            board.Dir = Vector2.Zero;
+            if(col.Collider is BasePowerUp powerUp)
+            {
+                powerUp.OnCollect();
+            }
+            else if(col.Collider is StaticBody2D)
+                board.Dir = Vector2.Zero;
         }
     }
 }
@@ -217,12 +222,17 @@ public class Board : KinematicBody2D
 
     public void ResetState()
     {
+        ResetPowerups();
+        Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
+    }
+
+    public void ResetPowerups()
+    {
         if(extended)
             this.Shrink();
 
         laserActivated = false;
         blastManager.LaserReady();
-        Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
     }
 
     private void ChangeSize(float xScale, float yScale)

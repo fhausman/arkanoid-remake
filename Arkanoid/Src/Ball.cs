@@ -5,13 +5,11 @@ using System;
 public class Moving : IState
 {
     private Ball ball;
-    private Board board;
     public Vector2 Dir { get; set; } = new Vector2(-1, -1);
 
-    public Moving(Ball ball, Board board)
+    public Moving(Ball ball)
     {
         this.ball = ball;
-        this.board = board;
     }
 
     public void Init(params object[] args) { Dir = (Vector2) args[0]; }
@@ -24,7 +22,7 @@ public class Moving : IState
         var col = ball.MoveAndCollide(Dir*ball.CurrentSpeed*dt);
         if(col != null)
         {
-            if(col.Collider is Board)
+            if(col.Collider is Board board)
             {
                 if(ball.GlueToBoard)
                 {
@@ -173,12 +171,16 @@ public class Ball : KinematicBody2D
 
     public void ResetPowerups()
     {
+        if(GlueToBoard && stateMachine.GetState() is Attached)
+        {
+            SetMoving(StartingDir);
+        }
         GlueToBoard = false;
     }
 
     public override void _Ready()
     {
-        stateMachine.Add(nameof(Moving), new Moving(this, Board));
+        stateMachine.Add(nameof(Moving), new Moving(this));
         stateMachine.Add(nameof(Attached), new Attached(this, Board));
         if(MovingAtStart)
         {

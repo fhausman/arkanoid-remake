@@ -30,10 +30,14 @@ public class Multiball : BasePowerUp
 
     public override void OnCollect()
     {
+        PowerupManager.ResetPowerups();
+
         ball = (Ball) GetTree().GetNodesInGroup("BALLS")[0];
 
         SpawnBalls();
         GD.Print(GetTree().GetNodesInGroup("BALLS").Count);
+
+        base.OnCollect();
     }
 
     public override void _Ready()

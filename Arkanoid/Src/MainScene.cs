@@ -75,6 +75,10 @@ public class MainScene : Node2D
                 }
             }
         }
+        else if(body is BasePowerUp powerUp)
+        {
+            PowerupManager.RegainPowerup(powerUp);
+        }
     }
 
     public override void _Ready()
