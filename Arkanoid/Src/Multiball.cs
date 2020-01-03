@@ -30,6 +30,8 @@ public class Multiball : BasePowerUp
 
     public override void OnCollect()
     {
+        PowerupManager.ResetPowerups();
+
         ball = (Ball) GetTree().GetNodesInGroup("BALLS")[0];
 
         SpawnBalls();

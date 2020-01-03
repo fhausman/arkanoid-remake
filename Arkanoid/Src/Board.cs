@@ -222,12 +222,17 @@ public class Board : KinematicBody2D
 
     public void ResetState()
     {
+        ResetPowerups();
+        Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
+    }
+
+    public void ResetPowerups()
+    {
         if(extended)
             this.Shrink();
 
         laserActivated = false;
         blastManager.LaserReady();
-        Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
     }
 
     private void ChangeSize(float xScale, float yScale)

@@ -45,7 +45,7 @@ public class PowerupManager : Node2D
             {
                 powerupManager.powerUps.Remove(powerUp);
             }
-            
+
             instance.Position = levelSpawnPosition + blockPosition;
             scene.AddChild(instance);
         }
@@ -55,6 +55,15 @@ public class PowerupManager : Node2D
     {
         GD.Print("Regaining power-up! ");
         powerUp.Free();
+    }
+
+    static public void ResetPowerups()
+    {
+        var ball = (Ball) scene.GetTree().GetNodesInGroup("BALLS")[0];
+        var board = scene.GetNode<Board>("Board");
+
+        ball.ResetPowerups();
+        board.ResetPowerups();
     }
 
     public override void _Ready()
