@@ -13,20 +13,30 @@ public class PowerupManager : Node2D
     private PackedScene glue;
     //todo private PackedScene teleport;
     private bool IsMultiballActive { get => scene.GetTree().GetNodesInGroup("BALLS").Count > 1; }
+    private bool IsAnyPowerUpOnScene { get => scene.GetTree().GetNodesInGroup("POWERUPS").Count > 0; }
 
     static private PowerupManager powerupManager;
-    static private List<Node2D> readyInstances = new List<Node2D>();
     static private MainScene scene;
     static private Vector2 levelSpawnPosition;
+    static private RandomNumberGenerator randGen = new RandomNumberGenerator();
 
     static public void SpawnPowerup(Vector2 blockPosition)
     {
-        if(powerupManager.IsMultiballActive == false)
+
+        if(randGen.RandfRange(0.0f, 1.0f) < powerupManager.PowerupSpawnProbability &&
+            powerupManager.IsMultiballActive == false &&
+            powerupManager.IsAnyPowerUpOnScene == false)
         {
-            var instance = readyInstances[0];
+            var instance = powerupManager.laser.Instance() as Node2D;
             instance.Position = levelSpawnPosition + blockPosition;
-            scene.AddChild(readyInstances[0]);
+            scene.AddChild(instance);
         }
+    }
+
+    static public void RegainPowerup(Node2D powerUp)
+    {
+        GD.Print("Regaining power-up! ");
+        powerUp.Free();
     }
 
     public override void _Ready()
@@ -41,18 +51,7 @@ public class PowerupManager : Node2D
         slowdown = GD.Load<PackedScene>("res://Resources/PowerUps/Slowdown.tscn");
         glue = GD.Load<PackedScene>("res://Resources/PowerUps/Glue.tscn");
 
-        readyInstances.Add(laser.Instance() as Node2D);
-        readyInstances.Add(multiball.Instance() as Node2D);
-        readyInstances.Add(extraLife.Instance() as Node2D);
-        readyInstances.Add(boardExtension.Instance() as Node2D);
-        readyInstances.Add(slowdown.Instance() as Node2D);
-        readyInstances.Add(glue.Instance() as Node2D);
 
         levelSpawnPosition = GetNode<Node2D>("/root/Main/LevelSpawnPoint").Position;
-
-        foreach(var powerup in readyInstances)
-        {
-            GD.Print(powerup);
-        }
     }
 }
