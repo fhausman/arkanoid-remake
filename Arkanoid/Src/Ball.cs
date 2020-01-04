@@ -171,9 +171,9 @@ public class Ball : KinematicBody2D
 
     public void ResetPowerups()
     {
-        if(GlueToBoard && stateMachine.GetState() is Attached)
+        if(stateMachine.GetState() is Attached)
         {
-            SetMoving(StartingDir);
+            SetMoving(Bounce.AngleToDir(Bounce.FirstAngle));
         }
         GlueToBoard = false;
     }
