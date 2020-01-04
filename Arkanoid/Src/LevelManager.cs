@@ -12,6 +12,7 @@ public enum Lvl
 
 class LevelManager
 {
+    static public LevelManager Instance { get; private set; } = null;
     MainScene scene;
     PackedScene ball;
     Ball ballInstance;
@@ -34,10 +35,14 @@ class LevelManager
         this.scene = scene;
     }
 
-    public void Init()
+    static public LevelManager Init(MainScene scene)
     {
-        ball = GD.Load<PackedScene>("res://Resources/Ball/Ball.tscn");
-        board = GD.Load<PackedScene>("res://Resources/Board/Board.tscn");
+        Instance = new LevelManager(scene);
+
+        Instance.ball = GD.Load<PackedScene>("res://Resources/Ball/Ball.tscn");
+        Instance.board = GD.Load<PackedScene>("res://Resources/Board/Board.tscn");
+
+        return Instance;
     }
 
     public void LoadLevel(Lvl level)
