@@ -7,6 +7,7 @@ public class EnemyMoveBase : IState
     protected StateMachine stateMachine { get; set; }
     protected Enemy enemy { get; set; }
     protected float speed { get; set; }
+    protected RandomNumberGenerator randGen { get; set; } = new RandomNumberGenerator();
 
     public EnemyMoveBase(Enemy enemy, StateMachine stateMachine, float speed)
     {
@@ -42,7 +43,12 @@ public class EnemyMoveBase : IState
 
     protected void RandomChangeState(string currState)
     {
-        var state = stateMachine.States.Where(s => s.Key != currState).ElementAt(0).Key;
+        randGen.Randomize();
+        var remainingStates = stateMachine.States.Where(s => s.Key != currState);
+        var idx = randGen.RandiRange(0, remainingStates.Count()-1);
+        var state = remainingStates.ElementAt(idx).Key;
+
+        GD.Print(state);
         stateMachine.ChangeState(state);
     }
 }
