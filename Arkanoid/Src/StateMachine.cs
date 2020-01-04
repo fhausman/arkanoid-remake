@@ -29,6 +29,7 @@ public class StateMachine
     public void PhysicsProcess(float dt) { currentState.PhysicsProcess(dt); }
     public T GetState<T>() where T : IState { return (T) currentState; }
     public IState GetState() { return currentState; }
+    public Dictionary<String, IState> States { get => states; }
 
     public IState ChangeState(String stateName, params object[] args)
     {
