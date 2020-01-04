@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Src/MainScene.cs" type="Script" id=1]
 [ext_resource path="res://Art/tlo (1).png" type="Texture" id=2]
-[ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Resources/PowerUps/PowerupManager.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 576, 64 )
@@ -25,6 +26,8 @@ position = Vector2( 960, 540 )
 z_index = -1
 texture = ExtResource( 2 )
 
+[node name="PowerupManager" parent="." instance=ExtResource( 3 )]
+
 [node name="BoardSpawnPoint" type="Node2D" parent="."]
 position = Vector2( 960, 960 )
 
@@ -32,7 +35,7 @@ position = Vector2( 960, 960 )
 position = Vector2( 544, 160 )
 
 [node name="BallSpawnPoint" type="Node2D" parent="."]
-position = Vector2( 960.916, 949.916 )
+position = Vector2( 960, 950 )
 
 [node name="DeathArea" type="Area2D" parent="."]
 position = Vector2( 960, 1056 )
@@ -62,5 +65,5 @@ shape = SubResource( 2 )
 position = Vector2( 960, 64 )
 shape = SubResource( 3 )
 
-[node name="UI" parent="." instance=ExtResource( 3 )]
+[node name="UI" parent="." instance=ExtResource( 4 )]
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]
