@@ -68,10 +68,11 @@ class LevelManager
         this.LoadLevel(++currentLevel);
     }
 
-    public void SoftReload()
+    public void SoftReload(Ball ball)
     {
+        ball.ResetState();
         boardInstance.ResetState();
-        FreeAllGroups();
+        FreeGroups(new string[]{"POWERUPS", "BLASTS", "ENEMIES"});
     }
     
     public void CleanGroup(string group)
@@ -87,12 +88,11 @@ class LevelManager
     {
         boardInstance.Free();
         levelInstance.Free();
-        FreeAllGroups();
+        FreeGroups(new string[]{"BALLS", "POWERUPS", "BLASTS", "ENEMIES"});
     }
 
-    private void FreeAllGroups()
+    private void FreeGroups(string[] groups)
     {
-        var groups = new string[]{"BALLS", "POWERUPS", "BLASTS"};
         foreach(var group in groups)
         {
             CleanGroup(group);
