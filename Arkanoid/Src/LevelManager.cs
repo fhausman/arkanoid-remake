@@ -70,8 +70,8 @@ class LevelManager
 
     public void SoftReload(Ball ball)
     {
-        ball.ResetState();
         boardInstance.ResetState();
+        ball.ResetState();
         FreeGroups(new string[]{"POWERUPS", "BLASTS", "ENEMIES"});
     }
     
