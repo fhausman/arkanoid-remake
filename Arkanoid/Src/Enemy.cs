@@ -41,12 +41,11 @@ public class EnemyMoveBase : IState
         return enemy.MoveAndCollide(dir*speed*dt);
     }
 
-    protected void RandomChangeState(string currState)
+    public void RandomChangeState()
     {
         randGen.Randomize();
-        var remainingStates = stateMachine.States.Where(s => s.Key != currState);
-        var idx = randGen.RandiRange(0, remainingStates.Count()-1);
-        var state = remainingStates.ElementAt(idx).Key;
+        var idx = randGen.RandiRange(0, stateMachine.States.Count - 1);
+        var state = stateMachine.States.ElementAt(idx).Key;
 
         GD.Print(state);
         stateMachine.ChangeState(state);
@@ -65,7 +64,7 @@ public class EnemyMoveLeft : EnemyMoveBase
         var col = Move(Vector2.Left, dt);
         if(col != null)
         {
-            RandomChangeState(nameof(EnemyMoveLeft));
+            stateMachine.ChangeState(nameof(EnemyMoveRight));
         }
     }
 }
@@ -82,7 +81,8 @@ public class EnemyMoveRight : EnemyMoveBase
         var col = Move(Vector2.Right, dt);
         if(col != null)
         {
-            RandomChangeState(nameof(EnemyMoveRight));
+            stateMachine.ChangeState(nameof(EnemyMoveLeft));
+
         }
     }
 }
@@ -99,7 +99,12 @@ public class EnemyMoveDown : EnemyMoveBase
         var col = Move(Vector2.Down, dt);
         if(col != null)
         {
-            RandomChangeState(nameof(EnemyMoveDown));
+            randGen.Randomize();
+            var leftOrRight = randGen.Randi() % 2;
+            if(leftOrRight == 0)
+                stateMachine.ChangeState(nameof(EnemyMoveRight));
+            else
+                stateMachine.ChangeState(nameof(EnemyMoveLeft));
         }
     }
 }
@@ -110,6 +115,13 @@ public class Enemy : KinematicBody2D, IHittable
     public float MoveSpeed { get; set; } = 0.0f;
     private Timer changeStateTimer { get; set; }
     private StateMachine stateMachine { get; set; } = new StateMachine();
+
+    private void ChangeState()
+    {
+        var state = (EnemyMoveBase) stateMachine.GetState();
+        state.RandomChangeState();
+        changeStateTimer.Start();
+    }
 
     public void OnHit()
     {
@@ -126,6 +138,7 @@ public class Enemy : KinematicBody2D, IHittable
         stateMachine.ChangeState(nameof(EnemyMoveDown));
 
         changeStateTimer = GetNode<Timer>("ChangeStateTimer");
+        changeStateTimer.Start();
     }
 
     public override void _PhysicsProcess(float delta)

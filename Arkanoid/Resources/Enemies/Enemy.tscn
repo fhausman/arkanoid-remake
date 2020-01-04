@@ -21,3 +21,5 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 32, 32 )
 
 [node name="ChangeStateTimer" type="Timer" parent="."]
+wait_time = 5.0
+[connection signal="timeout" from="ChangeStateTimer" to="." method="ChangeState"]
