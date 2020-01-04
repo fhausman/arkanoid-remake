@@ -23,7 +23,7 @@ public class PowerupManager : Node2D
 
     static public void SpawnPowerup(Vector2 blockPosition)
     {
-
+        randGen.Randomize();
         if(randGen.RandfRange(0.0f, 1.0f) < powerupManager.PowerupSpawnProbability &&
             powerupManager.IsMultiballActive == false &&
             powerupManager.IsAnyPowerUpOnScene == false)
