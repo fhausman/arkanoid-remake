@@ -9,6 +9,7 @@ public class MainScene : Node2D
     public int NumberOfLives { get; set; } = 2;
     public int Score { get; set; } = 0;
     public Node2D Blocks { private get; set; }
+    public bool LoadNextLevel { get; set; } = false;
     private Control ui;
     private Control livesContainer;
     private PackedScene boardIcon;
@@ -57,8 +58,6 @@ public class MainScene : Node2D
                 NumberOfLives--;
                 if(NumberOfLives >= 0)
                 {
-                    var board = GetNode<Board>("Board");
-
                     DecreaseNumberOfLifeIcons();
                     levelManager.SoftReload(ball);
                     GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
@@ -99,5 +98,10 @@ public class MainScene : Node2D
     public override void _Process(float delta)
     {
         scoreLabel.Text = GD.Str("Score: ", Score);
+        if(LoadNextLevel)
+        {
+            LoadNextLevel = false;
+            levelManager.AdvanceToNextLevel();
+        }
     }
 }

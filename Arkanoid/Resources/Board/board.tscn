@@ -23,4 +23,9 @@ texture = ExtResource( 2 )
 
 [node name="LaserDelay" type="Timer" parent="."]
 wait_time = 0.1
+
+[node name="WarpTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
 [connection signal="timeout" from="LaserDelay" to="." method="LaserReady"]
+[connection signal="timeout" from="WarpTimer" to="." method="OnWarpEnd"]

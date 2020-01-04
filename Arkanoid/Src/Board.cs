@@ -141,6 +141,7 @@ public class Warping : IState
 
     public void Init(params object[] args)
     {
+        board.StartWarp();
     }
 
     public void PhysicsProcess(float dt)
@@ -215,7 +216,7 @@ public class Board : KinematicBody2D
     private StateMachine stateMachine = new StateMachine();
     private BlastManager blastManager;
     private RectangleShape2D shape;
-    private Timer laserDelay;
+    private Timer warpTimer;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
 
@@ -282,6 +283,16 @@ public class Board : KinematicBody2D
         SetTransform(newTransform);
     }
 
+    public void StartWarp()
+    {
+        warpTimer.Start();
+    }
+
+    public void OnWarpEnd()
+    {
+        GetNode<MainScene>("/root/Main").LoadNextLevel = true;
+    }
+
     public override void _Ready()
     {
         stateMachine.Add(nameof(Idle), new Idle(this, stateMachine));
@@ -291,6 +302,7 @@ public class Board : KinematicBody2D
         stateMachine.ChangeState(nameof(Idle));
 
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
+        warpTimer = GetNode<Timer>("WarpTimer");
 
         blastManager = new BlastManager(this, this.GetNode<Timer>("LaserDelay"));
         blastManager.Prepare();
