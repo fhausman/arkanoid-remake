@@ -286,6 +286,7 @@ public class Board : KinematicBody2D
     public void StartWarp()
     {
         warpTimer.Start();
+        LevelManager.Instance.Pause();
     }
 
     public void OnWarpEnd()
@@ -307,6 +308,8 @@ public class Board : KinematicBody2D
 
         blastManager = new BlastManager(this, this.GetNode<Timer>("LaserDelay"));
         blastManager.Prepare();
+
+        PauseMode = PauseModeEnum.Process;
     }
 
     public override void _Process(float dt)

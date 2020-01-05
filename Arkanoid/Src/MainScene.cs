@@ -93,6 +93,8 @@ public class MainScene : Node2D
         scoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("Score");
 
         levelManager.LoadLevel(Level);
+
+        PauseMode = PauseModeEnum.Process;
     }
 
     public override void _Process(float delta)

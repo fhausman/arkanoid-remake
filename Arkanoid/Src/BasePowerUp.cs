@@ -20,4 +20,9 @@ public abstract class BasePowerUp : KinematicBody2D
             OnCollect();
         }
     }
+
+    public override void _Ready()
+    {
+        PauseMode = PauseModeEnum.Stop;
+    }
 }

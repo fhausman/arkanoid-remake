@@ -139,6 +139,8 @@ public class Enemy : KinematicBody2D, IHittable
 
         changeStateTimer = GetNode<Timer>("ChangeStateTimer");
         changeStateTimer.Start();
+
+        PauseMode = PauseModeEnum.Stop;
     }
 
     public override void _PhysicsProcess(float delta)

@@ -69,8 +69,9 @@ class LevelManager
 
     public void AdvanceToNextLevel()
     {
-        this.Cleanup();
-        this.LoadLevel(++currentLevel);
+        Cleanup();
+        LoadLevel(++currentLevel);
+        Unpause();
     }
 
     public void SoftReload(Ball ball)
@@ -80,15 +81,26 @@ class LevelManager
         boardInstance.ResetState();
         ball.ResetState();
         FreeGroups(new string[]{"POWERUPS", "BLASTS", "ENEMIES"});
+        Unpause();
     }
     
-    public void CleanGroup(string group)
+    private void CleanGroup(string group)
     {
         var tree = scene.GetTree();
         foreach(Node2D obj in tree.GetNodesInGroup(group))
         {
             obj.QueueFree();
         }
+    }
+
+    public void Pause()
+    {
+        scene.GetTree().Paused = true;
+    }
+
+    public void Unpause()
+    {
+        scene.GetTree().Paused = false;
     }
 
     private void Cleanup()
