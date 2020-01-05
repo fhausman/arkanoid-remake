@@ -13,6 +13,11 @@ public class MainMenu : Control
         GetTree().ChangeScene("MainScene.tscn");
     }
 
+    public void OnCreditsPressed()
+    {
+        GetTree().ChangeScene("Credits.tscn");
+    }
+
     public override void _Ready()
     {
         GetNode<Button>("CenterContainer/VBoxContainer/Start").GrabFocus();
