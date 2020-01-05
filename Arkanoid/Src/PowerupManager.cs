@@ -67,6 +67,7 @@ public class PowerupManager : Node2D
 
         ball.ResetPowerups();
         board.ResetPowerups();
+        DectivateTeleport();
     }
 
     public override void _Ready()
