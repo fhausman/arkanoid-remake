@@ -15,4 +15,9 @@ public class Blast : KinematicBody2D
             Free();
         }
     }
+
+    public override void _Ready()
+    {
+        PauseMode = PauseModeEnum.Stop;
+    }
 }

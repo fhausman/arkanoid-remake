@@ -11,7 +11,7 @@ public class PowerupManager : Node2D
     private PackedScene boardExtension;
     private PackedScene slowdown;
     private PackedScene glue;
-    //todo private PackedScene teleport;
+    private PackedScene teleport;
     private List<PackedScene> powerUps;
     private bool IsMultiballActive { get => scene.GetTree().GetNodesInGroup("BALLS").Count > 1; }
     private bool IsAnyPowerUpOnScene { get => scene.GetTree().GetNodesInGroup("POWERUPS").Count > 0; }
@@ -20,6 +20,9 @@ public class PowerupManager : Node2D
     static private MainScene scene;
     static private Vector2 levelSpawnPosition;
     static private RandomNumberGenerator randGen = new RandomNumberGenerator();
+    static public bool IsTeleportActive { get; private set; } = false;
+    static public void ActivateTeleport() { IsTeleportActive = true; }
+    static public void DectivateTeleport() { IsTeleportActive = false; }
 
     static public void SpawnPowerup(Vector2 blockPosition)
     {
@@ -41,7 +44,7 @@ public class PowerupManager : Node2D
             }
 
             var instance = powerUp.Instance() as Node2D;
-            if(instance is ExtraLife)
+            if(instance is ExtraLife || instance is Teleport)
             {
                 powerupManager.powerUps.Remove(powerUp);
             }
@@ -64,6 +67,7 @@ public class PowerupManager : Node2D
 
         ball.ResetPowerups();
         board.ResetPowerups();
+        DectivateTeleport();
     }
 
     public override void _Ready()
@@ -77,8 +81,9 @@ public class PowerupManager : Node2D
         boardExtension = GD.Load<PackedScene>("res://Resources/PowerUps/BoardExtend.tscn");
         slowdown = GD.Load<PackedScene>("res://Resources/PowerUps/Slowdown.tscn");
         glue = GD.Load<PackedScene>("res://Resources/PowerUps/Glue.tscn");
+        teleport = GD.Load<PackedScene>("res://Resources/PowerUps/Teleport.tscn");
 
-        powerUps = new List<PackedScene>() {laser, multiball, extraLife, boardExtension, slowdown, glue};
+        powerUps = new List<PackedScene>() {laser, multiball, extraLife, boardExtension, slowdown, glue, teleport};
 
         levelSpawnPosition = GetNode<Node2D>("/root/Main/LevelSpawnPoint").Position;
     }

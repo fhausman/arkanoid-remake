@@ -193,6 +193,8 @@ public class Ball : KinematicBody2D
 
         SetSpeed(InitialSpeed);
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
+
+        PauseMode = PauseModeEnum.Stop;
     }
 
     public override void _Process(float dt)

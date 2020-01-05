@@ -27,14 +27,16 @@ public class Idle : IState
         if(left_pressed && right_pressed)
             return;
         else if(left_pressed)
-            stateMachine.ChangeState("MoveLeft");
+            stateMachine.ChangeState(nameof(MoveLeft));
         else if (right_pressed)
-            stateMachine.ChangeState("MoveRight");
+            stateMachine.ChangeState(nameof(MoveRight));
     }
 }
 
 public class MoveBase
 {
+    protected StateMachine stateMachine;
+
     protected void Move(Board board, Vector2 dir, float dt)
     {
         board.Dir = dir;
@@ -46,8 +48,15 @@ public class MoveBase
             {
                 powerUp.OnCollect();
             }
-            else if(col.Collider is StaticBody2D)
+            else if(col.Collider is StaticBody2D body)
+            {
                 board.Dir = Vector2.Zero;
+                if(PowerupManager.IsTeleportActive &&
+                    body.Name == "right_col")
+                {
+                    stateMachine.ChangeState(nameof(Warping));
+                }
+            }
         }
     }
 }
@@ -55,7 +64,6 @@ public class MoveBase
 public class MoveLeft : MoveBase, IState
 {
     private Board board;
-    private StateMachine stateMachine;
     private Vector2 dir { get; } = new Vector2(-1, 0);
 
     public MoveLeft(Board board, StateMachine stateMachine)
@@ -74,7 +82,7 @@ public class MoveLeft : MoveBase, IState
         var right_pressed = Input.IsActionPressed("ui_right");
 
         if(!left_pressed || right_pressed)
-            stateMachine.ChangeState("Idle");
+            stateMachine.ChangeState(nameof(Idle));
     }
 
     public void PhysicsProcess(float dt)
@@ -86,7 +94,6 @@ public class MoveLeft : MoveBase, IState
 public class MoveRight : MoveBase, IState
 {
     private Board board;
-    private StateMachine stateMachine;
     private Vector2 dir { get; } = new Vector2(1, 0);
 
     public MoveRight(Board board, StateMachine stateMachine)
@@ -105,12 +112,45 @@ public class MoveRight : MoveBase, IState
         var right_pressed = Input.IsActionPressed("ui_right");
 
         if(!right_pressed || left_pressed)
-            stateMachine.ChangeState("Idle");
+            stateMachine.ChangeState(nameof(Idle));
     }
 
     public void PhysicsProcess(float dt)
     {
         base.Move(board, dir, dt);
+    }
+}
+
+public class Warping : IState
+{
+    private Board board;
+    private float WarpSpeed = 100;
+
+    public Warping(Board board)
+    {
+        this.board = board;
+    }
+
+    public void Exit()
+    {
+    }
+
+    public void HandleInput()
+    {
+    }
+
+    public void Init(params object[] args)
+    {
+        board.StartWarp();
+    }
+
+    public void PhysicsProcess(float dt)
+    {
+        board.Position += Vector2.Right*WarpSpeed*dt;
+    }
+
+    public void Process(float dt)
+    {
     }
 }
 #endregion
@@ -176,7 +216,7 @@ public class Board : KinematicBody2D
     private StateMachine stateMachine = new StateMachine();
     private BlastManager blastManager;
     private RectangleShape2D shape;
-    private Timer laserDelay;
+    private Timer warpTimer;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
 
@@ -224,6 +264,7 @@ public class Board : KinematicBody2D
     {
         ResetPowerups();
         Position = GetNode<Node2D>("../BoardSpawnPoint").Position;
+        stateMachine.ChangeState(nameof(Idle));
     }
 
     public void ResetPowerups()
@@ -242,17 +283,33 @@ public class Board : KinematicBody2D
         SetTransform(newTransform);
     }
 
+    public void StartWarp()
+    {
+        warpTimer.Start();
+        LevelManager.Instance.Pause();
+    }
+
+    public void OnWarpEnd()
+    {
+        GetNode<MainScene>("/root/Main").LoadNextLevel = true;
+        PowerupManager.DectivateTeleport();
+    }
+
     public override void _Ready()
     {
-        stateMachine.Add("Idle", new Idle(this, stateMachine));
-        stateMachine.Add("MoveLeft", new MoveLeft(this, stateMachine));
-        stateMachine.Add("MoveRight", new MoveRight(this, stateMachine));
-        stateMachine.ChangeState("Idle");
+        stateMachine.Add(nameof(Idle), new Idle(this, stateMachine));
+        stateMachine.Add(nameof(MoveLeft), new MoveLeft(this, stateMachine));
+        stateMachine.Add(nameof(MoveRight), new MoveRight(this, stateMachine));
+        stateMachine.Add(nameof(Warping), new Warping(this));
+        stateMachine.ChangeState(nameof(Idle));
 
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
+        warpTimer = GetNode<Timer>("WarpTimer");
 
         blastManager = new BlastManager(this, this.GetNode<Timer>("LaserDelay"));
         blastManager.Prepare();
+
+        PauseMode = PauseModeEnum.Process;
     }
 
     public override void _Process(float dt)

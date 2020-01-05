@@ -12,6 +12,7 @@ public enum Lvl
 
 class LevelManager
 {
+    static public LevelManager Instance { get; private set; } = null;
     MainScene scene;
     PackedScene ball;
     Ball ballInstance;
@@ -34,10 +35,14 @@ class LevelManager
         this.scene = scene;
     }
 
-    public void Init()
+    static public LevelManager Init(MainScene scene)
     {
-        ball = GD.Load<PackedScene>("res://Resources/Ball/Ball.tscn");
-        board = GD.Load<PackedScene>("res://Resources/Board/Board.tscn");
+        Instance = new LevelManager(scene);
+
+        Instance.ball = GD.Load<PackedScene>("res://Resources/Ball/Ball.tscn");
+        Instance.board = GD.Load<PackedScene>("res://Resources/Board/Board.tscn");
+
+        return Instance;
     }
 
     public void LoadLevel(Lvl level)
@@ -64,18 +69,22 @@ class LevelManager
 
     public void AdvanceToNextLevel()
     {
-        this.Cleanup();
-        this.LoadLevel(++currentLevel);
+        Cleanup();
+        LoadLevel(++currentLevel);
+        Unpause();
     }
 
     public void SoftReload(Ball ball)
     {
-        ball.ResetState();
+        PowerupManager.ResetPowerups();
+
         boardInstance.ResetState();
+        ball.ResetState();
         FreeGroups(new string[]{"POWERUPS", "BLASTS", "ENEMIES"});
+        Unpause();
     }
     
-    public void CleanGroup(string group)
+    private void CleanGroup(string group)
     {
         var tree = scene.GetTree();
         foreach(Node2D obj in tree.GetNodesInGroup(group))
@@ -84,8 +93,20 @@ class LevelManager
         }
     }
 
+    public void Pause()
+    {
+        scene.GetTree().Paused = true;
+    }
+
+    public void Unpause()
+    {
+        scene.GetTree().Paused = false;
+    }
+
     private void Cleanup()
     {
+        PowerupManager.ResetPowerups();
+
         boardInstance.Free();
         levelInstance.Free();
         FreeGroups(new string[]{"BALLS", "POWERUPS", "BLASTS", "ENEMIES"});
