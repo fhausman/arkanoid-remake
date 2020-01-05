@@ -10,10 +10,12 @@ public class MainScene : Node2D
     public int Score { get; set; } = 0;
     public Node2D Blocks { private get; set; }
     public bool LoadNextLevel { get; set; } = false;
+    private int highScore { get; set; } = 0;
     private Control ui;
     private Control livesContainer;
     private PackedScene boardIcon;
     private RichTextLabel scoreLabel;
+    private RichTextLabel highScoreLabel;
     private StateMachine stateMachine = new StateMachine();    
     private LevelManager levelManager;
 
@@ -91,6 +93,8 @@ public class MainScene : Node2D
         }
 
         scoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("Score");
+        highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
+        highScoreLabel.Text = GD.Str("HIGH SCORE: ", highScore);
 
         levelManager.LoadLevel(Level);
 
@@ -99,7 +103,7 @@ public class MainScene : Node2D
 
     public override void _Process(float delta)
     {
-        scoreLabel.Text = GD.Str("Score: ", Score);
+        scoreLabel.Text = GD.Str("SCORE: ", Score);
         if(LoadNextLevel)
         {
             LoadNextLevel = false;
