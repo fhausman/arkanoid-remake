@@ -16,7 +16,7 @@ public abstract class BasePowerUp : KinematicBody2D
         var col = MoveAndCollide(Vector2.Down*Speed*delta);
         if(col != null && col.Collider is Board)
         {
-            GD.Print("Power up collected!");
+            GD.Print("Power up collected! ", this);
             OnCollect();
         }
     }

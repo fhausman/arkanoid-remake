@@ -77,6 +77,7 @@ class LevelManager
     {
         boardInstance.ResetState();
         ball.ResetState();
+        PowerupManager.ResetPowerups();
         FreeGroups(new string[]{"POWERUPS", "BLASTS", "ENEMIES"});
     }
     
@@ -93,6 +94,7 @@ class LevelManager
     {
         boardInstance.Free();
         levelInstance.Free();
+        PowerupManager.ResetPowerups();
         FreeGroups(new string[]{"BALLS", "POWERUPS", "BLASTS", "ENEMIES"});
     }
 
