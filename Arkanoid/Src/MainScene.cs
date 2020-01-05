@@ -99,7 +99,7 @@ public class MainScene : Node2D
 
     public override void _Process(float delta)
     {
-        scoreLabel.Text = GD.Str("Score: ", Score);
+        scoreLabel.Text = GD.Str("SCORE: ", Score);
         if(LoadNextLevel)
         {
             LoadNextLevel = false;
