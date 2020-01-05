@@ -75,9 +75,10 @@ class LevelManager
 
     public void SoftReload(Ball ball)
     {
+        PowerupManager.ResetPowerups();
+
         boardInstance.ResetState();
         ball.ResetState();
-        PowerupManager.ResetPowerups();
         FreeGroups(new string[]{"POWERUPS", "BLASTS", "ENEMIES"});
     }
     
@@ -92,9 +93,10 @@ class LevelManager
 
     private void Cleanup()
     {
+        PowerupManager.ResetPowerups();
+
         boardInstance.Free();
         levelInstance.Free();
-        PowerupManager.ResetPowerups();
         FreeGroups(new string[]{"BALLS", "POWERUPS", "BLASTS", "ENEMIES"});
     }
 
