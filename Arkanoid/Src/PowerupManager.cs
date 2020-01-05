@@ -20,7 +20,9 @@ public class PowerupManager : Node2D
     static private MainScene scene;
     static private Vector2 levelSpawnPosition;
     static private RandomNumberGenerator randGen = new RandomNumberGenerator();
-    static public bool IsTeleportActive { get; private set; } = true;
+    static public bool IsTeleportActive { get; private set; } = false;
+    static public void ActivateTeleport() { IsTeleportActive = true; }
+    static public void DectivateTeleport() { IsTeleportActive = false; }
 
     static public void SpawnPowerup(Vector2 blockPosition)
     {
