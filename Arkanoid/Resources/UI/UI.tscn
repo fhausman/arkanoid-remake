@@ -37,3 +37,12 @@ margin_bottom = 104.0
 theme = SubResource( 3 )
 custom_colors/default_color = Color( 0.992157, 0, 0.654902, 1 )
 text = "PLACEHOLDER TEXT"
+
+[node name="HighScore" type="RichTextLabel" parent="."]
+margin_left = 544.0
+margin_top = 96.0
+margin_right = 896.0
+margin_bottom = 136.0
+theme = SubResource( 3 )
+custom_colors/default_color = Color( 0.992157, 0, 0.654902, 1 )
+text = "PLACEHOLDER TEXT"
