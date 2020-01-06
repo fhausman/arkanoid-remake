@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arkanoid.png-f1871a30123ecef0274e9375b8b7876f.stex"
+path="res://.import/DESKA_LASER_transform_Sheet.png-664fc0cedc08f41f8a84f4c79a010ebe.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Board/Sprites/arkanoid.png"
-dest_files=[ "res://.import/arkanoid.png-f1871a30123ecef0274e9375b8b7876f.stex" ]
+source_file="res://Art/board/DESKA_LASER_transform_Sheet.png"
+dest_files=[ "res://.import/DESKA_LASER_transform_Sheet.png-664fc0cedc08f41f8a84f4c79a010ebe.stex" ]
 
 [params]
 

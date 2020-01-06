@@ -68,6 +68,7 @@ class LevelManager
 
         scene.AddChild(boardInstance);
         scene.AddChild(ballInstance);
+        boardInstance.Spawn();
 
         scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
         Unpause();
@@ -84,6 +85,7 @@ class LevelManager
         PowerupManager.ResetPowerups();
 
         boardInstance.ResetState();
+        boardInstance.Spawn();
         ball.ResetState();
         FreeGroups(new string[]{"POWERUPS", "BLASTS", "ENEMIES"});
         Unpause();

@@ -217,31 +217,35 @@ public class Board : KinematicBody2D
     private BlastManager blastManager;
     private RectangleShape2D shape;
     private Timer warpTimer;
+    private AnimationPlayer animation;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
 
     public void Extend()
     {
-        this.ChangeSize(2.0f, 1.0f);
+        if(animation.CurrentAnimation != "laserDeactivate")
+            animation.Play("extend");
         extended = true;
     }
 
     public void Shrink()
     {
-        this.ChangeSize(0.5f, 1.0f);
+        animation.Play("shrink");
+        shape.SetExtents(new Vector2(Extents.x/1.5f, Extents.y));
         extended = false;
     }
 
     public void EnableLaser()
     {
         laserActivated = true;
-        //implement animation
+        if(animation.CurrentAnimation != "extend")
+            animation.Play("laserActivate");
     }
 
     public void DisableLaser()
     {
         laserActivated = false;
-        //implement animation
+        animation.Play("laserDeactivate");
     }
 
     public void LaserReady()
@@ -270,17 +274,11 @@ public class Board : KinematicBody2D
     public void ResetPowerups()
     {
         if(extended)
-            this.Shrink();
+            Shrink();
+        else if(laserActivated)
+            DisableLaser();
 
-        laserActivated = false;
         blastManager.LaserReady();
-    }
-
-    private void ChangeSize(float xScale, float yScale)
-    {
-        var newTransform = GetTransform();
-        newTransform.Scale = new Vector2(newTransform.Scale.x*xScale, newTransform.Scale.y*yScale);
-        SetTransform(newTransform);
     }
 
     public void StartWarp()
@@ -295,19 +293,54 @@ public class Board : KinematicBody2D
         PowerupManager.DectivateTeleport();
     }
 
+    public void Spawn()
+    {
+        animation.Play("spawn");
+    }
+
+    public void OnAnimationFinished(string name)
+    {
+        if(name == "spawn")
+        {
+            GD.Print("Spawn finished!");
+            stateMachine.ChangeState(nameof(Idle));
+        }
+        else if(name == "shrink")
+        {
+            if(laserActivated)
+                animation.Play("laserActivate");
+        }
+        else if(name == "laserActivate")
+        {
+            animation.Play("laserIdle");
+        }
+        else if(name == "laserDeactivate")
+        {
+            if(extended)
+                animation.Play("extend");
+        }
+        else if(name == "extend")
+        {
+            shape.SetExtents(new Vector2(Extents.x*1.5f, Extents.y));
+        }
+    }
+
     public override void _Ready()
     {
         stateMachine.Add(nameof(Idle), new Idle(this, stateMachine));
         stateMachine.Add(nameof(MoveLeft), new MoveLeft(this, stateMachine));
         stateMachine.Add(nameof(MoveRight), new MoveRight(this, stateMachine));
         stateMachine.Add(nameof(Warping), new Warping(this));
-        stateMachine.ChangeState(nameof(Idle));
+        stateMachine.Add(nameof(EmptyState), new EmptyState());
+        stateMachine.ChangeState(nameof(EmptyState));
 
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
         warpTimer = GetNode<Timer>("WarpTimer");
 
         blastManager = new BlastManager(this, this.GetNode<Timer>("LaserDelay"));
         blastManager.Prepare();
+
+        animation = GetNode<AnimationPlayer>("AnimationPlayer");
 
         PauseMode = PauseModeEnum.Process;
     }
