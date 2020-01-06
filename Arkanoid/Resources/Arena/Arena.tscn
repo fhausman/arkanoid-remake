@@ -1,13 +1,47 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Resources/Arena/Dust.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Art/arena/ARENA_1.png" type="Texture" id=2]
+[ext_resource path="res://Art/arena/arena_PULS_Sheet.png" type="Texture" id=2]
+[ext_resource path="res://Art/arena/ARENA_1.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "glow"
+length = 10.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("GlowSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 15 ]
+}
 
 [node name="Arena" type="Node2D"]
 
 [node name="Dust" parent="." instance=ExtResource( 1 )]
 position = Vector2( -1.67017, 0 )
 
-[node name="Details" type="Sprite" parent="."]
+[node name="Glow" type="Node2D" parent="."]
+
+[node name="GlowSprite" type="Sprite" parent="Glow"]
 texture = ExtResource( 2 )
+centered = false
+vframes = 4
+hframes = 4
+frame = 12
+region_enabled = true
+region_rect = Rect2( 0, 0, 7680, 4320 )
+
+[node name="GlowAnimation" type="AnimationPlayer" parent="Glow"]
+autoplay = "glow"
+playback_speed = 4.0
+anims/glow = SubResource( 1 )
+
+[node name="Details" type="Sprite" parent="."]
+texture = ExtResource( 3 )
 centered = false
