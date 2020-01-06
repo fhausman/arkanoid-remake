@@ -69,8 +69,8 @@ shape = SubResource( 3 )
 [node name="UI" parent="." instance=ExtResource( 4 )]
 
 [node name="Round" parent="." instance=ExtResource( 5 )]
-margin_left = 800.0
-margin_top = 576.0
-margin_right = 800.0
-margin_bottom = 576.0
+margin_left = 789.503
+margin_top = 587.663
+margin_right = 1014.5
+margin_bottom = 677.663
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]

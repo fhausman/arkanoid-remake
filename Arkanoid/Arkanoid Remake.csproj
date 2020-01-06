@@ -58,6 +58,7 @@
     <Compile Include="Src\MainMenu.cs" />
     <Compile Include="Src\Multiball.cs" />
     <Compile Include="Src\PowerupManager.cs" />
+    <Compile Include="Src\Round.cs" />
     <Compile Include="Src\Slowdown.cs" />
     <Compile Include="Src\ExtraLife.cs" />
     <Compile Include="Src\Ball.cs" />

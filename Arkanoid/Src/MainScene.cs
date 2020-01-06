@@ -80,7 +80,7 @@ public class MainScene : Node2D
 
     public override void _Ready()
     {
-        levelManager = LevelManager.Init(this);
+        levelManager = LevelManager.Init(this, GetNode<Round>("Round"));
 
         //todo: UI manager should handle it
         boardIcon = GD.Load<PackedScene>("res://Resources/UI/BoardIcon.tscn");
@@ -96,7 +96,7 @@ public class MainScene : Node2D
         highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
         highScoreLabel.Text = GD.Str("HIGH SCORE: ", highScore);
 
-        levelManager.LoadLevel(Level);
+        levelManager.StartLoading(Level);
 
         PauseMode = PauseModeEnum.Process;
     }

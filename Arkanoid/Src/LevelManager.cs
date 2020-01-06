@@ -14,6 +14,7 @@ class LevelManager
 {
     static public LevelManager Instance { get; private set; } = null;
     MainScene scene;
+    Round round;
     PackedScene ball;
     Ball ballInstance;
     PackedScene board;
@@ -30,25 +31,34 @@ class LevelManager
         {Lvl.LEVEL5, "5 level.tscn"}
     };
 
-    public LevelManager(MainScene scene)
+    static public LevelManager Init(MainScene scene, Round round)
     {
-        this.scene = scene;
-    }
+        Instance = new LevelManager();
 
-    static public LevelManager Init(MainScene scene)
-    {
-        Instance = new LevelManager(scene);
-
+        Instance.scene = scene;
+        Instance.round = round;
         Instance.ball = GD.Load<PackedScene>("res://Resources/Ball/Ball.tscn");
         Instance.board = GD.Load<PackedScene>("res://Resources/Board/Board.tscn");
+
+        round.OnSequenceEnd += Instance.FinishLoading;
 
         return Instance;
     }
 
-    public void LoadLevel(Lvl level)
+    public void StartLoading(Lvl level)
     {
         currentLevel = level;
+        round.Play(((int) currentLevel + 1));
 
+        var levelScene = GD.Load<PackedScene>(string.Format("res://Resources/Levels/{0}", levels[currentLevel]));
+        levelInstance = (Node2D) levelScene.Instance();
+        levelInstance.Position = scene.GetNode<Node2D>("LevelSpawnPoint").Position;
+
+        scene.AddChild(levelInstance);
+    }
+
+    public void FinishLoading()
+    {
         boardInstance = (Board) board.Instance();
         boardInstance.Position = scene.GetNode<Node2D>("BoardSpawnPoint").Position;
 
@@ -56,22 +66,17 @@ class LevelManager
         ballInstance.Board = boardInstance;
         ballInstance.Position = scene.GetNode<Node2D>("BallSpawnPoint").Position;
 
-        var levelScene = GD.Load<PackedScene>(string.Format("res://Resources/Levels/{0}", levels[level]));
-        levelInstance = (Node2D) levelScene.Instance();
-        levelInstance.Position = scene.GetNode<Node2D>("LevelSpawnPoint").Position;;
-
         scene.AddChild(boardInstance);
         scene.AddChild(ballInstance);
-        scene.AddChild(levelInstance);
 
         scene.Blocks = scene.GetNode<Node2D>("Blocks");
+        Unpause();
     }
 
     public void AdvanceToNextLevel()
     {
         Cleanup();
-        LoadLevel(++currentLevel);
-        Unpause();
+        StartLoading(++currentLevel);
     }
 
     public void SoftReload(Ball ball)
