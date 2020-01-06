@@ -1,12 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Src/MainScene.cs" type="Script" id=1]
 [ext_resource path="res://Resources/Arena/Arena.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Resources/PowerUps/PowerupManager.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Resources/PowerUps/Teleport.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Resources/PowerUps/Multiball.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 576, 64 )
@@ -75,10 +73,4 @@ margin_left = 789.503
 margin_top = 587.663
 margin_right = 1014.5
 margin_bottom = 677.663
-
-[node name="PowerUp" parent="." instance=ExtResource( 6 )]
-position = Vector2( 960, 384 )
-
-[node name="PowerUp" parent="PowerUp" instance=ExtResource( 7 )]
-position = Vector2( 0, 352 )
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]
