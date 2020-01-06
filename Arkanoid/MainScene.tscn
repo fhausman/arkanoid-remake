@@ -22,7 +22,6 @@ __meta__ = {
 "_edit_horizontal_guides_": [ 992.0, 96.0 ],
 "_edit_vertical_guides_": [ 544.0, 1376.0, 960.0 ]
 }
-Level = 4
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 960, 540 )
