@@ -18,11 +18,20 @@ public class PowerupManager : Node2D
 
     static private PowerupManager powerupManager;
     static private MainScene scene;
+    static private Arena arena;
     static private Vector2 levelSpawnPosition;
     static private RandomNumberGenerator randGen = new RandomNumberGenerator();
     static public bool IsTeleportActive { get; private set; } = false;
-    static public void ActivateTeleport() { IsTeleportActive = true; }
-    static public void DectivateTeleport() { IsTeleportActive = false; }
+    static public void ActivateTeleport()
+    {
+        IsTeleportActive = true;
+        arena.OpenTeleport();
+    }
+    static public void DectivateTeleport()
+    {
+        IsTeleportActive = false;
+        arena.CloseTeleport();
+    }
 
     static public void SpawnPowerup(Vector2 blockPosition)
     {
@@ -75,6 +84,7 @@ public class PowerupManager : Node2D
         powerupManager = this;
 
         scene = GetNode<MainScene>("/root/Main");
+        arena = scene.GetNode<Arena>("Arena");
         laser = GD.Load<PackedScene>("res://Resources/PowerUps/Laser.tscn");
         multiball = GD.Load<PackedScene>("res://Resources/PowerUps/Multiball.tscn");
         extraLife = GD.Load<PackedScene>("res://Resources/PowerUps/ExtraLife.tscn");
