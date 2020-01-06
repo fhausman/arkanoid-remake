@@ -3,6 +3,8 @@ using System;
 
 public class MainMenu : Control
 {
+    PackedScene mainScene;
+
     public void OnQuitPressed()
     {
         GetTree().Quit();
@@ -10,7 +12,7 @@ public class MainMenu : Control
 
     public void OnStartPressed()
     {
-        GetTree().ChangeScene("MainScene.tscn");
+        GetTree().ChangeSceneTo(mainScene);
     }
 
     public void OnCreditsPressed()
@@ -20,6 +22,7 @@ public class MainMenu : Control
 
     public override void _Ready()
     {
+        mainScene = GD.Load<PackedScene>("MainScene.tscn");
         GetNode<Button>("CenterContainer/VBoxContainer/Start").GrabFocus();
     }
 }

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Src/MainScene.cs" type="Script" id=1]
-[ext_resource path="res://Art/tlo (1).png" type="Texture" id=2]
+[ext_resource path="res://Resources/Arena/Arena.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Resources/PowerUps/PowerupManager.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=5]
@@ -22,23 +22,22 @@ __meta__ = {
 "_edit_vertical_guides_": [ 544.0, 1376.0, 960.0 ]
 }
 
-[node name="Background" type="Sprite" parent="."]
-position = Vector2( 960, 540 )
-z_index = -1
-texture = ExtResource( 2 )
+[node name="Arena" parent="." instance=ExtResource( 2 )]
+show_behind_parent = true
 
 [node name="PowerupManager" parent="." instance=ExtResource( 3 )]
 
 [node name="BoardSpawnPoint" type="Node2D" parent="."]
-position = Vector2( 960, 960 )
+position = Vector2( 960, 991.699 )
 
 [node name="LevelSpawnPoint" type="Node2D" parent="."]
-position = Vector2( 544, 160 )
+position = Vector2( 544, 224 )
 
 [node name="BallSpawnPoint" type="Node2D" parent="."]
-position = Vector2( 960, 950 )
+position = Vector2( 960, 972 )
 
 [node name="DeathArea" type="Area2D" parent="."]
+editor/display_folded = true
 position = Vector2( 960, 1056 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathArea"]
@@ -46,6 +45,7 @@ position = Vector2( 0, 128 )
 shape = SubResource( 1 )
 
 [node name="Environment" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="left_col" type="StaticBody2D" parent="Environment"]
 

@@ -94,7 +94,7 @@ public class MainScene : Node2D
 
         scoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("Score");
         highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
-        highScoreLabel.Text = GD.Str("HIGH SCORE: ", highScore);
+        highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, highScore);
 
         levelManager.StartLoading(Level);
 
