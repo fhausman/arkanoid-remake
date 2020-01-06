@@ -24,7 +24,7 @@ margin_top = 21.0
 margin_right = 338.0
 margin_bottom = 64.0
 theme = ExtResource( 2 )
-custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "ROUND X"
 align = 1
 
@@ -33,7 +33,7 @@ margin_top = 68.0
 margin_right = 338.0
 margin_bottom = 111.0
 theme = ExtResource( 2 )
-custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "READY"
 align = 1
 
