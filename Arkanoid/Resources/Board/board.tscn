@@ -1,35 +1,37 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Src/Board.cs" type="Script" id=1]
-[ext_resource path="res://Art/board/deska_appear_v2_Sheet.png" type="Texture" id=2]
-[ext_resource path="res://Art/deska_IDLE.png" type="Texture" id=3]
+[ext_resource path="res://Art/board/DESKA_LONG_transform_Sheet.png" type="Texture" id=2]
+[ext_resource path="res://Art/board/deska_LONG_IDLE.png" type="Texture" id=3]
+[ext_resource path="res://Art/board/deska_appear_v2_Sheet.png" type="Texture" id=4]
+[ext_resource path="res://Art/deska_IDLE.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 64, 1 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "spawn"
-length = 2.0
+[sub_resource type="Animation" id=3]
+resource_name = "extend"
+length = 0.55
 tracks/0/type = "value"
-tracks/0/path = NodePath("spawn:frame")
+tracks/0/path = NodePath("extend:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
+"times": PoolRealArray( 0, 0.54 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 6, 0 ]
+"values": [ 0, 8 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("spawn:visible")
+tracks/1/path = NodePath("extend:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 1 ),
+"times": PoolRealArray( 0, 0.54 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
@@ -41,10 +43,138 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("spawn:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("extended_idle:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.54 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "shrink"
+length = 0.55
+tracks/0/type = "value"
+tracks/0/path = NodePath("extend:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.54 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 8, 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("idle:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.54 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("extend:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.54 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("extended_idle:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "spawn"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("spawn:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.42 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 6, 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("spawn:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.42 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("idle:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.42 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("extend:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 
 [node name="Board" type="KinematicBody2D"]
@@ -54,17 +184,32 @@ collision_mask = 3
 script = ExtResource( 1 )
 Speed = 500.0
 
+[node name="extend" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, 16 )
+texture = ExtResource( 2 )
+vframes = 5
+hframes = 2
+frame = 8
+region_enabled = true
+region_rect = Rect2( 0, 0, 384, 160 )
+
+[node name="extended_idle" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, 16 )
+texture = ExtResource( 3 )
+
 [node name="spawn" type="Sprite" parent="."]
 visible = false
 position = Vector2( 0.0944672, 14.4885 )
-texture = ExtResource( 2 )
+texture = ExtResource( 4 )
 vframes = 4
 hframes = 2
 region_rect = Rect2( 0, 0, 256, 256 )
 
 [node name="idle" type="Sprite" parent="."]
 position = Vector2( 0.218475, 14.6745 )
-texture = ExtResource( 3 )
+texture = ExtResource( 5 )
 
 [node name="col" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 1 )
@@ -78,8 +223,9 @@ wait_time = 2.0
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-playback_speed = 2.0
+anims/extend = SubResource( 3 )
+anims/shrink = SubResource( 4 )
 anims/spawn = SubResource( 2 )
 [connection signal="timeout" from="LaserDelay" to="." method="LaserReady"]
 [connection signal="timeout" from="WarpTimer" to="." method="OnWarpEnd"]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnSpawnFinished"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]

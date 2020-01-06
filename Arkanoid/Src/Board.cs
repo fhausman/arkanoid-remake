@@ -223,13 +223,15 @@ public class Board : KinematicBody2D
 
     public void Extend()
     {
-        this.ChangeSize(2.0f, 1.0f);
+        animation.Play("extend");
+        shape.SetExtents(new Vector2(Extents.x*1.5f, Extents.y));
         extended = true;
     }
 
     public void Shrink()
     {
-        this.ChangeSize(0.5f, 1.0f);
+        animation.Play("shrink");
+        shape.SetExtents(new Vector2(Extents.x/1.5f, Extents.y));
         extended = false;
     }
 
@@ -301,10 +303,13 @@ public class Board : KinematicBody2D
         animation.Play("spawn");
     }
 
-    public void OnSpawnFinished(string name)
+    public void OnAnimationFinished(string name)
     {
-        GD.Print("Spawn finished!");
-        stateMachine.ChangeState(nameof(Idle));
+        if(name == "spawn")
+        {
+            GD.Print("Spawn finished!");
+            stateMachine.ChangeState(nameof(Idle));
+        }
     }
 
     public override void _Ready()

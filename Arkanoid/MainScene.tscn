@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Src/MainScene.cs" type="Script" id=1]
 [ext_resource path="res://Resources/Arena/Arena.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Resources/PowerUps/PowerupManager.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Resources/PowerUps/BoardExtend.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 576, 64 )
@@ -26,6 +27,7 @@ __meta__ = {
 show_behind_parent = true
 
 [node name="PowerupManager" parent="." instance=ExtResource( 3 )]
+PowerupSpawnProbability = 0.5
 
 [node name="BoardSpawnPoint" type="Node2D" parent="."]
 position = Vector2( 960, 991.699 )
@@ -75,4 +77,7 @@ margin_left = 789.503
 margin_top = 587.663
 margin_right = 1014.5
 margin_bottom = 677.663
+
+[node name="PowerUp" parent="." instance=ExtResource( 6 )]
+position = Vector2( 960, 192 )
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]
