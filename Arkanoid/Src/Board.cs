@@ -223,7 +223,8 @@ public class Board : KinematicBody2D
 
     public void Extend()
     {
-        animation.Play("extend");
+        if(animation.CurrentAnimation != "laserDeactivate")
+            animation.Play("extend");
         shape.SetExtents(new Vector2(Extents.x*1.5f, Extents.y));
         extended = true;
     }
@@ -238,13 +239,14 @@ public class Board : KinematicBody2D
     public void EnableLaser()
     {
         laserActivated = true;
-        //implement animation
+        if(animation.CurrentAnimation != "extend")
+            animation.Play("laserActivate");
     }
 
     public void DisableLaser()
     {
         laserActivated = false;
-        //implement animation
+        animation.Play("laserDeactivate");
     }
 
     public void LaserReady()
@@ -273,17 +275,11 @@ public class Board : KinematicBody2D
     public void ResetPowerups()
     {
         if(extended)
-            this.Shrink();
+            Shrink();
+        else if(laserActivated)
+            DisableLaser();
 
-        laserActivated = false;
         blastManager.LaserReady();
-    }
-
-    private void ChangeSize(float xScale, float yScale)
-    {
-        var newTransform = GetTransform();
-        newTransform.Scale = new Vector2(newTransform.Scale.x*xScale, newTransform.Scale.y*yScale);
-        SetTransform(newTransform);
     }
 
     public void StartWarp()
@@ -309,6 +305,20 @@ public class Board : KinematicBody2D
         {
             GD.Print("Spawn finished!");
             stateMachine.ChangeState(nameof(Idle));
+        }
+        else if(name == "shrink")
+        {
+            if(laserActivated)
+                animation.Play("laserActivate");
+        }
+        else if(name == "laserActivate")
+        {
+            animation.Play("laserIdle");
+        }
+        else if(name == "laserDeactivate")
+        {
+            if(extended)
+                animation.Play("extend");
         }
     }
 
