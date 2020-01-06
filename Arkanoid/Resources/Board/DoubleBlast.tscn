@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Resources/Board/Blast.tscn" type="PackedScene" id=1]
+
+[node name="DoubleBlast" type="Node2D"]
+
+[node name="LeftBlast" parent="." instance=ExtResource( 1 )]
+position = Vector2( -20, 0 )
+
+[node name="RightBlast" parent="." instance=ExtResource( 1 )]
+position = Vector2( 20, 0 )
