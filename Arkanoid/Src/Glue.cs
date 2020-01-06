@@ -11,4 +11,10 @@ public class Glue : BasePowerUp
         ball.GlueToBoard = true;
         base.OnCollect();
     }
+
+    public override void _Ready()
+    {
+        base._Ready();
+        animation.Play("glue");
+    }
 }

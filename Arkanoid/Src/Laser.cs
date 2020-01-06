@@ -10,4 +10,10 @@ public class Laser : BasePowerUp
         board.EnableLaser();
         base.OnCollect();
     }
+
+    public override void _Ready()
+    {
+        base._Ready();
+        animation.Play("laser");
+    }
 }

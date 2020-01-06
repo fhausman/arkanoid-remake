@@ -5,6 +5,7 @@ public abstract class BasePowerUp : KinematicBody2D
 {
     [Export]
     public int Speed { get; set; } = 200;
+    protected AnimationPlayer animation;
 
     public virtual void OnCollect()
     {
@@ -23,6 +24,8 @@ public abstract class BasePowerUp : KinematicBody2D
 
     public override void _Ready()
     {
+        animation = GetNode<AnimationPlayer>("PowerUpAnimation/TypeAnimation");
         PauseMode = PauseModeEnum.Stop;
+
     }
 }

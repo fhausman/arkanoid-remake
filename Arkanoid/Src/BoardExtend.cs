@@ -11,4 +11,10 @@ public class BoardExtend : BasePowerUp
         board.Extend();
         base.OnCollect();
     }
+
+    public override void _Ready()
+    {
+        base._Ready();
+        animation.Play("extend");
+    }
 }

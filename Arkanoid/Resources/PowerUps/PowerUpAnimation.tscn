@@ -1,0 +1,158 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Art/powerups/POWERUP_background_Sheet_2.png" type="Texture" id=1]
+[ext_resource path="res://Art/powerups/powerupy_ALL_types_Sheet.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "base"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Base:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 8 ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "extend"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Type:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 18, 21 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "glue"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Type:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 3, 6 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "laser"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Type:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 9, 12 ]
+}
+
+[sub_resource type="Animation" id=5]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Type:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 6, 9 ]
+}
+
+[sub_resource type="Animation" id=6]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Type:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 3 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "slow"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Type:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 15, 18 ]
+}
+
+[sub_resource type="Animation" id=8]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Type:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 12, 15 ]
+}
+
+[node name="PowerUpAnimation" type="Node2D"]
+
+[node name="Base" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+vframes = 4
+hframes = 4
+frame = 7
+
+[node name="BaseAnimation" type="AnimationPlayer" parent="."]
+autoplay = "base"
+playback_speed = 1.5
+anims/base = SubResource( 1 )
+
+[node name="Type" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+vframes = 8
+hframes = 4
+frame = 18
+
+[node name="TypeAnimation" type="AnimationPlayer" parent="."]
+playback_speed = 3.0
+anims/extend = SubResource( 2 )
+anims/glue = SubResource( 3 )
+anims/laser = SubResource( 4 )
+anims/life = SubResource( 5 )
+anims/multi = SubResource( 6 )
+anims/slow = SubResource( 7 )
+anims/teleport = SubResource( 8 )

@@ -47,5 +47,6 @@ public class Multiball : BasePowerUp
         ballScene = GD.Load<PackedScene>("res://Resources/Ball/Ball.tscn");
 
         base._Ready();
+        animation.Play("multi");
     }
 }

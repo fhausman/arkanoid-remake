@@ -8,4 +8,10 @@ public class Teleport : BasePowerUp
         PowerupManager.ActivateTeleport();
         base.OnCollect();
     }
+
+    public override void _Ready()
+    {
+        base._Ready();
+        animation.Play("teleport");
+    }
 }
