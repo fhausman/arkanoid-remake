@@ -64,4 +64,4 @@ rotation = 1.5708
 z_index = 8
 
 [node name="Portal" parent="." instance=ExtResource( 6 )]
-position = Vector2( 1394.36, 1009.91 )
+position = Vector2( 1394.65, 1000.27 )
