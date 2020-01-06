@@ -217,6 +217,7 @@ public class Board : KinematicBody2D
     private BlastManager blastManager;
     private RectangleShape2D shape;
     private Timer warpTimer;
+    private AnimationPlayer animation;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
 
@@ -295,19 +296,33 @@ public class Board : KinematicBody2D
         PowerupManager.DectivateTeleport();
     }
 
+    public void Spawn()
+    {
+        animation.Play("spawn");
+    }
+
+    public void OnSpawnFinished(string name)
+    {
+        GD.Print("Spawn finished!");
+        stateMachine.ChangeState(nameof(Idle));
+    }
+
     public override void _Ready()
     {
         stateMachine.Add(nameof(Idle), new Idle(this, stateMachine));
         stateMachine.Add(nameof(MoveLeft), new MoveLeft(this, stateMachine));
         stateMachine.Add(nameof(MoveRight), new MoveRight(this, stateMachine));
         stateMachine.Add(nameof(Warping), new Warping(this));
-        stateMachine.ChangeState(nameof(Idle));
+        stateMachine.Add(nameof(EmptyState), new EmptyState());
+        stateMachine.ChangeState(nameof(EmptyState));
 
         shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
         warpTimer = GetNode<Timer>("WarpTimer");
 
         blastManager = new BlastManager(this, this.GetNode<Timer>("LaserDelay"));
         blastManager.Prepare();
+
+        animation = GetNode<AnimationPlayer>("AnimationPlayer");
 
         PauseMode = PauseModeEnum.Process;
     }
