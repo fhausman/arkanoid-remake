@@ -19,7 +19,7 @@ tracks/0/keys = {
 "values": [ 0, 9 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=2]
 resource_name = "extend"
 loop = true
 tracks/0/type = "value"
@@ -51,7 +51,7 @@ tracks/0/keys = {
 "values": [ 3, 6 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "laser"
 loop = true
 tracks/0/type = "value"
@@ -67,8 +67,7 @@ tracks/0/keys = {
 "values": [ 9, 12 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "life"
+[sub_resource type="Animation" id=5]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Type:frame")
@@ -83,8 +82,7 @@ tracks/0/keys = {
 "values": [ 6, 9 ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "multi"
+[sub_resource type="Animation" id=6]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Type:frame")
@@ -99,7 +97,7 @@ tracks/0/keys = {
 "values": [ 0, 3 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 resource_name = "slow"
 loop = true
 tracks/0/type = "value"
@@ -115,8 +113,7 @@ tracks/0/keys = {
 "values": [ 15, 18 ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "teleport"
+[sub_resource type="Animation" id=8]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Type:frame")
@@ -148,14 +145,14 @@ anims/base = SubResource( 1 )
 texture = ExtResource( 2 )
 vframes = 8
 hframes = 4
-frame = 20
+frame = 18
 
 [node name="TypeAnimation" type="AnimationPlayer" parent="."]
 playback_speed = 3.0
-anims/extend = SubResource( 7 )
+anims/extend = SubResource( 2 )
 anims/glue = SubResource( 3 )
-anims/laser = SubResource( 5 )
-anims/life = SubResource( 4 )
-anims/multi = SubResource( 2 )
-anims/slow = SubResource( 8 )
-anims/teleport = SubResource( 6 )
+anims/laser = SubResource( 4 )
+anims/life = SubResource( 5 )
+anims/multi = SubResource( 6 )
+anims/slow = SubResource( 7 )
+anims/teleport = SubResource( 8 )

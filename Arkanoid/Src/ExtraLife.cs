@@ -13,7 +13,8 @@ public class ExtraLife : BasePowerUp
 
     public override void _Ready()
     {
-        scene = GetNode<MainScene>("/root/Main");
         base._Ready();
+        scene = GetNode<MainScene>("/root/Main");
+        animation.Play("life");
     }
 }
