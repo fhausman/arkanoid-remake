@@ -54,7 +54,7 @@ class LevelManager
         levelInstance = (Node2D) levelScene.Instance();
         levelInstance.Position = scene.GetNode<Node2D>("LevelSpawnPoint").Position;
 
-        scene.AddChild(levelInstance);
+        scene.GetNode("LevelRoot").AddChild(levelInstance);
     }
 
     public void FinishLoading()
@@ -69,7 +69,7 @@ class LevelManager
         scene.AddChild(boardInstance);
         scene.AddChild(ballInstance);
 
-        scene.Blocks = scene.GetNode<Node2D>("Blocks");
+        scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
         Unpause();
     }
 
