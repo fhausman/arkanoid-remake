@@ -299,6 +299,7 @@ public class Board : KinematicBody2D
     public void Destroy()
     {
         animation.Play("destroy");
+        stateMachine.ChangeState(nameof(EmptyState));
     }
 
     public void OnAnimationFinished(string name)

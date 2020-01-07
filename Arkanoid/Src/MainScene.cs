@@ -73,7 +73,7 @@ public class MainScene : Node2D
         if(NumberOfLives >= 0)
         {
             DecreaseNumberOfLifeIcons();
-            levelManager.SoftReload((Ball) GetTree().GetNodesInGroup("BALLS")[0]);
+            levelManager.SoftReload();
             GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
         }
         else

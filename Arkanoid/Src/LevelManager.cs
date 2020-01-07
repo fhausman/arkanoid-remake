@@ -45,16 +45,19 @@ class LevelManager
         return Instance;
     }
 
-    public void StartLoading(Lvl level)
+    public void StartLoading(Lvl level, bool reloadLevel = true)
     {
         currentLevel = level;
         round.Play(((int) currentLevel + 1));
 
-        var levelScene = GD.Load<PackedScene>(string.Format("res://Resources/Levels/{0}", levels[currentLevel]));
-        levelInstance = (Node2D) levelScene.Instance();
-        levelInstance.Position = scene.GetNode<Node2D>("LevelSpawnPoint").Position;
+        if(reloadLevel)
+        {
+            var levelScene = GD.Load<PackedScene>(string.Format("res://Resources/Levels/{0}", levels[currentLevel]));
+            levelInstance = (Node2D) levelScene.Instance();
+            levelInstance.Position = scene.GetNode<Node2D>("LevelSpawnPoint").Position;
 
-        scene.GetNode("LevelRoot").AddChild(levelInstance);
+            scene.GetNode("LevelRoot").AddChild(levelInstance);
+        }
     }
 
     public void FinishLoading()
@@ -80,15 +83,10 @@ class LevelManager
         StartLoading(++currentLevel);
     }
 
-    public void SoftReload(Ball ball)
+    public void SoftReload()
     {
-        PowerupManager.ResetPowerups();
-
-        boardInstance.ResetState();
-        boardInstance.Spawn();
-        ball.ResetState();
-        FreeGroups(new string[]{"POWERUPS", "BLASTS", "ENEMIES"});
-        Unpause();
+        Cleanup(false);
+        StartLoading(currentLevel, false);
     }
     
     private void CleanGroup(string group)
@@ -110,12 +108,13 @@ class LevelManager
         scene.GetTree().Paused = false;
     }
 
-    private void Cleanup()
+    private void Cleanup(bool destroyLevel = true)
     {
         PowerupManager.ResetPowerups();
 
-        boardInstance.Free();
-        levelInstance.Free();
+        boardInstance.QueueFree();
+        if(destroyLevel)
+            levelInstance.Free();
         FreeGroups(new string[]{"BALLS", "POWERUPS", "BLASTS", "ENEMIES"});
     }
 
