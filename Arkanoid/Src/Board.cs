@@ -162,8 +162,7 @@ public class BlastManager
     private MainScene scene;
     private Timer laserDelay;
     private bool laserReady = true;
-    private int xOffset = 25;
-    private int yOffset = 10;
+    private int yOffset = -27;
 
     public void LaserReady()
     {
@@ -177,14 +176,14 @@ public class BlastManager
 
     public void Prepare()
     {
-        blast = GD.Load<PackedScene>("res://Resources/Board/Blast.tscn");
+        blast = GD.Load<PackedScene>("res://Resources/Board/DoubleBlast.tscn");
         scene = board.GetNode<MainScene>("/root/Main");
     }
 
     public bool CanShoot()
     {
         return laserReady &&
-            scene.GetTree().GetNodesInGroup("BLASTS").Count < 5;
+            scene.GetTree().GetNodesInGroup("BLASTS").Count < 3;
     }
 
     public void Shoot()
@@ -193,13 +192,12 @@ public class BlastManager
         laserDelay.Start();
 
         var middle = board.Middle;
-        InstanceBlast(new Vector2(middle.x + xOffset, middle.y + yOffset));
-        InstanceBlast(new Vector2(middle.x - xOffset, middle.y + yOffset));
+        InstanceBlast(new Vector2(middle.x, middle.y + yOffset));
     }
 
     private void InstanceBlast(Vector2 position)
     {
-        var blastInstance = (Blast) blast.Instance();
+        var blastInstance = (Node2D) blast.Instance();
         blastInstance.Position = position;
         scene.AddChild(blastInstance);
     }

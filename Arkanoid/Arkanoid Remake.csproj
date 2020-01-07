@@ -54,6 +54,7 @@
     <Compile Include="Src\BoardExtend.cs" />
     <Compile Include="Src\Blast.cs" />
     <Compile Include="Src\Credits.cs" />
+    <Compile Include="Src\DoubleBlast.cs" />
     <Compile Include="Src\Enemy.cs" />
     <Compile Include="Src\Glue.cs" />
     <Compile Include="Src\MainMenu.cs" />

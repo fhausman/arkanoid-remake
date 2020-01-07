@@ -12,7 +12,8 @@ public class Blast : KinematicBody2D
         {
             if(col.Collider is IHittable obj)
                 obj.OnHit();
-            Free();
+            
+            GetParent<DoubleBlast>().OnHit();
         }
     }
 
