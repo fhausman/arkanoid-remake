@@ -57,24 +57,30 @@ public class MainScene : Node2D
             }
             else
             {
-                NumberOfLives--;
-                if(NumberOfLives >= 0)
-                {
-                    DecreaseNumberOfLifeIcons();
-                    levelManager.SoftReload(ball);
-                    GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
-                }
-                else
-                {
-                    GetTree().ReloadCurrentScene();
-
-                    GD.Print("Game over");
-                }
+                levelManager.Pause();
+                GetNode<Board>("Board").Destroy();
             }
         }
         else if(body is BasePowerUp powerUp)
         {
             PowerupManager.RegainPowerup(powerUp);
+        }
+    }
+
+    public void PostDestroy()
+    {
+        NumberOfLives--;
+        if(NumberOfLives >= 0)
+        {
+            DecreaseNumberOfLifeIcons();
+            levelManager.SoftReload((Ball) GetTree().GetNodesInGroup("BALLS")[0]);
+            GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
+        }
+        else
+        {
+            GetTree().ReloadCurrentScene();
+
+            GD.Print("Game over");
         }
     }
 
