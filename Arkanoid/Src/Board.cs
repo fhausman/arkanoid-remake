@@ -162,7 +162,7 @@ public class BlastManager
     private MainScene scene;
     private Timer laserDelay;
     private bool laserReady = true;
-    private int yOffset = -20;
+    private int yOffset = -27;
 
     public void LaserReady()
     {

@@ -13,7 +13,7 @@ public class Blast : KinematicBody2D
             if(col.Collider is IHittable obj)
                 obj.OnHit();
             
-            GetParent().QueueFree();
+            GetParent<DoubleBlast>().OnHit();
         }
     }
 
