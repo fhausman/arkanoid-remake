@@ -183,7 +183,7 @@ public class BlastManager
     public bool CanShoot()
     {
         return laserReady &&
-            scene.GetTree().GetNodesInGroup("BLASTS").Count < 5;
+            scene.GetTree().GetNodesInGroup("BLASTS").Count < 3;
     }
 
     public void Shoot()
