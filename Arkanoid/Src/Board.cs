@@ -236,7 +236,7 @@ public class Board : KinematicBody2D
     public void EnableLaser()
     {
         laserActivated = true;
-        if(animation.CurrentAnimation != "extend")
+        if(animation.CurrentAnimation != "shrink")
             animation.Play("laserActivate");
     }
 

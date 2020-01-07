@@ -51,7 +51,7 @@ public class Attached : IState
 {
     private Ball ball;
     private Board board;
-    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.Extents.x * 0.2f; }}
+    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.Extents.x * 0.05f; }}
     public Vector2 Dir { get; set; } = Vector2.Zero;
     public Vector2 AttachPosition { get; set; } = Vector2.Zero;
 
