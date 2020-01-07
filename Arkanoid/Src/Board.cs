@@ -296,6 +296,12 @@ public class Board : KinematicBody2D
         animation.Play("spawn");
     }
 
+    public void Destroy()
+    {
+        animation.Play("destroy");
+        stateMachine.ChangeState(nameof(EmptyState));
+    }
+
     public void OnAnimationFinished(string name)
     {
         if(name == "spawn")
@@ -320,6 +326,10 @@ public class Board : KinematicBody2D
         else if(name == "extend")
         {
             shape.SetExtents(new Vector2(Extents.x*1.5f, Extents.y));
+        }
+        else if(name == "destroy")
+        {
+            GetNode<MainScene>("..").PostDestroy();
         }
     }
 
