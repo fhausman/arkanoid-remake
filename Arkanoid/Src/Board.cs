@@ -57,6 +57,10 @@ public class MoveBase
                     stateMachine.ChangeState(nameof(Warping));
                 }
             }
+            else if(col.Collider is IHittable obj)
+            {
+                obj.OnHit();
+            }
         }
     }
 }

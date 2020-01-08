@@ -10,6 +10,7 @@ public class MainScene : Node2D
     public int Score { get; set; } = 0;
     public Node2D Blocks { private get; set; }
     public bool LoadNextLevel { get; set; } = false;
+    public EnemiesManager EnemiesManager { get; set; }
     private int highScore { get; set; } = 0;
     private Control ui;
     private Control livesContainer;
@@ -43,7 +44,7 @@ public class MainScene : Node2D
         if(blocks_count == 0)
         {
             GD.Print("Woohoo, level won, going to the next stage");
-            levelManager.AdvanceToNextLevel();
+            LoadNextLevel = true;
         }
     }
 
@@ -65,6 +66,10 @@ public class MainScene : Node2D
         {
             PowerupManager.RegainPowerup(powerUp);
         }
+        else if(body is Node2D obj)
+        {
+            obj.QueueFree();
+        }
     }
 
     public void PostDestroy()
@@ -82,11 +87,13 @@ public class MainScene : Node2D
 
             GD.Print("Game over");
         }
+        EnemiesManager.DisableSpawning();
     }
 
     public override void _Ready()
     {
         levelManager = LevelManager.Init(this, GetNode<Round>("Round"));
+        EnemiesManager = GetNode<EnemiesManager>("EnemiesManager");
 
         //todo: UI manager should handle it
         boardIcon = GD.Load<PackedScene>("res://Resources/UI/BoardIcon.tscn");

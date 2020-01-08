@@ -1,15 +1,15 @@
 using Godot;
-using System.Collections.Generic;
-using System.Linq;
 
-public class EnemyMoveBase : IState
+public class EnemyMoveSteady : IState
 {
-    protected StateMachine stateMachine { get; set; }
-    protected Enemy enemy { get; set; }
-    protected float speed { get; set; }
-    protected RandomNumberGenerator randGen { get; set; } = new RandomNumberGenerator();
+    private StateMachine stateMachine;
+    private Enemy enemy;
+    private float speed;
+    private RandomNumberGenerator randGen = new RandomNumberGenerator();
+    private Vector2 dir = Vector2.Down;
+    private Vector2 previousHorizontalDir = Vector2.Right;
 
-    public EnemyMoveBase(Enemy enemy, StateMachine stateMachine, float speed)
+    public EnemyMoveSteady(Enemy enemy, StateMachine stateMachine, float speed)
     {
         this.enemy = enemy;
         this.stateMachine = stateMachine;
@@ -30,82 +30,30 @@ public class EnemyMoveBase : IState
 
     public virtual void PhysicsProcess(float dt)
     {
+        var col = enemy.MoveAndCollide(dir*speed*dt);
+        if(col != null)
+        {
+            if(col.Collider is Board)
+            {
+               enemy.OnHit();
+               return;
+            }
+
+            //if was moving down move horizontally in previous direction
+            //if not move in opposite direction
+            dir = (dir != Vector2.Down) ?
+                -dir : previousHorizontalDir;
+        }
+        //if nothing below move down
+        else if(dir != Vector2.Down && enemy.BelowArea.GetOverlappingBodies().Count == 0)
+        {
+            previousHorizontalDir = dir;
+            dir = Vector2.Down;
+        }
     }
 
     public virtual void Process(float dt)
     {
-    }
-
-    protected KinematicCollision2D Move(Vector2 dir, float dt)
-    {
-        return enemy.MoveAndCollide(dir*speed*dt);
-    }
-
-    public void RandomChangeState()
-    {
-        randGen.Randomize();
-        var idx = randGen.RandiRange(0, stateMachine.States.Count - 1);
-        var state = stateMachine.States.ElementAt(idx).Key;
-
-        GD.Print(state);
-        stateMachine.ChangeState(state);
-    }
-}
-
-public class EnemyMoveLeft : EnemyMoveBase
-{
-    public EnemyMoveLeft(Enemy enemy, StateMachine stateMachine, float speed)
-        : base(enemy, stateMachine, speed)
-    {
-    }
-
-    public override void PhysicsProcess(float dt)
-    {
-        var col = Move(Vector2.Left, dt);
-        if(col != null)
-        {
-            stateMachine.ChangeState(nameof(EnemyMoveRight));
-        }
-    }
-}
-
-public class EnemyMoveRight : EnemyMoveBase
-{
-    public EnemyMoveRight(Enemy enemy, StateMachine stateMachine, float speed)
-        : base(enemy, stateMachine, speed)
-    {
-    }
-
-    public override void PhysicsProcess(float dt)
-    {
-        var col = Move(Vector2.Right, dt);
-        if(col != null)
-        {
-            stateMachine.ChangeState(nameof(EnemyMoveLeft));
-
-        }
-    }
-}
-
-public class EnemyMoveDown : EnemyMoveBase
-{
-    public EnemyMoveDown(Enemy enemy, StateMachine stateMachine, float speed)
-        : base(enemy, stateMachine, speed)
-    {
-    }
-
-    public override void PhysicsProcess(float dt)
-    {
-        var col = Move(Vector2.Down, dt);
-        if(col != null)
-        {
-            randGen.Randomize();
-            var leftOrRight = randGen.Randi() % 2;
-            if(leftOrRight == 0)
-                stateMachine.ChangeState(nameof(EnemyMoveRight));
-            else
-                stateMachine.ChangeState(nameof(EnemyMoveLeft));
-        }
     }
 }
 
@@ -113,15 +61,8 @@ public class Enemy : KinematicBody2D, IHittable
 {
     [Export]
     public float MoveSpeed { get; set; } = 0.0f;
-    private Timer changeStateTimer { get; set; }
-    private StateMachine stateMachine { get; set; } = new StateMachine();
-
-    private void ChangeState()
-    {
-        var state = (EnemyMoveBase) stateMachine.GetState();
-        state.RandomChangeState();
-        changeStateTimer.Start();
-    }
+    public Area2D BelowArea { get; set; }
+    private StateMachine stateMachine = new StateMachine();
 
     public void OnHit()
     {
@@ -131,14 +72,10 @@ public class Enemy : KinematicBody2D, IHittable
 
     public override void _Ready()
     {
-        stateMachine.Add(nameof(EnemyMoveLeft), new EnemyMoveLeft(this, stateMachine, MoveSpeed));
-        stateMachine.Add(nameof(EnemyMoveRight), new EnemyMoveRight(this, stateMachine, MoveSpeed));
-        stateMachine.Add(nameof(EnemyMoveDown), new EnemyMoveDown(this, stateMachine, MoveSpeed));
+        stateMachine.Add(nameof(EnemyMoveSteady), new EnemyMoveSteady(this, stateMachine, MoveSpeed));
+        stateMachine.ChangeState(nameof(EnemyMoveSteady));
 
-        stateMachine.ChangeState(nameof(EnemyMoveDown));
-
-        changeStateTimer = GetNode<Timer>("ChangeStateTimer");
-        changeStateTimer.Start();
+        BelowArea = GetNode<Area2D>("Area2D");
 
         PauseMode = PauseModeEnum.Stop;
     }

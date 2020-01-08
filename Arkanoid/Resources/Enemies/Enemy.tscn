@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Src/Enemy.cs" type="Script" id=1]
 [ext_resource path="res://Art/ball/kulka_eksperyment.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 1 )
 
 [node name="Enemy" type="KinematicBody2D" groups=[
 "ENEMIES",
@@ -22,6 +25,8 @@ texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 32, 32 )
 
-[node name="ChangeStateTimer" type="Timer" parent="."]
-wait_time = 5.0
-[connection signal="timeout" from="ChangeStateTimer" to="." method="ChangeState"]
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 0, 17.7501 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
