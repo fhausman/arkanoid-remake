@@ -18,6 +18,7 @@ public class MainScene : Node2D
     private RichTextLabel highScoreLabel;
     private StateMachine stateMachine = new StateMachine();    
     private LevelManager levelManager;
+    private EnemiesManager enemiesManager;
 
     void DecreaseNumberOfLifeIcons()
     {
@@ -87,6 +88,8 @@ public class MainScene : Node2D
     public override void _Ready()
     {
         levelManager = LevelManager.Init(this, GetNode<Round>("Round"));
+        enemiesManager = GetNode<EnemiesManager>("EnemiesManager");
+        enemiesManager.EnableSpawning();
 
         //todo: UI manager should handle it
         boardIcon = GD.Load<PackedScene>("res://Resources/UI/BoardIcon.tscn");

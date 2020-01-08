@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Src/MainScene.cs" type="Script" id=1]
 [ext_resource path="res://Resources/Arena/Arena.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Resources/PowerUps/PowerupManager.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Resources/Enemies/EnemiesManager.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 576, 64 )
@@ -24,6 +25,7 @@ __meta__ = {
 
 [node name="Arena" parent="." instance=ExtResource( 2 )]
 show_behind_parent = true
+position = Vector2( 0, 0 )
 
 [node name="PowerupManager" parent="." instance=ExtResource( 3 )]
 PowerupSpawnProbability = 0.5
@@ -38,6 +40,8 @@ position = Vector2( 544, 224 )
 position = Vector2( 960, 972 )
 
 [node name="LevelRoot" type="Node2D" parent="."]
+
+[node name="EnemiesManager" parent="." instance=ExtResource( 4 )]
 
 [node name="DeathArea" type="Area2D" parent="."]
 editor/display_folded = true
@@ -64,14 +68,16 @@ shape = SubResource( 2 )
 
 [node name="upper_col" type="StaticBody2D" parent="Environment"]
 position = Vector2( 0, 58 )
+collision_layer = 512
+collision_mask = 512
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/upper_col"]
 position = Vector2( 960, 64 )
 shape = SubResource( 3 )
 
-[node name="UI" parent="." instance=ExtResource( 4 )]
+[node name="UI" parent="." instance=ExtResource( 5 )]
 
-[node name="Round" parent="." instance=ExtResource( 5 )]
+[node name="Round" parent="." instance=ExtResource( 6 )]
 margin_left = 789.503
 margin_top = 587.663
 margin_right = 1014.5
