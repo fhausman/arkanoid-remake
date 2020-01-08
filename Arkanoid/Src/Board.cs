@@ -222,6 +222,7 @@ public class Board : KinematicBody2D
     private RectangleShape2D shape;
     private Timer warpTimer;
     private AnimationPlayer animation;
+    private Node2D spawnPoint;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
 
@@ -350,6 +351,7 @@ public class Board : KinematicBody2D
         blastManager.Prepare();
 
         animation = GetNode<AnimationPlayer>("AnimationPlayer");
+        spawnPoint = GetNode<Node2D>("../BoardSpawnPoint");
 
         PauseMode = PauseModeEnum.Process;
     }
@@ -368,5 +370,6 @@ public class Board : KinematicBody2D
     public override void _PhysicsProcess(float dt)
     {
         stateMachine.PhysicsProcess(dt);
+        Position = new Vector2(Position.x, spawnPoint.Position.y);
     }
 }

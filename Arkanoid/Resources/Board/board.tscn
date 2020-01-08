@@ -504,11 +504,11 @@ hframes = 2
 region_rect = Rect2( 0, 0, 256, 256 )
 
 [node name="death" type="Sprite" parent="."]
-visible = false
 position = Vector2( 0, 16 )
 texture = ExtResource( 7 )
 vframes = 4
 hframes = 4
+frame = 15
 
 [node name="idle" type="Sprite" parent="."]
 visible = false
