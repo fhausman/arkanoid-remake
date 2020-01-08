@@ -64,6 +64,12 @@ public class EnemyMoveLeft : EnemyMoveBase
         var col = Move(Vector2.Left, dt);
         if(col != null)
         {
+            if(col.Collider is Board)
+            {
+               enemy.OnHit();
+               return;
+            }
+
             stateMachine.ChangeState(nameof(EnemyMoveRight));
         }
     }
@@ -81,6 +87,12 @@ public class EnemyMoveRight : EnemyMoveBase
         var col = Move(Vector2.Right, dt);
         if(col != null)
         {
+            if(col.Collider is Board)
+            {
+               enemy.OnHit();
+               return;
+            }
+
             stateMachine.ChangeState(nameof(EnemyMoveLeft));
 
         }
@@ -99,6 +111,12 @@ public class EnemyMoveDown : EnemyMoveBase
         var col = Move(Vector2.Down, dt);
         if(col != null)
         {
+            if(col.Collider is Board)
+            {
+               enemy.OnHit();
+               return;
+            }
+
             randGen.Randomize();
             var leftOrRight = randGen.Randi() % 2;
             if(leftOrRight == 0)

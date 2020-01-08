@@ -44,7 +44,7 @@ public class MainScene : Node2D
         if(blocks_count == 0)
         {
             GD.Print("Woohoo, level won, going to the next stage");
-            levelManager.AdvanceToNextLevel();
+            LoadNextLevel = true;
         }
     }
 
@@ -65,6 +65,10 @@ public class MainScene : Node2D
         else if(body is BasePowerUp powerUp)
         {
             PowerupManager.RegainPowerup(powerUp);
+        }
+        else if(body is Node2D obj)
+        {
+            obj.QueueFree();
         }
     }
 
