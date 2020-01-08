@@ -25,7 +25,6 @@ __meta__ = {
 
 [node name="Arena" parent="." instance=ExtResource( 2 )]
 show_behind_parent = true
-position = Vector2( 0, 0 )
 
 [node name="PowerupManager" parent="." instance=ExtResource( 3 )]
 PowerupSpawnProbability = 0.5

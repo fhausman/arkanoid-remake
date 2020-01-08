@@ -5,6 +5,8 @@ public class Arena : Node2D
     private Node2D gateUpperLeft;
     private Node2D gateUpperRight;
     private Node2D gateTeleport;
+    private Timer leftGateTimer;
+    private Timer rightGateTimer;
 
     public Vector2 LeftSpawnPoint { get; private set; }
     public Vector2 RightSpawnPoint { get; private set; }
@@ -21,6 +23,7 @@ public class Arena : Node2D
 
     public void OpenLeftGate()
     {
+        leftGateTimer.Start();
         OpenGate(gateUpperLeft);
     }
 
@@ -31,6 +34,7 @@ public class Arena : Node2D
 
     public void OpenRightGate()
     {
+        rightGateTimer.Start();
         OpenGate(gateUpperRight);
 
     }
@@ -55,6 +59,9 @@ public class Arena : Node2D
         gateUpperLeft = GetNode<Node2D>("GateUpperLeft");
         gateUpperRight = GetNode<Node2D>("GateUpperRight");
         gateTeleport = GetNode<Node2D>("GateTeleport");
+
+        leftGateTimer = GetNode<Timer>("LeftGateTimer");
+        rightGateTimer = GetNode<Timer>("RightGateTimer");
 
         LeftSpawnPoint = GetNode<Node2D>("LeftSpawnPoint").Position;
         RightSpawnPoint = GetNode<Node2D>("RightSpawnPoint").Position;

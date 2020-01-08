@@ -71,3 +71,11 @@ position = Vector2( 737.62, 102.451 )
 
 [node name="RightSpawnPoint" type="Node2D" parent="."]
 position = Vector2( 1186.17, 106.071 )
+
+[node name="LeftGateTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="RightGateTimer" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="LeftGateTimer" to="." method="CloseLeftGate"]
+[connection signal="timeout" from="RightGateTimer" to="." method="CloseRightGate"]
