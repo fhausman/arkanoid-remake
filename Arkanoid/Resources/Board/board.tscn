@@ -153,6 +153,30 @@ tracks/4/keys = {
 "update": 1,
 "values": [ false, true ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("col:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.36 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 1 ), Vector2( 1.65, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("shape_col:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.36 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.5, 1 ) ]
+}
 
 [sub_resource type="Animation" id=5]
 resource_name = "laserActivate"
@@ -325,6 +349,30 @@ tracks/3/keys = {
 "update": 1,
 "values": [ false ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath("col:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.36 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1.65, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("shape_col:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.36 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1.5, 1 ), Vector2( 1, 1 ) ]
+}
 
 [sub_resource type="Animation" id=9]
 length = 0.5
@@ -388,6 +436,30 @@ tracks/4/keys = {
 "update": 1,
 "values": [ false ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("col:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("shape_col:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
 
 [node name="Board" type="KinematicBody2D"]
 z_index = 2
@@ -401,6 +473,7 @@ visible = false
 position = Vector2( 0, 13 )
 texture = ExtResource( 2 )
 vframes = 5
+frame = 4
 region_enabled = true
 region_rect = Rect2( 0, 0, 192, 160 )
 
@@ -438,16 +511,19 @@ vframes = 4
 hframes = 4
 
 [node name="idle" type="Sprite" parent="."]
+visible = false
 position = Vector2( 0.218475, 14.6745 )
 texture = ExtResource( 8 )
 
 [node name="col" type="CollisionShape2D" parent="."]
 position = Vector2( 1.36076, 1.10468 )
+scale = Vector2( 1.65, 1 )
 shape = SubResource( 1 )
 
 [node name="shape_col" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 13 )
 rotation = 3.14159
+scale = Vector2( 1.5, 1 )
 shape = SubResource( 2 )
 one_way_collision = true
 

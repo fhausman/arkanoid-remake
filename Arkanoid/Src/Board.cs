@@ -235,7 +235,6 @@ public class Board : KinematicBody2D
     public void Shrink()
     {
         animation.Play("shrink");
-        shape.SetExtents(new Vector2(Extents.x/1.5f, Extents.y));
         extended = false;
     }
 
@@ -328,10 +327,6 @@ public class Board : KinematicBody2D
         {
             if(extended)
                 animation.Play("extend");
-        }
-        else if(name == "extend")
-        {
-            shape.SetExtents(new Vector2(Extents.x*1.5f, Extents.y));
         }
         else if(name == "destroy")
         {
