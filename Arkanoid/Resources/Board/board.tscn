@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Src/Board.cs" type="Script" id=1]
-[ext_resource path="res://Art/board/DESKA_LONG_transform_Sheet.png" type="Texture" id=2]
+[ext_resource path="res://Art/board/DESKA_LONG_CUT3_transform_Sheet.png" type="Texture" id=2]
 [ext_resource path="res://Art/board/deska_LONG_IDLE.png" type="Texture" id=3]
 [ext_resource path="res://Art/board/deska_LASER_idle_Sheet.png" type="Texture" id=4]
 [ext_resource path="res://Art/board/DESKA_LASER_transform_Sheet.png" type="Texture" id=5]
@@ -92,7 +92,7 @@ tracks/5/keys = {
 }
 
 [sub_resource type="Animation" id=4]
-length = 0.55
+length = 0.36
 tracks/0/type = "value"
 tracks/0/path = NodePath("extend:frame")
 tracks/0/interp = 1
@@ -100,10 +100,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.54 ),
+"times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0, 8 ]
+"values": [ 0, 4 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("extend:visible")
@@ -112,7 +112,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.54 ),
+"times": PoolRealArray( 0, 0.36 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
@@ -148,7 +148,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.54 ),
+"times": PoolRealArray( 0, 0.36 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
@@ -276,7 +276,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-length = 0.55
+length = 0.36
 tracks/0/type = "value"
 tracks/0/path = NodePath("extend:frame")
 tracks/0/interp = 1
@@ -284,10 +284,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.54 ),
+"times": PoolRealArray( 0, 0.36 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 8, 0 ]
+"values": [ 4, 0 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("idle:visible")
@@ -296,7 +296,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.54 ),
+"times": PoolRealArray( 0, 0.36 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
@@ -308,7 +308,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.54 ),
+"times": PoolRealArray( 0, 0.36 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
@@ -398,17 +398,15 @@ Speed = 500.0
 
 [node name="extend" type="Sprite" parent="."]
 visible = false
-position = Vector2( 0, 16 )
+position = Vector2( 0, 13 )
 texture = ExtResource( 2 )
 vframes = 5
-hframes = 2
-frame = 8
 region_enabled = true
-region_rect = Rect2( 0, 0, 384, 160 )
+region_rect = Rect2( 0, 0, 192, 160 )
 
 [node name="extended_idle" type="Sprite" parent="."]
 visible = false
-position = Vector2( 0, 16 )
+position = Vector2( 0, 14 )
 texture = ExtResource( 3 )
 
 [node name="laser_idle" type="Sprite" parent="."]
@@ -433,11 +431,11 @@ hframes = 2
 region_rect = Rect2( 0, 0, 256, 256 )
 
 [node name="death" type="Sprite" parent="."]
+visible = false
 position = Vector2( 0, 16 )
 texture = ExtResource( 7 )
 vframes = 4
 hframes = 4
-frame = 15
 
 [node name="idle" type="Sprite" parent="."]
 position = Vector2( 0.218475, 14.6745 )
