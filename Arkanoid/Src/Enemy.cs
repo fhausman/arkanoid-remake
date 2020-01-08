@@ -33,7 +33,7 @@ public class EnemyMoveSteady : IState
         var col = enemy.MoveAndCollide(dir*speed*dt);
         if(col != null)
         {
-            if(col.Collider is Board)
+            if(col.Collider is Board || col.ColliderShape is Ball)
             {
                enemy.OnHit();
                return;
@@ -54,6 +54,79 @@ public class EnemyMoveSteady : IState
 
     public virtual void Process(float dt)
     {
+        if(enemy.GlobalPosition.y > 640)
+        {
+            stateMachine.ChangeState(nameof(CrazyMode));
+        }
+    }
+}
+
+public class CrazyMode : IState
+{
+    private Enemy enemy;
+    private float speed;
+    private Vector2 velocity = Vector2.Zero;
+    public CrazyMode(Enemy enemy, float speed)
+    {
+        this.enemy = enemy;
+        this.speed = speed;
+    }
+
+    public void Exit()
+    {
+    }
+
+    public void HandleInput()
+    {
+    }
+
+    public void Init(params object[] args)
+    {
+    }
+
+    public void PhysicsProcess(float dt)
+    {
+        velocity = ArriveTo(
+            velocity,
+            enemy.GlobalPosition,
+            enemy.GetViewport().GetMousePosition(),
+            speed,
+            200.0f,
+            2.0f
+            );
+        
+
+        var col = enemy.MoveAndCollide(velocity*dt);
+        if(col != null)
+        {
+            if(col.Collider is Board || col.Collider is Ball)
+            {
+                enemy.OnHit();
+                return;
+            }
+        }
+    }
+
+    public void Process(float dt)
+    {
+    }
+
+    private Vector2 ArriveTo(
+        Vector2 velocity,
+        Vector2 global_position,
+        Vector2 target_position,
+        float max_speed,
+        float slow_radius,
+        float mass
+    )
+    {
+        var toTarget = global_position.DistanceTo(target_position);
+        var desired_velocity = (target_position - global_position).Normalized()*max_speed;
+        if(toTarget < slow_radius)
+            desired_velocity *= (toTarget / slow_radius) * 0.75f + 0.25f;
+        
+        var steering = (desired_velocity - velocity) / mass;
+        return velocity + steering;
     }
 }
 
@@ -73,7 +146,8 @@ public class Enemy : KinematicBody2D, IHittable
     public override void _Ready()
     {
         stateMachine.Add(nameof(EnemyMoveSteady), new EnemyMoveSteady(this, stateMachine, MoveSpeed));
-        stateMachine.ChangeState(nameof(EnemyMoveSteady));
+        stateMachine.Add(nameof(CrazyMode), new CrazyMode(this, 4*MoveSpeed));
+        stateMachine.ChangeState(nameof(CrazyMode));
 
         BelowArea = GetNode<Area2D>("Area2D");
 
