@@ -3,7 +3,8 @@ using Godot;
 public class EnemiesManager : Node2D
 {
     [Export]
-    public int EnemiesAmountOnLevel = 3;
+    public int MaxEnemiesOnLevel = 3;
+    private int enemiesAmountOnLevel = 1;
     private Arena arena;
     private PackedScene enemyScene;
     private Timer spawnTimer;
@@ -20,9 +21,14 @@ public class EnemiesManager : Node2D
         spawnTimer.Stop();
     }
 
+    public void MaxAmountOfEnemies()
+    {
+        enemiesAmountOnLevel = MaxEnemiesOnLevel;
+    }
+
     public void Spawn()
     {
-        if(GetTree().GetNodesInGroup("ENEMIES").Count < EnemiesAmountOnLevel)
+        if(GetTree().GetNodesInGroup("ENEMIES").Count < enemiesAmountOnLevel)
         {
             var instance = (Enemy) enemyScene.Instance();
             if(spawnedCounter % 2 == 0)
