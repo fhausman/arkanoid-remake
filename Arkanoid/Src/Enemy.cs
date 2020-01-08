@@ -62,7 +62,6 @@ public class Enemy : KinematicBody2D, IHittable
     [Export]
     public float MoveSpeed { get; set; } = 0.0f;
     public Area2D BelowArea { get; set; }
-    private Timer changeStateTimer;
     private StateMachine stateMachine = new StateMachine();
 
     public void OnHit()
@@ -77,9 +76,6 @@ public class Enemy : KinematicBody2D, IHittable
         stateMachine.ChangeState(nameof(EnemyMoveSteady));
 
         BelowArea = GetNode<Area2D>("Area2D");
-
-        changeStateTimer = GetNode<Timer>("ChangeStateTimer");
-        changeStateTimer.Start();
 
         PauseMode = PauseModeEnum.Stop;
     }
