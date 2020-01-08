@@ -75,6 +75,7 @@ class LevelManager
 
         scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
         Unpause();
+        scene.EnemiesManager.EnableSpawning();
     }
 
     public void AdvanceToNextLevel()

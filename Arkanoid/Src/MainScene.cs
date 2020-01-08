@@ -10,6 +10,7 @@ public class MainScene : Node2D
     public int Score { get; set; } = 0;
     public Node2D Blocks { private get; set; }
     public bool LoadNextLevel { get; set; } = false;
+    public EnemiesManager EnemiesManager { get; set; }
     private int highScore { get; set; } = 0;
     private Control ui;
     private Control livesContainer;
@@ -18,7 +19,6 @@ public class MainScene : Node2D
     private RichTextLabel highScoreLabel;
     private StateMachine stateMachine = new StateMachine();    
     private LevelManager levelManager;
-    private EnemiesManager enemiesManager;
 
     void DecreaseNumberOfLifeIcons()
     {
@@ -83,13 +83,13 @@ public class MainScene : Node2D
 
             GD.Print("Game over");
         }
+        EnemiesManager.DisableSpawning();
     }
 
     public override void _Ready()
     {
         levelManager = LevelManager.Init(this, GetNode<Round>("Round"));
-        enemiesManager = GetNode<EnemiesManager>("EnemiesManager");
-        enemiesManager.EnableSpawning();
+        EnemiesManager = GetNode<EnemiesManager>("EnemiesManager");
 
         //todo: UI manager should handle it
         boardIcon = GD.Load<PackedScene>("res://Resources/UI/BoardIcon.tscn");

@@ -15,6 +15,11 @@ public class EnemiesManager : Node2D
         spawnTimer.Start();
     }
 
+    public void DisableSpawning()
+    {
+        spawnTimer.Stop();
+    }
+
     public void Spawn()
     {
         if(GetTree().GetNodesInGroup("ENEMIES").Count < EnemiesAmountOnLevel)
