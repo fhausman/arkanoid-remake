@@ -111,6 +111,7 @@ class LevelManager
     private void Cleanup(bool destroyLevel = true)
     {
         PowerupManager.ResetPowerups();
+        PowerupManager.ResetState();
 
         boardInstance.QueueFree();
         if(destroyLevel)

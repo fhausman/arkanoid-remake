@@ -215,6 +215,8 @@ public class Board : KinematicBody2D
     public Vector2 Velocity { get => Speed*Dir; }
     public Vector2 Extents { get => shape.GetExtents()*Transform.Scale; }
     public Vector2 Middle { get => Position; }
+    public bool IsLaserActive { get => laserActivated; }
+    public bool IsExtended { get => extended; }
     private StateMachine stateMachine = new StateMachine();
     private BlastManager blastManager;
     private RectangleShape2D shape;
