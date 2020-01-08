@@ -18,6 +18,7 @@ public class EnemiesManager : Node2D
 
     public void DisableSpawning()
     {
+        enemiesAmountOnLevel = 1;
         spawnTimer.Stop();
     }
 

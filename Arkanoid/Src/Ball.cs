@@ -24,10 +24,12 @@ public class Moving : IState
         {
             if(col.Collider is Board board)
             {
+                if(col.ColliderShape.Get("name").ToString() != "col")
+                    return;
+
                 if(ball.GlueToBoard)
                 {
-                    var state = ball.SetAttached(Vector2.Zero, ball.Position);
-                    //state
+                    ball.SetAttached(Vector2.Zero, ball.Position);
                     return;
                 }
 

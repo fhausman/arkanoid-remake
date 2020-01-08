@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Src/Board.cs" type="Script" id=1]
 [ext_resource path="res://Art/board/DESKA_LONG_transform_Sheet.png" type="Texture" id=2]
@@ -10,9 +10,12 @@
 [ext_resource path="res://Art/deska_IDLE.png" type="Texture" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 64, 1 )
+extents = Vector2( 49.9534, 1 )
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 63.4096, 1.00849 )
+
+[sub_resource type="Animation" id=3]
 resource_name = "destroy"
 length = 1.5
 tracks/0/type = "value"
@@ -88,8 +91,7 @@ tracks/5/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "extend"
+[sub_resource type="Animation" id=4]
 length = 0.55
 tracks/0/type = "value"
 tracks/0/path = NodePath("extend:frame")
@@ -273,8 +275,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "shrink"
+[sub_resource type="Animation" id=8]
 length = 0.55
 tracks/0/type = "value"
 tracks/0/path = NodePath("extend:frame")
@@ -325,8 +326,7 @@ tracks/3/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "spawn"
+[sub_resource type="Animation" id=9]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("spawn:frame")
@@ -440,13 +440,18 @@ hframes = 4
 frame = 15
 
 [node name="idle" type="Sprite" parent="."]
-visible = false
 position = Vector2( 0.218475, 14.6745 )
 texture = ExtResource( 8 )
 
 [node name="col" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 1 )
+position = Vector2( 1.36076, 1.10468 )
 shape = SubResource( 1 )
+
+[node name="shape_col" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 13 )
+rotation = 3.14159
+shape = SubResource( 2 )
+one_way_collision = true
 
 [node name="LaserDelay" type="Timer" parent="."]
 wait_time = 0.1
@@ -456,13 +461,13 @@ wait_time = 2.0
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/destroy = SubResource( 8 )
-anims/extend = SubResource( 3 )
+anims/destroy = SubResource( 3 )
+anims/extend = SubResource( 4 )
 anims/laserActivate = SubResource( 5 )
 anims/laserDeactivate = SubResource( 6 )
 anims/laserIdle = SubResource( 7 )
-anims/shrink = SubResource( 4 )
-anims/spawn = SubResource( 2 )
+anims/shrink = SubResource( 8 )
+anims/spawn = SubResource( 9 )
 [connection signal="timeout" from="LaserDelay" to="." method="LaserReady"]
 [connection signal="timeout" from="WarpTimer" to="." method="OnWarpEnd"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]
