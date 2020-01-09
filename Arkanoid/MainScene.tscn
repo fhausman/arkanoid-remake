@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Src/MainScene.cs" type="Script" id=1]
 [ext_resource path="res://Resources/Arena/Arena.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://Resources/Enemies/EnemiesManager.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Resources/Arena/EnemiesPath.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Resources/Arena/Level1Path.tres" type="Curve2D" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 576, 64 )
@@ -43,6 +45,7 @@ position = Vector2( 960, 972 )
 [node name="EnemiesManager" parent="." instance=ExtResource( 4 )]
 
 [node name="DeathArea" type="Area2D" parent="."]
+editor/display_folded = true
 position = Vector2( 960, 1056 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathArea"]
@@ -50,6 +53,7 @@ position = Vector2( 0, 130 )
 shape = SubResource( 1 )
 
 [node name="Environment" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="left_col" type="StaticBody2D" parent="Environment"]
 
@@ -80,4 +84,7 @@ margin_left = 789.503
 margin_top = 587.663
 margin_right = 1014.5
 margin_bottom = 677.663
+
+[node name="EnemiesPath" parent="." instance=ExtResource( 7 )]
+curve = ExtResource( 8 )
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]

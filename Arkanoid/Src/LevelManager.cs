@@ -15,6 +15,7 @@ class LevelManager
     static public LevelManager Instance { get; private set; } = null;
     MainScene scene;
     Round round;
+    EnemiesManager enemiesManager;
     PackedScene ball;
     Ball ballInstance;
     PackedScene board;
@@ -37,6 +38,7 @@ class LevelManager
 
         Instance.scene = scene;
         Instance.round = round;
+        Instance.enemiesManager = scene.GetNode<EnemiesManager>("EnemiesManager");
         Instance.ball = GD.Load<PackedScene>("res://Resources/Ball/Ball.tscn");
         Instance.board = GD.Load<PackedScene>("res://Resources/Board/Board.tscn");
 
@@ -48,6 +50,7 @@ class LevelManager
     public void StartLoading(Lvl level, bool reloadLevel = true)
     {
         currentLevel = level;
+        enemiesManager.SetLevel(currentLevel);
         round.Play(((int) currentLevel + 1));
 
         if(reloadLevel)
@@ -74,6 +77,7 @@ class LevelManager
         boardInstance.Spawn();
 
         scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
+        enemiesManager.Reset();
         Unpause();
     }
 
@@ -117,6 +121,7 @@ class LevelManager
         if(destroyLevel)
             levelInstance.Free();
         FreeGroups(new string[]{"BALLS", "POWERUPS", "BLASTS", "ENEMIES"});
+        enemiesManager.DisableSpawning();
     }
 
     private void FreeGroups(string[] groups)
