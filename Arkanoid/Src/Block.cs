@@ -17,16 +17,11 @@ public class Block : StaticBody2D, IHittable
     public override void _Ready()
     {
         scene = GetNode<MainScene>("/root/Main");
-        if(NumOfHits > 1)
-        {
-            Points += ((int) scene.CurrentLevel)*Points;
-        }
+        Points += ((int) scene.CurrentLevel)*Points;
     }
 
-    public void OnHit()
+    public virtual void OnHit()
     {
-        //todo: play hit animation
-
         if(!Destructable)
             return;
 

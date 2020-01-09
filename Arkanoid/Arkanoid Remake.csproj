@@ -58,10 +58,12 @@
     <Compile Include="Src\EnemiesManager.cs" />
     <Compile Include="Src\Enemy.cs" />
     <Compile Include="Src\Glue.cs" />
+    <Compile Include="Src\GoldenBlock.cs" />
     <Compile Include="Src\MainMenu.cs" />
     <Compile Include="Src\Multiball.cs" />
     <Compile Include="Src\PowerupManager.cs" />
     <Compile Include="Src\Round.cs" />
+    <Compile Include="Src\SilverBlock.cs" />
     <Compile Include="Src\Slowdown.cs" />
     <Compile Include="Src\ExtraLife.cs" />
     <Compile Include="Src\Ball.cs" />
