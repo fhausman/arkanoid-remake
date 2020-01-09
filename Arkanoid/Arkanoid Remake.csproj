@@ -75,6 +75,7 @@
     <Compile Include="Src\StateMachine.cs" />
     <Compile Include="Src\IHittable.cs" />
     <Compile Include="Src\Teleport.cs" />
+    <Compile Include="Src\PathFollow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

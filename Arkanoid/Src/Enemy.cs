@@ -5,7 +5,6 @@ public class EnemyMoveSteady : IState
     private StateMachine stateMachine;
     private Enemy enemy;
     private float speed;
-    private RandomNumberGenerator randGen = new RandomNumberGenerator();
     private Vector2 dir = Vector2.Down;
     private Vector2 previousHorizontalDir = Vector2.Right;
 
@@ -89,9 +88,9 @@ public class CrazyMode : IState
         velocity = ArriveTo(
             velocity,
             enemy.GlobalPosition,
-            enemy.GetViewport().GetMousePosition(),
+            enemy.FollowNode.GlobalPosition,
             speed,
-            200.0f,
+            100.0f,
             2.0f
             );
         
@@ -113,17 +112,17 @@ public class CrazyMode : IState
 
     private Vector2 ArriveTo(
         Vector2 velocity,
-        Vector2 global_position,
-        Vector2 target_position,
-        float max_speed,
-        float slow_radius,
+        Vector2 globalPosition,
+        Vector2 targetPosition,
+        float maxSpeed,
+        float slowRadius,
         float mass
     )
     {
-        var toTarget = global_position.DistanceTo(target_position);
-        var desired_velocity = (target_position - global_position).Normalized()*max_speed;
-        if(toTarget < slow_radius)
-            desired_velocity *= (toTarget / slow_radius) * 0.75f + 0.25f;
+        var toTarget = globalPosition.DistanceTo(targetPosition);
+        var desired_velocity = (targetPosition - globalPosition).Normalized()*maxSpeed;
+        if(toTarget < slowRadius)
+            desired_velocity *= (toTarget / slowRadius) * 0.75f + 0.25f;
         
         var steering = (desired_velocity - velocity) / mass;
         return velocity + steering;
@@ -135,6 +134,7 @@ public class Enemy : KinematicBody2D, IHittable
     [Export]
     public float MoveSpeed { get; set; } = 0.0f;
     public Area2D BelowArea { get; set; }
+    public Node2D FollowNode { get; set; }
     private StateMachine stateMachine = new StateMachine();
 
     public void OnHit()
@@ -147,11 +147,17 @@ public class Enemy : KinematicBody2D, IHittable
     {
         stateMachine.Add(nameof(EnemyMoveSteady), new EnemyMoveSteady(this, stateMachine, MoveSpeed));
         stateMachine.Add(nameof(CrazyMode), new CrazyMode(this, 4*MoveSpeed));
-        stateMachine.ChangeState(nameof(CrazyMode));
+        stateMachine.ChangeState(nameof(EnemyMoveSteady));
 
         BelowArea = GetNode<Area2D>("Area2D");
+        FollowNode = GetNode<Node2D>("../../EnemiesPath/PathFollow/FollowingPoint");
 
         PauseMode = PauseModeEnum.Stop;
+    }
+
+    public override void _Process(float delta)
+    {
+        stateMachine.Process(delta);
     }
 
     public override void _PhysicsProcess(float delta)
