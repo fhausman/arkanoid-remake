@@ -4,6 +4,7 @@ public class EnemiesManager : Node2D
 {
     [Export]
     public int MaxEnemiesOnLevel = 3;
+    public string EnemyToSpawn = "triangle";
     private int enemiesAmountOnLevel = 1;
     private Arena arena;
     private PackedScene enemyScene;
@@ -32,6 +33,7 @@ public class EnemiesManager : Node2D
         if(GetTree().GetNodesInGroup("ENEMIES").Count < enemiesAmountOnLevel)
         {
             var instance = (Enemy) enemyScene.Instance();
+            instance.EnemyType = EnemyToSpawn;
             if(spawnedCounter % 2 == 0)
             {
                 arena.OpenLeftGate();
