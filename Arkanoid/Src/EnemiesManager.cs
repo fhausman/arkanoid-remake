@@ -1,4 +1,18 @@
 using Godot;
+using System.Collections.Generic;
+public struct LevelInfo
+{
+    public string enemyType;
+    public int maxEnemiesOnLevel;
+    public int maxSpawnTime;
+
+    public LevelInfo(string enemyType, int maxEnemiesOnLevel, int maxSpawnTime)
+    {
+        this.enemyType = enemyType;
+        this.maxEnemiesOnLevel = maxEnemiesOnLevel;
+        this.maxSpawnTime = maxSpawnTime;
+    }
+}
 
 public class EnemiesManager : Node2D
 {
@@ -9,8 +23,19 @@ public class EnemiesManager : Node2D
     private Arena arena;
     private PackedScene enemyScene;
     private Timer spawnTimer;
+    private Timer enableTimer;
+    private Timer maxTimer;
     private Node2D levelRoot;
     private int spawnedCounter = 0;
+
+    Dictionary<Lvl, LevelInfo> enemiesInfo = new Dictionary<Lvl, LevelInfo>()
+    {
+        {Lvl.LEVEL1, new LevelInfo("triangle", 2, 30)},
+        {Lvl.LEVEL2, new LevelInfo("square", 1, 0)},
+        {Lvl.LEVEL3, new LevelInfo("folded", 3, 0)},
+        {Lvl.LEVEL4, new LevelInfo("origami", 2, 0)},
+        {Lvl.LEVEL5, new LevelInfo("triangle", 3, 0)}
+    };
 
     public void EnableSpawning()
     {
@@ -26,6 +51,23 @@ public class EnemiesManager : Node2D
     public void MaxAmountOfEnemies()
     {
         enemiesAmountOnLevel = MaxEnemiesOnLevel;
+    }
+
+    public void SetLevel(Lvl level)
+    {
+        var info = enemiesInfo[level];
+        MaxEnemiesOnLevel = info.maxEnemiesOnLevel;
+        enableTimer.WaitTime = info.maxSpawnTime;
+        maxTimer.WaitTime = info.maxSpawnTime;
+    }
+
+    public void Reset()
+    {
+        spawnTimer.Stop();
+        enableTimer.Stop();
+        maxTimer.Stop();
+        enableTimer.Start();
+        maxTimer.Start();
     }
 
     public void Spawn()
@@ -55,6 +97,8 @@ public class EnemiesManager : Node2D
         enemyScene = GD.Load<PackedScene>("res://Resources/Enemies/Enemy.tscn");
         arena = GetNode<Arena>("../Arena");
         spawnTimer = GetNode<Timer>("SpawnTimer");
+        enableTimer = GetNode<Timer>("EnableTimer");
+        maxTimer = GetNode<Timer>("MaxTimer");
         levelRoot = GetNode<Node2D>("../LevelRoot");
     }
 }

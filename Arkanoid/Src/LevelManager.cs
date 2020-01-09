@@ -31,14 +31,6 @@ class LevelManager
         {Lvl.LEVEL4, "4 level.tscn"},
         {Lvl.LEVEL5, "5 level.tscn"}
     };
-    Dictionary<Lvl, string> enemies = new Dictionary<Lvl, string>()
-    {
-        {Lvl.LEVEL1, "triangle"},
-        {Lvl.LEVEL2, "square"},
-        {Lvl.LEVEL3, "folded"},
-        {Lvl.LEVEL4, "origami"},
-        {Lvl.LEVEL5, "triangle"}
-    };
 
     static public LevelManager Init(MainScene scene, Round round)
     {
@@ -58,7 +50,7 @@ class LevelManager
     public void StartLoading(Lvl level, bool reloadLevel = true)
     {
         currentLevel = level;
-        enemiesManager.EnemyToSpawn = enemies[level];
+        enemiesManager.SetLevel(currentLevel);
         round.Play(((int) currentLevel + 1));
 
         if(reloadLevel)
@@ -85,7 +77,7 @@ class LevelManager
         boardInstance.Spawn();
 
         scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
-        enemiesManager.EnableSpawning();
+        enemiesManager.Reset();
         Unpause();
     }
 
