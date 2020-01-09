@@ -85,6 +85,7 @@ public class CrazyMode : IState
 
     public void Init(params object[] args)
     {
+        enemy.SetCollisionMask(9);
     }
 
     public void PhysicsProcess(float dt)
