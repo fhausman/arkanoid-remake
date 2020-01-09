@@ -37,6 +37,10 @@ public class EnemyMoveSteady : IState
                enemy.OnHit();
                return;
             }
+            else if(col.Collider is Enemy)
+            {
+                return;
+            }
 
             //if was moving down move horizontally in previous direction
             //if not move in opposite direction
