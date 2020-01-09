@@ -18,10 +18,17 @@ _global_script_class_icons={
 config/name="Arkanoid Remake"
 run/main_scene="res://MainMenu.tscn"
 
+[debug]
+
+settings/fps/force_fps=60
+settings/stdout/print_fps=true
+
 [display]
 
 window/size/width=1920
 window/size/height=1080
+window/size/resizable=false
+window/size/fullscreen=true
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
