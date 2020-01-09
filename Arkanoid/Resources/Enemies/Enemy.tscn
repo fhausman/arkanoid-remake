@@ -10,7 +10,7 @@ extents = Vector2( 28, 21 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 28, 1 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "death"
 length = 0.54
 tracks/0/type = "value"
@@ -38,8 +38,7 @@ tracks/1/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "triangle"
+[sub_resource type="Animation" id=4]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -64,7 +63,6 @@ script = ExtResource( 1 )
 MoveSpeed = 100.0
 
 [node name="Triangle" type="Sprite" parent="."]
-visible = false
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 4
@@ -89,5 +87,6 @@ shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "triangle"
-anims/death = SubResource( 4 )
-anims/triangle = SubResource( 3 )
+anims/death = SubResource( 3 )
+anims/triangle = SubResource( 4 )
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]

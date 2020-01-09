@@ -136,15 +136,30 @@ public class Enemy : KinematicBody2D, IHittable
     public Area2D BelowArea { get; set; }
     public Node2D FollowNode { get; set; }
     private StateMachine stateMachine = new StateMachine();
+    private AnimationPlayer animation;
+    private Sprite triangle;
+    private Sprite death;
 
     public void OnHit()
     {
-        //play destroy animation
-        Free();
+        triangle.Visible = false;
+        stateMachine.ChangeState(nameof(EmptyState));
+        SetCollisionLayer(0);
+        SetCollisionMask(0);
+        animation.Play("death");
+    }
+
+    public void OnAnimationFinished(string name)
+    {
+        if(name == "death")
+        {
+            QueueFree();
+        }
     }
 
     public override void _Ready()
     {
+        stateMachine.Add(nameof(EmptyState), new EmptyState());
         stateMachine.Add(nameof(EnemyMoveSteady), new EnemyMoveSteady(this, stateMachine, MoveSpeed));
         stateMachine.Add(nameof(CrazyMode), new CrazyMode(this, 4*MoveSpeed));
         stateMachine.ChangeState(nameof(EnemyMoveSteady));
@@ -152,6 +167,8 @@ public class Enemy : KinematicBody2D, IHittable
         BelowArea = GetNode<Area2D>("Area2D");
         FollowNode = GetNode<Node2D>("../../EnemiesPath/PathFollow/FollowingPoint");
 
+        animation = GetNode<AnimationPlayer>("AnimationPlayer");
+        triangle = GetNode<Sprite>("Triangle");
         PauseMode = PauseModeEnum.Stop;
     }
 
