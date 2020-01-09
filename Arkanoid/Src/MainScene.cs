@@ -1,5 +1,6 @@
 using Godot;
 using System.Linq;
+using System;
 
 public class MainScene : Node2D
 {
@@ -82,10 +83,36 @@ public class MainScene : Node2D
         }
         else
         {
+            if(Score > highScore)
+                SaveHighscore(Score);
+
             GetTree().ReloadCurrentScene();
 
             GD.Print("Game over");
         }
+    }
+
+    public int GetHighscore()
+    {
+        var file = new File();
+        if(!file.FileExists("user://arkanoid.data"))
+        {
+            return 5000;
+        }
+
+        file.Open("user://arkanoid.data", (int) File.ModeFlags.Read);
+        var obj = file.GetLine();
+        file.Close();
+
+        return Int32.Parse(obj);
+    }
+
+    public void SaveHighscore(int highScore)
+    {
+        var file = new File();
+        file.Open("user://arkanoid.data", (int) File.ModeFlags.Write);
+        file.StoreLine(highScore.ToString());
+        file.Close();
     }
 
     public override void _Ready()
@@ -102,6 +129,7 @@ public class MainScene : Node2D
             IncreaseNumberOfLifeIcons();
         }
 
+        highScore = GetHighscore();
         scoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("Score");
         highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
         highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, highScore);
