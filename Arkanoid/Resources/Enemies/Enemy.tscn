@@ -1,13 +1,59 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Src/Enemy.cs" type="Script" id=1]
-[ext_resource path="res://Art/ball/kulka_eksperyment.png" type="Texture" id=2]
+[ext_resource path="res://Art/enemies/latajek_1_sheet.png" type="Texture" id=2]
+[ext_resource path="res://Art/enemies/LATAJEK_DEATH_Sheet.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
+extents = Vector2( 28, 21 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 16, 1 )
+extents = Vector2( 28, 1 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "death"
+length = 0.54
+tracks/0/type = "value"
+tracks/0/path = NodePath("Death:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.48 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 7 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Death:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.54 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "triangle"
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Triangle:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 9 ]
+}
 
 [node name="Enemy" type="KinematicBody2D" groups=[
 "ENEMIES",
@@ -17,16 +63,31 @@ collision_mask = 37
 script = ExtResource( 1 )
 MoveSpeed = 100.0
 
+[node name="Triangle" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 2 )
+vframes = 4
+hframes = 4
+frame = 6
+region_rect = Rect2( 0, 0, 32, 32 )
+
+[node name="Death" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 3 )
+vframes = 2
+hframes = 4
+frame = 7
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 32, 32 )
-
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2( 0, 17.7501 )
+position = Vector2( 0, 22.2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "triangle"
+anims/death = SubResource( 4 )
+anims/triangle = SubResource( 3 )
