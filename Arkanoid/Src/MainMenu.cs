@@ -23,6 +23,6 @@ public class MainMenu : Control
     public override void _Ready()
     {
         mainScene = GD.Load<PackedScene>("MainScene.tscn");
-        GetNode<Button>("CenterContainer/VBoxContainer/Start").GrabFocus();
+        GetNode<Button>("VBoxContainer/Start").GrabFocus();
     }
 }
