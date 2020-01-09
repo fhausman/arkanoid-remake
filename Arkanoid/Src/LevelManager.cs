@@ -117,6 +117,9 @@ class LevelManager
         PowerupManager.ResetPowerups();
         PowerupManager.ResetState();
 
+        if(PowerupManager.IsTeleportActive)
+            PowerupManager.DectivateTeleport();
+
         boardInstance.QueueFree();
         if(destroyLevel)
             levelInstance.Free();

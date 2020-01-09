@@ -105,9 +105,6 @@ public class PowerupManager : Node2D
 
         ball.ResetPowerups();
         board.ResetPowerups();
-
-        if(IsTeleportActive)
-            DectivateTeleport();
     }
 
     public List<PackedScene> GetAllAvailablePowerUps()
