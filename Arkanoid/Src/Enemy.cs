@@ -37,7 +37,7 @@ public class EnemyMoveSteady : IState
                enemy.OnHit();
                return;
             }
-            else if(col.Collider is Enemy)
+            else if(col.Collider is Enemy && dir == Vector2.Zero)
             {
                 return;
             }

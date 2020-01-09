@@ -31,10 +31,10 @@ public class EnemiesManager : Node2D
     Dictionary<Lvl, LevelInfo> enemiesInfo = new Dictionary<Lvl, LevelInfo>()
     {
         {Lvl.LEVEL1, new LevelInfo("triangle", 2, 30)},
-        {Lvl.LEVEL2, new LevelInfo("square", 1, 0)},
-        {Lvl.LEVEL3, new LevelInfo("folded", 3, 0)},
-        {Lvl.LEVEL4, new LevelInfo("origami", 2, 0)},
-        {Lvl.LEVEL5, new LevelInfo("triangle", 3, 0)}
+        {Lvl.LEVEL2, new LevelInfo("square", 1, 1)},
+        {Lvl.LEVEL3, new LevelInfo("folded", 3, 1)},
+        {Lvl.LEVEL4, new LevelInfo("origami", 2, 1)},
+        {Lvl.LEVEL5, new LevelInfo("triangle", 3, 1)}
     };
 
     public void EnableSpawning()
@@ -56,6 +56,7 @@ public class EnemiesManager : Node2D
     public void SetLevel(Lvl level)
     {
         var info = enemiesInfo[level];
+        EnemyToSpawn = info.enemyType;
         MaxEnemiesOnLevel = info.maxEnemiesOnLevel;
         enableTimer.WaitTime = info.maxSpawnTime;
         maxTimer.WaitTime = info.maxSpawnTime;
