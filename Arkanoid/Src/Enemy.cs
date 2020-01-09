@@ -1,5 +1,5 @@
 using Godot;
-
+using System.Collections.Generic;
 public class EnemyMoveSteady : IState
 {
     private StateMachine stateMachine;
@@ -133,16 +133,25 @@ public class Enemy : KinematicBody2D, IHittable
 {
     [Export]
     public float MoveSpeed { get; set; } = 0.0f;
+    [Export]
+    public string EnemyType { get; set; } = "folded";
     public Area2D BelowArea { get; set; }
     public Node2D FollowNode { get; set; }
     private StateMachine stateMachine = new StateMachine();
     private AnimationPlayer animation;
     private Sprite triangle;
-    private Sprite death;
+    private Sprite square;
+    private Sprite folded;
+    private Sprite origami;
+    private Dictionary<string, Sprite> animations;
 
     public void OnHit()
     {
-        triangle.Visible = false;
+        foreach(var anim in animations)
+        {
+            anim.Value.Visible = false;
+        }
+
         stateMachine.ChangeState(nameof(EmptyState));
         SetCollisionLayer(0);
         SetCollisionMask(0);
@@ -169,6 +178,19 @@ public class Enemy : KinematicBody2D, IHittable
 
         animation = GetNode<AnimationPlayer>("AnimationPlayer");
         triangle = GetNode<Sprite>("Triangle");
+        square = GetNode<Sprite>("Square");
+        folded = GetNode<Sprite>("Folded");
+        origami = GetNode<Sprite>("Origami");
+        animations = new Dictionary<string, Sprite>()
+        {
+            {nameof(triangle), triangle},
+            {nameof(square), square},
+            {nameof(folded), folded},
+            {nameof(origami), origami},
+        };
+        animations[EnemyType].Visible = true;
+        animation.Play(EnemyType);
+
         PauseMode = PauseModeEnum.Stop;
     }
 

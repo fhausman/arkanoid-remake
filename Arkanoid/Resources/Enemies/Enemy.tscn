@@ -1,11 +1,14 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Src/Enemy.cs" type="Script" id=1]
 [ext_resource path="res://Art/enemies/latajek_1_sheet.png" type="Texture" id=2]
-[ext_resource path="res://Art/enemies/LATAJEK_DEATH_Sheet.png" type="Texture" id=3]
+[ext_resource path="res://Art/enemies/latajek_2_fix.png" type="Texture" id=3]
+[ext_resource path="res://Art/enemies/latajek_3_pion_Sheet.png" type="Texture" id=4]
+[ext_resource path="res://Art/enemies/Latajek_4_v2_Sheet.png" type="Texture" id=5]
+[ext_resource path="res://Art/enemies/LATAJEK_DEATH_Sheet.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 28, 21 )
+extents = Vector2( 28, 28.1894 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 28, 1 )
@@ -38,6 +41,57 @@ tracks/1/keys = {
 "values": [ true, false ]
 }
 
+[sub_resource type="Animation" id=6]
+resource_name = "folded"
+length = 0.96
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Folded:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.96 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 11 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "origami"
+length = 0.64
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Origami:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.64 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 7 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "square"
+length = 0.72
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Square:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.72 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 11 ]
+}
+
 [sub_resource type="Animation" id=4]
 length = 0.6
 loop = true
@@ -63,15 +117,35 @@ script = ExtResource( 1 )
 MoveSpeed = 100.0
 
 [node name="Triangle" type="Sprite" parent="."]
+visible = false
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 4
-frame = 6
+frame = 3
 region_rect = Rect2( 0, 0, 32, 32 )
+
+[node name="Square" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 3 )
+vframes = 4
+hframes = 4
+
+[node name="Folded" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 4 )
+vframes = 4
+hframes = 4
+frame = 8
+
+[node name="Origami" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 5 )
+vframes = 2
+hframes = 4
 
 [node name="Death" type="Sprite" parent="."]
 visible = false
-texture = ExtResource( 3 )
+texture = ExtResource( 6 )
 vframes = 2
 hframes = 4
 frame = 7
@@ -86,7 +160,9 @@ position = Vector2( 0, 22.2 )
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "triangle"
 anims/death = SubResource( 3 )
+anims/folded = SubResource( 6 )
+anims/origami = SubResource( 7 )
+anims/square = SubResource( 5 )
 anims/triangle = SubResource( 4 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]
