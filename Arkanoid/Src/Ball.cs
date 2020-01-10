@@ -135,6 +135,7 @@ public class Ball : KinematicBody2D
 
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
+    private Timer attachTimer;
 
     public void SpeedUp(float speedUp)
     {
@@ -148,14 +149,20 @@ public class Ball : KinematicBody2D
         CurrentSpeed = speed;
     }
 
-    public Attached SetAttached(Vector2 dir, Vector2 attachPos)
+    public void SetAttached(Vector2 dir, Vector2 attachPos)
     {
-        return (Attached) stateMachine.ChangeState(nameof(Attached), dir, attachPos);
+        attachTimer.Start();
+        stateMachine.ChangeState(nameof(Attached), dir, attachPos);
     }
 
-    public Moving SetMoving(Vector2 dir)
+    public void SetMoving(Vector2 dir)
     {
-        return (Moving) stateMachine.ChangeState(nameof(Moving), dir);
+        stateMachine.ChangeState(nameof(Moving), dir);
+    }
+
+    public void SetMoving()
+    {
+        SetMoving(Bounce.AngleToDir(Bounce.FirstAngle));
     }
 
     public void ResetState()
@@ -183,6 +190,7 @@ public class Ball : KinematicBody2D
 
     public override void _Ready()
     {
+        attachTimer = GetNode<Timer>("AttachTimer");
         stateMachine.Add(nameof(Moving), new Moving(this));
         stateMachine.Add(nameof(Attached), new Attached(this, Board));
         if(MovingAtStart)

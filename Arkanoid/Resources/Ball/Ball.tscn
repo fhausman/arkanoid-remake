@@ -45,3 +45,8 @@ hframes = 4
 autoplay = "ball"
 playback_speed = 0.8
 anims/ball = SubResource( 2 )
+
+[node name="AttachTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+[connection signal="timeout" from="AttachTimer" to="." method="SetMoving"]
