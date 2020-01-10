@@ -44,6 +44,10 @@ public class MoveBase
         var col = board.MoveAndCollide(board.Velocity*dt);
         if(col != null)
         {
+            if(col.Collider is Ball ball)
+            {
+                ball.CurrentDir = Bounce.BoardBounce(ball, board.Position, board.Extents, col.Position);
+            }
             if(col.Collider is BasePowerUp powerUp)
             {
                 powerUp.OnCollect();
