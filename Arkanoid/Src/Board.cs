@@ -217,13 +217,14 @@ public class Board : KinematicBody2D
     public float Speed { get; set; } = 0.0f;
     public Vector2 Dir { get; set; } = new Vector2(0,0);
     public Vector2 Velocity { get => Speed*Dir; }
-    public Vector2 Extents { get => shape.GetExtents()*Transform.Scale; }
+    public Vector2 Extents { get => shape.GetExtents()*col.Scale; }
     public Vector2 Middle { get => Position; }
     public bool IsLaserActive { get => laserActivated; }
     public bool IsExtended { get => extended; }
     private StateMachine stateMachine = new StateMachine();
     private BlastManager blastManager;
     private RectangleShape2D shape;
+    private CollisionShape2D col;
     private Timer warpTimer;
     private AnimationPlayer animation;
     private Node2D spawnPoint;
@@ -348,7 +349,8 @@ public class Board : KinematicBody2D
         stateMachine.Add(nameof(EmptyState), new EmptyState());
         stateMachine.ChangeState(nameof(EmptyState));
 
-        shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
+        col = GetNode<CollisionShape2D>("col");
+        shape = (RectangleShape2D) col.GetShape();
         warpTimer = GetNode<Timer>("WarpTimer");
 
         blastManager = new BlastManager(this, this.GetNode<Timer>("LaserDelay"));
