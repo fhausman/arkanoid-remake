@@ -20,6 +20,7 @@ public class MainScene : Node2D
     private LevelManager levelManager;
     private Timer winDelay;
     private GodMode gm;
+    private bool gameFinished = false;
 
     void DecreaseNumberOfLifeIcons()
     {
@@ -31,7 +32,7 @@ public class MainScene : Node2D
     {
         livesContainer.AddChild(boardIcon.Instance());
     }
-    
+
     public void AddExtraLife()
     {
         NumberOfLives++;
@@ -58,6 +59,22 @@ public class MainScene : Node2D
     public void OnWin()
     {
         levelManager.AdvanceToNextLevel();
+    }
+
+    public void OnVictory()
+    {
+        var screen = GetNode<Control>("VictoryScreen");
+        var scoreLabel = screen.GetNode<Label>("CenterContainer/VBoxContainer/Score");
+        var scoreStr = GD.Str("SCORE: ", Score);
+        if(Score > highScore)
+        {
+            SaveHighscore(Score);
+            scoreStr += "\nNEW HIGHSCORE!!!";
+        }
+        scoreLabel.Text = scoreStr;
+
+        gameFinished = true;
+        screen.Visible = true;
     }
 
     public void OnDeathAreaEntered(PhysicsBody2D body)
@@ -102,9 +119,10 @@ public class MainScene : Node2D
             if(Score > highScore)
                 SaveHighscore(Score);
 
-            GetTree().ReloadCurrentScene();
-
-            GD.Print("Game over");
+            levelManager.Cleanup();
+            var continueScreen = GetNode<Control>("ContinueScreen");
+            continueScreen.Visible = true;
+            continueScreen.GetNode<Timer>("Countdown").Start();
         }
     }
 
@@ -162,5 +180,14 @@ public class MainScene : Node2D
         scoreLabel.Text = GD.Str("SCORE: ", Score);
         if(Score > highScore)
             highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, Score);
+    }
+
+    public override void _Input(InputEvent e)
+    {
+        if(e is InputEventKey && gameFinished)
+        {
+            GetTree().Paused = false;
+            GetTree().ChangeScene("MainMenu.tscn");
+        }
     }
 }

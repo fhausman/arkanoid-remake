@@ -18,13 +18,13 @@ anchor_bottom = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_left = 380.0
-margin_top = 261.0
+margin_top = 258.0
 margin_right = 1540.0
-margin_bottom = 818.0
+margin_bottom = 821.0
 
 [node name="GameDesign" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_right = 1160.0
-margin_bottom = 48.0
+margin_bottom = 50.0
 theme = ExtResource( 3 )
 custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
 text = "GAME DESIGN"
@@ -32,9 +32,9 @@ align = 1
 autowrap = true
 
 [node name="Zuza" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 52.0
+margin_top = 54.0
 margin_right = 1160.0
-margin_bottom = 183.0
+margin_bottom = 185.0
 theme = ExtResource( 4 )
 custom_colors/font_color = Color( 0.227451, 0.92549, 0.988235, 1 )
 text = "ZUZANNA SLAWINSKA
@@ -42,18 +42,18 @@ text = "ZUZANNA SLAWINSKA
 align = 1
 
 [node name="GraphicDesign" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 187.0
+margin_top = 189.0
 margin_right = 1160.0
-margin_bottom = 235.0
+margin_bottom = 239.0
 theme = ExtResource( 3 )
 custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
 text = "GRAPHIC DESIGN"
 align = 1
 
 [node name="Pies" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 239.0
+margin_top = 243.0
 margin_right = 1160.0
-margin_bottom = 370.0
+margin_bottom = 374.0
 theme = ExtResource( 4 )
 custom_colors/font_color = Color( 0.227451, 0.92549, 0.988235, 1 )
 text = "DARIUSZ PIES OGRODOWCZYK
@@ -61,18 +61,18 @@ text = "DARIUSZ PIES OGRODOWCZYK
 align = 1
 
 [node name="Programming" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 374.0
+margin_top = 378.0
 margin_right = 1160.0
-margin_bottom = 422.0
+margin_bottom = 428.0
 theme = ExtResource( 3 )
 custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
 text = "PROGRAMMING"
 align = 1
 
 [node name="Filip" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 426.0
+margin_top = 432.0
 margin_right = 1160.0
-margin_bottom = 557.0
+margin_bottom = 563.0
 theme = ExtResource( 4 )
 custom_colors/font_color = Color( 0.227451, 0.92549, 0.988235, 1 )
 text = "FILIP HAUSMAN

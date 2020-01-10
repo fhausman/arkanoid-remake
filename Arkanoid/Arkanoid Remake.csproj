@@ -53,6 +53,7 @@
     <Compile Include="Src\Arena.cs" />
     <Compile Include="Src\BoardExtend.cs" />
     <Compile Include="Src\Blast.cs" />
+    <Compile Include="Src\ContinueScreen.cs" />
     <Compile Include="Src\Credits.cs" />
     <Compile Include="Src\DoubleBlast.cs" />
     <Compile Include="Src\EnemiesManager.cs" />

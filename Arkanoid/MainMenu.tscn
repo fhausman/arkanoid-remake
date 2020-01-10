@@ -42,6 +42,7 @@ custom_styles/disabled = SubResource( 4 )
 custom_styles/normal = SubResource( 5 )
 custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
 custom_colors/font_color_hover = Color( 0.227451, 0.92549, 0.988235, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "START"
 
 [node name="Credits" type="Button" parent="VBoxContainer"]
