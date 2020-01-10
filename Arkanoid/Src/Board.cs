@@ -46,6 +46,7 @@ public class MoveBase
         {
             if(col.Collider is Ball ball)
             {
+                ball.Audio.BoardHit();
                 ball.CurrentDir = Bounce.BoardBounce(ball, board.Position, board.Extents, col.Position);
             }
             if(col.Collider is BasePowerUp powerUp)
@@ -228,6 +229,7 @@ public class Board : KinematicBody2D
     private Timer warpTimer;
     private AnimationPlayer animation;
     private Node2D spawnPoint;
+    private AudioManager audio;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
 
@@ -268,6 +270,7 @@ public class Board : KinematicBody2D
             && blastManager.CanShoot()
         )
         {
+            audio.LaserShot();
             blastManager.Shoot();
             GD.Print("Psium, psium!");
         }
@@ -309,6 +312,7 @@ public class Board : KinematicBody2D
 
     public void Destroy()
     {
+        audio.Death();
         animation.Play("destroy");
         stateMachine.ChangeState(nameof(EmptyState));
     }
@@ -352,6 +356,7 @@ public class Board : KinematicBody2D
         col = GetNode<CollisionShape2D>("col");
         shape = (RectangleShape2D) col.GetShape();
         warpTimer = GetNode<Timer>("WarpTimer");
+        audio = GetNode<AudioManager>("../AudioManager");
 
         blastManager = new BlastManager(this, this.GetNode<Timer>("LaserDelay"));
         blastManager.Prepare();
