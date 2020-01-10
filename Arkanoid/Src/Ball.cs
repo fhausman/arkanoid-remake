@@ -157,6 +157,7 @@ public class Ball : KinematicBody2D
 
     public void SetMoving(Vector2 dir)
     {
+        attachTimer.Stop();
         stateMachine.ChangeState(nameof(Moving), dir);
     }
 
