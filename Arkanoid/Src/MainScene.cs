@@ -19,6 +19,7 @@ public class MainScene : Node2D
     private StateMachine stateMachine = new StateMachine();    
     private LevelManager levelManager;
     private Timer winDelay;
+    private GodMode gm;
 
     void DecreaseNumberOfLifeIcons()
     {
@@ -85,10 +86,14 @@ public class MainScene : Node2D
 
     public void PostDestroy()
     {
-        NumberOfLives--;
+        if(!gm.GodModeEnabled)
+            NumberOfLives--;
+        
         if(NumberOfLives >= 0)
         {
-            DecreaseNumberOfLifeIcons();
+            if(!gm.GodModeEnabled)
+                DecreaseNumberOfLifeIcons();
+            
             levelManager.SoftReload();
             GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
         }
@@ -145,6 +150,7 @@ public class MainScene : Node2D
         scoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("Score");
         highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
         highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, highScore);
+        gm = GetNode<GodMode>("GodMode");
 
         levelManager.StartLoading(Level);
 
