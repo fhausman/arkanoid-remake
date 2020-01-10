@@ -298,7 +298,7 @@ public class Board : KinematicBody2D
 
     public void OnWarpEnd()
     {
-        GetNode<MainScene>("/root/Main").LoadNextLevel = true;
+        GetNode<MainScene>("/root/Main").Win();
         PowerupManager.DectivateTeleport();
     }
 

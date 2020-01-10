@@ -87,4 +87,9 @@ margin_bottom = 677.663
 
 [node name="EnemiesPath" parent="." instance=ExtResource( 7 )]
 curve = ExtResource( 8 )
+
+[node name="WinDelay" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]
+[connection signal="timeout" from="WinDelay" to="." method="OnWin"]
