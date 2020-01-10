@@ -252,6 +252,7 @@ public class Enemy : KinematicBody2D, IHittable
     public Node2D FollowNode { get; set; }
     public SideChecker SideChecker { get; set; }
     public AudioManager audio;
+    private MainScene scene;
     private StateMachine stateMachine = new StateMachine();
     private AnimationPlayer animation;
     private Sprite triangle;
@@ -268,6 +269,7 @@ public class Enemy : KinematicBody2D, IHittable
             anim.Value.Visible = false;
         }
 
+        scene.Score += 50*((int) scene.Level + 1);
         stateMachine.ChangeState(nameof(EmptyState));
         SetCollisionLayer(0);
         SetCollisionMask(0);
@@ -302,7 +304,8 @@ public class Enemy : KinematicBody2D, IHittable
         FollowNode = GetFollowingPoint();
         SideChecker = new SideChecker(GetNode<Node2D>("SideChecker"));
 
-        audio = GetNode<AudioManager>("../../AudioManager");
+        scene = GetNode<MainScene>("../..");
+        audio = scene.GetNode<AudioManager>("AudioManager");
 
         animation = GetNode<AnimationPlayer>("AnimationPlayer");
         triangle = GetNode<Sprite>("Triangle");
