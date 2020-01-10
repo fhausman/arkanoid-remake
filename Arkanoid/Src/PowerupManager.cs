@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PowerupManager : Node2D
 {
@@ -12,7 +13,7 @@ public class PowerupManager : Node2D
     private PackedScene slowdown;
     private PackedScene glue;
     private PackedScene teleport;
-    private List<PackedScene> powerUps;
+    private Dictionary<PackedScene, float> powerUpsProbability;
     private bool IsMultiballActive { get => scene.GetTree().GetNodesInGroup("BALLS").Count > 1; }
     private bool IsAnyPowerUpOnScene { get => scene.GetTree().GetNodesInGroup("POWERUPS").Count > 0; }
 
@@ -46,7 +47,7 @@ public class PowerupManager : Node2D
             var instance = powerUp.Instance() as Node2D;
             if(instance is ExtraLife || instance is Teleport)
             {
-                powerupManager.powerUps.Remove(powerUp);
+                powerupManager.powerUpsProbability.Remove(powerUp);
             }
 
             instance.Position = levelSpawnPosition + blockPosition;
@@ -54,24 +55,29 @@ public class PowerupManager : Node2D
         }
     }
 
-    static private PackedScene DrawPowerUp(List<PackedScene> availablePowerUps)
+    static private PackedScene DrawPowerUp(Dictionary<PackedScene, float> availablePowerUps)
     {
-        var num = randGen.RandfRange(0.0f, 1.0f);
-        var range = 1.0f / availablePowerUps.Count;
-        for(int i = 0; i < availablePowerUps.Count; ++i)
+        randGen.Randomize();
+        var range = availablePowerUps.Values.Sum(p => p);
+        var num = randGen.RandfRange(0.0f, range);
+        var sum = 0.0f;
+        foreach(var powerUp in availablePowerUps)
         {
-            if(i*range <= num && num < (i+1)*range)
+            var prob = powerUp.Value;
+            if(sum <= num && num < sum + prob)
             {
-                return availablePowerUps[i];
+                return powerUp.Key;
             }
+
+            sum += prob;
         }
 
         return null;
     }
 
-    static private List<PackedScene> GetAvailablePowerups()
+    static private Dictionary<PackedScene, float> GetAvailablePowerups()
     {
-        var activePowerUps = new List<PackedScene>(powerupManager.powerUps);
+        var activePowerUps = new Dictionary<PackedScene, float>(powerupManager.powerUpsProbability);
         var ball = (Ball) scene.GetTree().GetNodesInGroup("BALLS")[0];
         var board = scene.GetNode<Board>("Board");
 
@@ -107,14 +113,23 @@ public class PowerupManager : Node2D
         board.ResetPowerups();
     }
 
-    public List<PackedScene> GetAllAvailablePowerUps()
+    public Dictionary<PackedScene, float> GetAllAvailablePowerUps()
     {
-        return new List<PackedScene>() {laser, multiball, extraLife, boardExtension, slowdown, glue, teleport};
+        return new Dictionary<PackedScene, float>()
+        {
+            {laser, 0.168f},
+            {multiball, 0.168f},
+            {boardExtension, 0.168f},
+            {slowdown, 0.168f},
+            {glue, 0.168f},
+            {teleport, 0.08f},
+            {extraLife, 0.08f}
+        };
     }
 
     static public void ResetState()
     {
-        powerupManager.powerUps = powerupManager.GetAllAvailablePowerUps();
+        powerupManager.powerUpsProbability = powerupManager.GetAllAvailablePowerUps();
     }
 
     public override void _Ready()
@@ -131,7 +146,7 @@ public class PowerupManager : Node2D
         glue = GD.Load<PackedScene>("res://Resources/PowerUps/Glue.tscn");
         teleport = GD.Load<PackedScene>("res://Resources/PowerUps/Teleport.tscn");
 
-        powerUps = GetAllAvailablePowerUps();
+        powerUpsProbability = GetAllAvailablePowerUps();
 
         levelSpawnPosition = GetNode<Node2D>("/root/Main/LevelSpawnPoint").Position;
     }
