@@ -9,6 +9,7 @@ public class AudioManager : Node2D
     AudioStreamPlayer2D laserShot;
     AudioStreamPlayer2D deathSound;
     AudioStreamPlayer2D enemyDeath;
+    AudioStreamPlayer2D music;
 
     public void DestroyHit()
     {
@@ -40,6 +41,16 @@ public class AudioManager : Node2D
         enemyDeath.Play();
     }
 
+    public void StartPlayingMusic()
+    {
+        music.Play();
+    }
+
+    public bool IsMusicPlaying()
+    {
+        return music.IsPlaying();
+    }
+
     public override void _Ready()
     {
         blockHit = GetNode<AudioStreamPlayer2D>("BlockHit");    
@@ -48,5 +59,6 @@ public class AudioManager : Node2D
         laserShot = GetNode<AudioStreamPlayer2D>("LaserShot");
         deathSound = GetNode<AudioStreamPlayer2D>("DeathSound");
         enemyDeath = GetNode<AudioStreamPlayer2D>("EnemyDeath");
+        music = GetNode<AudioStreamPlayer2D>("Music");
     }
 }

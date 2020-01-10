@@ -77,6 +77,10 @@ class LevelManager
         boardInstance.Spawn();
 
         scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
+
+        if(!scene.Audio.IsMusicPlaying())
+            scene.Audio.StartPlayingMusic();
+            
         enemiesManager.Reset();
         Unpause();
     }

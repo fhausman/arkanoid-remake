@@ -10,6 +10,7 @@ public class MainScene : Node2D
     public int NumberOfLives { get; set; } = 2;
     public int Score { get; set; } = 0;
     public Node2D Blocks { private get; set; }
+    public AudioManager Audio { get; private set; }
     private int highScore { get; set; } = 0;
     private Control ui;
     private Control livesContainer;
@@ -169,6 +170,7 @@ public class MainScene : Node2D
         highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
         highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, highScore);
         gm = GetNode<GodMode>("GodMode");
+        Audio = GetNode<AudioManager>("AudioManager");
 
         levelManager.StartLoading(Level);
 
