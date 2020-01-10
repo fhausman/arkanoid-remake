@@ -10,7 +10,7 @@
 [ext_resource path="res://Art/deska_IDLE.png" type="Texture" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 49.9534, 1 )
+extents = Vector2( 51.2567, 1 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 63.4096, 1.00849 )
@@ -504,6 +504,7 @@ hframes = 2
 region_rect = Rect2( 0, 0, 256, 256 )
 
 [node name="death" type="Sprite" parent="."]
+visible = false
 position = Vector2( 0, 16 )
 texture = ExtResource( 7 )
 vframes = 4
@@ -516,7 +517,7 @@ position = Vector2( 0.218475, 14.6745 )
 texture = ExtResource( 8 )
 
 [node name="col" type="CollisionShape2D" parent="."]
-position = Vector2( 1.36076, 1.10468 )
+position = Vector2( 0, 0.781 )
 scale = Vector2( 1.65, 1 )
 shape = SubResource( 1 )
 one_way_collision = true
