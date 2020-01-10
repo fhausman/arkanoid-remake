@@ -1,5 +1,33 @@
 using Godot;
 using System.Collections.Generic;
+
+public class EnemyMoveUp : IState
+{
+    public void Exit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void HandleInput()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Init(params object[] args)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void PhysicsProcess(float dt)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Process(float dt)
+    {
+        throw new System.NotImplementedException();
+    }
+}
 public class EnemyMoveSteady : IState
 {
     private StateMachine stateMachine;
