@@ -134,7 +134,8 @@ public class EnemyMoveSteady : IState
 
     public virtual void Process(float dt)
     {
-        if(enemy.GlobalPosition.y > 640)
+        var crazyPosition = MainScene.CurrentLevel != Lvl.LEVEL2 ? 480 : 640;
+        if(enemy.GlobalPosition.y > crazyPosition)
         {
             stateMachine.ChangeState(nameof(CrazyMode));
         }
@@ -256,6 +257,7 @@ public class Enemy : KinematicBody2D, IHittable
     private Sprite folded;
     private Sprite origami;
     private Dictionary<string, Sprite> animations;
+    private static int NumSpawned = 0;
 
     public void OnHit()
     {
@@ -278,8 +280,15 @@ public class Enemy : KinematicBody2D, IHittable
         }
     }
 
+    private Node2D GetFollowingPoint()
+    {
+        var str = GD.Str("../../EnemiesPath", NumSpawned%2, "/PathFollow/FollowingPoint");
+        return GetNode<Node2D>(str);
+    }
+
     public override void _Ready()
     {
+        NumSpawned++;
         stateMachine.Add(nameof(EmptyState), new EmptyState());
         stateMachine.Add(nameof(EnemyMoveSteady), new EnemyMoveSteady(this, stateMachine, MoveSpeed));
         stateMachine.Add(nameof(EnemyMoveUp), new EnemyMoveUp(this, stateMachine, MoveSpeed));
@@ -287,7 +296,7 @@ public class Enemy : KinematicBody2D, IHittable
         stateMachine.ChangeState(nameof(EnemyMoveSteady));
 
         BelowArea = GetNode<Area2D>("Area2D");
-        FollowNode = GetNode<Node2D>("../../EnemiesPath/PathFollow/FollowingPoint");
+        FollowNode = GetFollowingPoint();
         SideChecker = new SideChecker(GetNode<Node2D>("SideChecker"));
 
         animation = GetNode<AnimationPlayer>("AnimationPlayer");
