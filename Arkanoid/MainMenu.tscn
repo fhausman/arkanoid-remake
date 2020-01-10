@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Src/MainMenu.cs" type="Script" id=1]
 [ext_resource path="res://Resources/Arena/Dust.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Resources/UI/Animated Logo.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Resources/UI/ButtonTheme.tres" type="Theme" id=4]
+[ext_resource path="res://Sounds/Arkanoid SFX (1).wav" type="AudioStream" id=5]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -33,7 +34,7 @@ margin_bottom = 938.0
 
 [node name="Start" type="Button" parent="VBoxContainer"]
 margin_right = 459.0
-margin_bottom = 86.0
+margin_bottom = 64.0
 theme = ExtResource( 4 )
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
@@ -46,9 +47,9 @@ custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "START"
 
 [node name="Credits" type="Button" parent="VBoxContainer"]
-margin_top = 90.0
+margin_top = 68.0
 margin_right = 459.0
-margin_bottom = 176.0
+margin_bottom = 132.0
 theme = ExtResource( 4 )
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
@@ -60,9 +61,9 @@ custom_colors/font_color_hover = Color( 0.227451, 0.92549, 0.988235, 1 )
 text = "CREDITS"
 
 [node name="Quit" type="Button" parent="VBoxContainer"]
-margin_top = 180.0
+margin_top = 136.0
 margin_right = 459.0
-margin_bottom = 266.0
+margin_bottom = 200.0
 theme = ExtResource( 4 )
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
@@ -73,7 +74,14 @@ custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
 custom_colors/font_color_hover = Color( 0.227451, 0.92549, 0.988235, 1 )
 text = "QUIT"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="MenuSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+[connection signal="focus_entered" from="VBoxContainer/Start" to="." method="OnFocusEnter"]
+[connection signal="mouse_entered" from="VBoxContainer/Start" to="." method="OnFocusEnter"]
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="OnStartPressed"]
+[connection signal="focus_entered" from="VBoxContainer/Credits" to="." method="OnFocusEnter"]
+[connection signal="mouse_entered" from="VBoxContainer/Credits" to="." method="OnFocusEnter"]
 [connection signal="pressed" from="VBoxContainer/Credits" to="." method="OnCreditsPressed"]
+[connection signal="focus_entered" from="VBoxContainer/Quit" to="." method="OnFocusEnter"]
+[connection signal="mouse_entered" from="VBoxContainer/Quit" to="." method="OnFocusEnter"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="OnQuitPressed"]

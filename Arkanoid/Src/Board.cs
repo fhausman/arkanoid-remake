@@ -229,7 +229,7 @@ public class Board : KinematicBody2D
     private Timer warpTimer;
     private AnimationPlayer animation;
     private Node2D spawnPoint;
-    private AudioManager audio;
+    public AudioManager audio;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
 
@@ -295,6 +295,7 @@ public class Board : KinematicBody2D
 
     public void StartWarp()
     {
+        audio.Warp();
         warpTimer.Start();
         LevelManager.Instance.Pause();
     }
