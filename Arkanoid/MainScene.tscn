@@ -29,7 +29,7 @@ __meta__ = {
 show_behind_parent = true
 
 [node name="PowerupManager" parent="." instance=ExtResource( 3 )]
-PowerupSpawnProbability = 0.5
+PowerupSpawnProbability = 0.3
 
 [node name="BoardSpawnPoint" type="Node2D" parent="."]
 position = Vector2( 960, 991.699 )
