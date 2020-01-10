@@ -6,49 +6,49 @@
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Art/font/Mood_01-Regular.ttf"
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="DynamicFont" id=2]
 size = 92
 font_data = SubResource( 1 )
 
-[sub_resource type="Theme" id=11]
-default_font = SubResource( 12 )
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
 
-[sub_resource type="DynamicFontData" id=13]
+[sub_resource type="DynamicFontData" id=4]
 font_path = "res://Art/font/Mood_01-Regular.ttf"
 
-[sub_resource type="DynamicFont" id=14]
+[sub_resource type="DynamicFont" id=5]
 size = 72
-font_data = SubResource( 13 )
+font_data = SubResource( 4 )
 
-[sub_resource type="Theme" id=15]
-default_font = SubResource( 14 )
+[sub_resource type="Theme" id=6]
+default_font = SubResource( 5 )
 
-[sub_resource type="DynamicFontData" id=16]
+[sub_resource type="DynamicFontData" id=7]
 font_path = "res://Art/font/Mood_01-Regular.ttf"
 
-[sub_resource type="DynamicFont" id=17]
+[sub_resource type="DynamicFont" id=8]
 size = 70
-font_data = SubResource( 16 )
+font_data = SubResource( 7 )
 
-[sub_resource type="Theme" id=18]
-default_font = SubResource( 17 )
-
-[sub_resource type="StyleBoxEmpty" id=6]
-
-[sub_resource type="StyleBoxEmpty" id=7]
-
-[sub_resource type="StyleBoxEmpty" id=8]
-
-[sub_resource type="StyleBoxEmpty" id=9]
+[sub_resource type="Theme" id=9]
+default_font = SubResource( 8 )
 
 [sub_resource type="StyleBoxEmpty" id=10]
 
-[sub_resource type="DynamicFont" id=19]
-size = 72
-font_data = SubResource( 16 )
+[sub_resource type="StyleBoxEmpty" id=11]
 
-[sub_resource type="Theme" id=20]
-default_font = SubResource( 19 )
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="DynamicFont" id=15]
+size = 72
+font_data = SubResource( 7 )
+
+[sub_resource type="Theme" id=16]
+default_font = SubResource( 15 )
 
 [node name="ContinueScreen" type="Control"]
 anchor_right = 1.0
@@ -68,7 +68,7 @@ margin_bottom = 682.0
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_right = 421.0
 margin_bottom = 127.0
-theme = SubResource( 11 )
+theme = SubResource( 3 )
 custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
 text = "GAME OVER
 "
@@ -87,7 +87,7 @@ align = 1
 margin_top = 185.0
 margin_right = 421.0
 margin_bottom = 233.0
-theme = SubResource( 15 )
+theme = SubResource( 6 )
 text = "10"
 align = 1
 
@@ -102,12 +102,12 @@ alignment = 1
 margin_left = 46.0
 margin_right = 161.0
 margin_bottom = 48.0
-theme = SubResource( 18 )
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/focus = SubResource( 8 )
-custom_styles/disabled = SubResource( 9 )
-custom_styles/normal = SubResource( 10 )
+theme = SubResource( 9 )
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/focus = SubResource( 12 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
 custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
 custom_colors/font_color_hover = Color( 0.227451, 0.92549, 0.988235, 1 )
 text = "YES"
@@ -116,12 +116,12 @@ text = "YES"
 margin_left = 301.0
 margin_right = 374.0
 margin_bottom = 48.0
-theme = SubResource( 20 )
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/focus = SubResource( 8 )
-custom_styles/disabled = SubResource( 9 )
-custom_styles/normal = SubResource( 10 )
+theme = SubResource( 16 )
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/focus = SubResource( 12 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
 custom_colors/font_color = Color( 0.992157, 0, 0.654902, 1 )
 custom_colors/font_color_hover = Color( 0.227451, 0.92549, 0.988235, 1 )
 text = "NO"
