@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\Arena.cs" />
+    <Compile Include="Src\AudioManager.cs" />
     <Compile Include="Src\BoardExtend.cs" />
     <Compile Include="Src\Blast.cs" />
     <Compile Include="Src\ContinueScreen.cs" />
