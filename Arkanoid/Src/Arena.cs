@@ -7,12 +7,14 @@ public class Arena : Node2D
     private Node2D gateTeleport;
     private Timer leftGateTimer;
     private Timer rightGateTimer;
+    private AudioManager audio;
 
     public Vector2 LeftSpawnPoint { get; private set; }
     public Vector2 RightSpawnPoint { get; private set; }
 
     public void OpenTeleport()
     {
+        audio.OpenTeleport();
         OpenGate(gateTeleport);
     }
     
@@ -56,6 +58,8 @@ public class Arena : Node2D
 
     public override void _Ready()
     {
+        audio = GetNode<AudioManager>("../AudioManager");
+
         gateUpperLeft = GetNode<Node2D>("GateUpperLeft");
         gateUpperRight = GetNode<Node2D>("GateUpperRight");
         gateTeleport = GetNode<Node2D>("GateTeleport");

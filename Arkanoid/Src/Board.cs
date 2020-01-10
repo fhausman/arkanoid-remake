@@ -229,14 +229,17 @@ public class Board : KinematicBody2D
     private Timer warpTimer;
     private AnimationPlayer animation;
     private Node2D spawnPoint;
-    private AudioManager audio;
+    public AudioManager audio;
     private bool extended { get; set; } = false;
     private bool laserActivated { get; set; } = false;
 
     public void Extend()
     {
         if(animation.CurrentAnimation != "laserDeactivate")
+        {   
+            audio.Extend();
             animation.Play("extend");
+        }
         extended = true;
     }
 
@@ -295,6 +298,7 @@ public class Board : KinematicBody2D
 
     public void StartWarp()
     {
+        audio.Warp();
         warpTimer.Start();
         LevelManager.Instance.Pause();
     }
@@ -336,7 +340,10 @@ public class Board : KinematicBody2D
         else if(name == "laserDeactivate")
         {
             if(extended)
+            {
+                audio.Extend();
                 animation.Play("extend");
+            }
         }
         else if(name == "destroy")
         {

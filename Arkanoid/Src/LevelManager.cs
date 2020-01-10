@@ -61,6 +61,9 @@ class LevelManager
 
             scene.GetNode("LevelRoot").AddChild(levelInstance);
         }
+
+        if(!scene.Audio.IsMusicPlaying())
+            scene.Audio.StartPlayingMusic();
     }
 
     public void FinishLoading()
@@ -78,9 +81,6 @@ class LevelManager
 
         scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
 
-        if(!scene.Audio.IsMusicPlaying())
-            scene.Audio.StartPlayingMusic();
-            
         enemiesManager.Reset();
         Unpause();
     }
