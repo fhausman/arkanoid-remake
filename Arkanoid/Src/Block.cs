@@ -17,7 +17,7 @@ public class Block : StaticBody2D, IHittable
     public override void _Ready()
     {
         scene = GetNode<MainScene>("/root/Main");
-        Points += ((int) scene.CurrentLevel)*Points;
+        Points += ((int) MainScene.CurrentLevel)*Points;
     }
 
     public virtual void OnHit()
