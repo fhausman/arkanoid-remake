@@ -31,7 +31,7 @@ public class MainScene : Node2D
     {
         livesContainer.AddChild(boardIcon.Instance());
     }
-    
+
     public void AddExtraLife()
     {
         NumberOfLives++;
@@ -102,9 +102,10 @@ public class MainScene : Node2D
             if(Score > highScore)
                 SaveHighscore(Score);
 
-            GetTree().ReloadCurrentScene();
-
-            GD.Print("Game over");
+            levelManager.Cleanup();
+            var continueScreen = GetNode<Control>("ContinueScreen");
+            continueScreen.Visible = true;
+            continueScreen.GetNode<Timer>("Countdown").Start();
         }
     }
 

@@ -112,7 +112,7 @@ class LevelManager
         scene.GetTree().Paused = false;
     }
 
-    private void Cleanup(bool destroyLevel = true)
+    public void Cleanup(bool destroyLevel = true)
     {
         PowerupManager.ResetPowerups();
         PowerupManager.ResetState();
