@@ -89,10 +89,10 @@ shape = SubResource( 3 )
 [node name="UI" parent="." instance=ExtResource( 6 )]
 
 [node name="Round" parent="." instance=ExtResource( 7 )]
-margin_left = 789.503
-margin_top = 587.663
-margin_right = 1014.5
-margin_bottom = 677.663
+margin_left = 800.553
+margin_top = 652.733
+margin_right = 1025.55
+margin_bottom = 742.733
 
 [node name="EnemiesPath0" parent="." instance=ExtResource( 8 )]
 position = Vector2( 980, 561.187 )
