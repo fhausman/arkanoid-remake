@@ -126,7 +126,7 @@ public class Ball : KinematicBody2D
     public Board Board { get; set; }
     public float CurrentSpeed { get; private set; } = 0.0f;
     public Vector2 StartingDir { private get; set; } = Vector2.Zero;
-    public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; }
+    public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; set {  stateMachine.GetState<Moving>().Dir = value; } }
     public Vector2 GetExtents { get => shape.GetExtents(); }
     public bool MovingAtStart { get; set; } = false;
     public bool GlueToBoard { get; set; } = false;
