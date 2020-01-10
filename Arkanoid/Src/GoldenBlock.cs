@@ -7,6 +7,7 @@ public class GoldenBlock : Block
     public override void _Ready()
     {
         animation = GetNode<AnimationPlayer>("AnimationPlayer");
+        base._Ready();
     }
 
     public override void OnHit()
