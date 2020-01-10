@@ -24,12 +24,10 @@ public class Moving : IState
         {
             if(col.Collider is Board board)
             {
-                if(col.ColliderShape.Get("name").ToString() != "col")
-                    return;
-
                 if(ball.GlueToBoard)
                 {
-                    ball.SetAttached(Vector2.Zero, ball.Position);
+                    var newBallX = Ball.ClampToBoardFlatPart(ball.Position.x, board);
+                    ball.SetAttached(Vector2.Zero, new Vector2(newBallX, ball.Position.y));
                     return;
                 }
 
@@ -92,7 +90,7 @@ public class Attached : IState
             new Vector2(board_pos.x + AttachPosition.x - GetVelocityOffset, new_y),
             dt*ball.SlideSpeed).x;
  
-        ball.SetPosition(new Vector2(new_x, new_y));
+        ball.SetPosition(new Vector2(Ball.ClampToBoardFlatPart(new_x, board), new_y));
     }
 
     private Vector2 GetDispatchDir()
@@ -137,6 +135,10 @@ public class Ball : KinematicBody2D
     private RectangleShape2D shape;
     private Timer attachTimer;
 
+    public static float ClampToBoardFlatPart(float x, Board board)
+    {
+        return Mathf.Clamp(x, board.Middle.x - 51.0f, board.Middle.x + 49.0f);
+    }
     public void SpeedUp(float speedUp)
     {
         GD.Print("Speeding up! ", speedUp);
