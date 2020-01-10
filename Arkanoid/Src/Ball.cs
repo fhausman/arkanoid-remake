@@ -34,7 +34,8 @@ public class Moving : IState
                     ball.SetAttached(Vector2.Zero, new Vector2(newBallX, ball.Position.y));
                     return;
                 }
-
+                
+                ball.Audio.BoardHit();
                 Dir = Bounce.BoardBounce(ball, board.Position, board.Extents, col.Position);
             }
             else
@@ -134,6 +135,8 @@ public class Ball : KinematicBody2D
     public Vector2 GetExtents { get => shape.GetExtents(); }
     public bool MovingAtStart { get; set; } = false;
     public bool GlueToBoard { get; set; } = false;
+    public AudioManager Audio;
+
 
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
@@ -163,6 +166,7 @@ public class Ball : KinematicBody2D
 
     public void SetMoving(Vector2 dir)
     {
+        Audio.BoardHit();
         attachTimer.Stop();
         stateMachine.ChangeState(nameof(Moving), dir);
     }
@@ -200,6 +204,9 @@ public class Ball : KinematicBody2D
         attachTimer = GetNode<Timer>("AttachTimer");
         stateMachine.Add(nameof(Moving), new Moving(this));
         stateMachine.Add(nameof(Attached), new Attached(this, Board));
+        
+        Audio = GetNode<AudioManager>("../AudioManager");
+
         if(MovingAtStart)
         {
             SetMoving(StartingDir);
