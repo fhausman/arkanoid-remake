@@ -10,6 +10,9 @@ public class AudioManager : Node2D
     AudioStreamPlayer2D deathSound;
     AudioStreamPlayer2D enemyDeath;
     AudioStreamPlayer2D music;
+    AudioStreamPlayer2D teleport;
+    AudioStream teleportOpen;
+    AudioStream teleportWarp;
 
     public void DestroyHit()
     {
@@ -51,6 +54,18 @@ public class AudioManager : Node2D
         return music.IsPlaying();
     }
 
+    public void OpenTeleport()
+    {
+        teleport.Stream = teleportOpen;
+        teleport.Play();
+    }
+
+    public void Warp()
+    {
+        teleport.Stream = teleportWarp;
+        teleport.Play();
+    }
+
     public override void _Ready()
     {
         blockHit = GetNode<AudioStreamPlayer2D>("BlockHit");    
@@ -60,5 +75,8 @@ public class AudioManager : Node2D
         deathSound = GetNode<AudioStreamPlayer2D>("DeathSound");
         enemyDeath = GetNode<AudioStreamPlayer2D>("EnemyDeath");
         music = GetNode<AudioStreamPlayer2D>("Music");
+        teleport = GetNode<AudioStreamPlayer2D>("Teleport");
+        teleportOpen = (AudioStream) GD.Load("res://Sounds/teleport_open.wav");
+        teleportWarp = (AudioStream) GD.Load("res://Sounds/teleport.wav");
     }
 }
