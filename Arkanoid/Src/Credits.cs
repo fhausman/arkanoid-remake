@@ -5,9 +5,9 @@ public class Credits : Control
 {
     public override void _Input(InputEvent e)
     {
-        if(e is InputEvent && e.IsPressed())
+        if(e.IsActionPressed("ui_cancel"))
         {
-            GetTree().ChangeScene("MainMenu.tscn");
+            QueueFree();
         }
     }
 }
