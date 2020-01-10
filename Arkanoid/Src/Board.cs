@@ -236,7 +236,10 @@ public class Board : KinematicBody2D
     public void Extend()
     {
         if(animation.CurrentAnimation != "laserDeactivate")
+        {   
+            audio.Extend();
             animation.Play("extend");
+        }
         extended = true;
     }
 
@@ -337,7 +340,10 @@ public class Board : KinematicBody2D
         else if(name == "laserDeactivate")
         {
             if(extended)
+            {
+                audio.Extend();
                 animation.Play("extend");
+            }
         }
         else if(name == "destroy")
         {
