@@ -6,11 +6,10 @@ public class MainScene : Node2D
 {
     [Export]
     public Lvl Level { get; set; } = Lvl.LEVEL1;
-    public Lvl CurrentLevel { get; set; }
+    static public Lvl CurrentLevel { get; set; }
     public int NumberOfLives { get; set; } = 2;
     public int Score { get; set; } = 0;
     public Node2D Blocks { private get; set; }
-    public bool LoadNextLevel { get; set; } = false;
     private int highScore { get; set; } = 0;
     private Control ui;
     private Control livesContainer;
@@ -19,6 +18,9 @@ public class MainScene : Node2D
     private RichTextLabel highScoreLabel;
     private StateMachine stateMachine = new StateMachine();    
     private LevelManager levelManager;
+    private Timer winDelay;
+    private GodMode gm;
+    private bool gameFinished = false;
 
     void DecreaseNumberOfLifeIcons()
     {
@@ -43,9 +45,36 @@ public class MainScene : Node2D
         GD.Print("Checkin... ", blocks_count);
         if(blocks_count == 0)
         {
-            GD.Print("Woohoo, level won, going to the next stage");
-            LoadNextLevel = true;
+            Win();
         }
+    }
+
+    public void Win()
+    {
+        levelManager.Pause();
+        winDelay.Start();
+        GD.Print("Woohoo, level won, going to the next stage");
+    }
+
+    public void OnWin()
+    {
+        levelManager.AdvanceToNextLevel();
+    }
+
+    public void OnVictory()
+    {
+        var screen = GetNode<Control>("VictoryScreen");
+        var scoreLabel = screen.GetNode<Label>("CenterContainer/VBoxContainer/Score");
+        var scoreStr = GD.Str("SCORE: ", Score);
+        if(Score > highScore)
+        {
+            SaveHighscore(Score);
+            scoreStr += "\nNEW HIGHSCORE!!!";
+        }
+        scoreLabel.Text = scoreStr;
+
+        gameFinished = true;
+        screen.Visible = true;
     }
 
     public void OnDeathAreaEntered(PhysicsBody2D body)
@@ -74,10 +103,14 @@ public class MainScene : Node2D
 
     public void PostDestroy()
     {
-        NumberOfLives--;
+        if(!gm.GodModeEnabled)
+            NumberOfLives--;
+        
         if(NumberOfLives >= 0)
         {
-            DecreaseNumberOfLifeIcons();
+            if(!gm.GodModeEnabled)
+                DecreaseNumberOfLifeIcons();
+            
             levelManager.SoftReload();
             GD.Print("Ball entered death zone. ", NumberOfLives, " chances left!");
         }
@@ -86,9 +119,10 @@ public class MainScene : Node2D
             if(Score > highScore)
                 SaveHighscore(Score);
 
-            GetTree().ReloadCurrentScene();
-
-            GD.Print("Game over");
+            levelManager.Cleanup();
+            var continueScreen = GetNode<Control>("ContinueScreen");
+            continueScreen.Visible = true;
+            continueScreen.GetNode<Timer>("Countdown").Start();
         }
     }
 
@@ -118,6 +152,7 @@ public class MainScene : Node2D
     public override void _Ready()
     {
         levelManager = LevelManager.Init(this, GetNode<Round>("Round"));
+        winDelay = GetNode<Timer>("WinDelay");
 
         //todo: UI manager should handle it
         boardIcon = GD.Load<PackedScene>("res://Resources/UI/BoardIcon.tscn");
@@ -133,6 +168,7 @@ public class MainScene : Node2D
         scoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("Score");
         highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
         highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, highScore);
+        gm = GetNode<GodMode>("GodMode");
 
         levelManager.StartLoading(Level);
 
@@ -142,10 +178,16 @@ public class MainScene : Node2D
     public override void _Process(float delta)
     {
         scoreLabel.Text = GD.Str("SCORE: ", Score);
-        if(LoadNextLevel)
+        if(Score > highScore)
+            highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, Score);
+    }
+
+    public override void _Input(InputEvent e)
+    {
+        if(e is InputEventKey && gameFinished)
         {
-            LoadNextLevel = false;
-            levelManager.AdvanceToNextLevel();
+            GetTree().Paused = false;
+            GetTree().ChangeScene("MainMenu.tscn");
         }
     }
 }

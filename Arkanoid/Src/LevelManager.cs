@@ -84,7 +84,13 @@ class LevelManager
     public void AdvanceToNextLevel()
     {
         Cleanup();
-        StartLoading(++currentLevel);
+        ++currentLevel;
+        if((int) currentLevel > 4)
+        {
+            scene.OnVictory();
+            return;
+        }
+        StartLoading(currentLevel);
     }
 
     public void SoftReload()
@@ -112,7 +118,7 @@ class LevelManager
         scene.GetTree().Paused = false;
     }
 
-    private void Cleanup(bool destroyLevel = true)
+    public void Cleanup(bool destroyLevel = true)
     {
         PowerupManager.ResetPowerups();
         PowerupManager.ResetState();

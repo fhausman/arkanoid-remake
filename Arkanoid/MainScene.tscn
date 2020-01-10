@@ -1,13 +1,15 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Src/MainScene.cs" type="Script" id=1]
-[ext_resource path="res://Resources/Arena/Arena.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Resources/PowerUps/PowerupManager.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Resources/Enemies/EnemiesManager.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Resources/Arena/EnemiesPath.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Resources/Arena/Level1Path.tres" type="Curve2D" id=8]
+[ext_resource path="res://Resources/GodMode.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Resources/Arena/Arena.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Resources/PowerUps/PowerupManager.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Resources/Enemies/EnemiesManager.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Resources/UI/UI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Resources/Arena/EnemiesPath.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Resources/UI/ContinueScreen.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Resources/UI/VictoryScreen.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 576, 64 )
@@ -18,18 +20,25 @@ extents = Vector2( 32, 512 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 480, 32 )
 
+[sub_resource type="Curve2D" id=4]
+_data = {
+"points": PoolVector2Array( -4.29594, 67.303, 4.29594, -67.303, -372, -32, 0, 0, 0, 0, -276, -128, -17.1838, -55.8472, 17.1838, 55.8472, -148, -64, -27.2076, -52.9832, 27.2076, 52.9832, -244, 64, -57.2792, 0, 57.2792, 0, -148, 160, -44.3914, 42.9594, 44.3914, -42.9594, 12, 160, 37.2315, 67.303, -37.2315, -67.303, -84, 32, 0, 0, 0, 0, 12, -96, -15.7518, -28.6396, 15.7518, 28.6396, 140, -96, -18.6157, -18.6157, 18.6157, 18.6157, 236, -32, 0, 0, 0, 0, 236, 192, 57.2792, -10.0239, -57.2792, 10.0239, 172, 288, 50.1193, 5.72792, -50.1193, -5.72792, 12, 320, 31.5035, 21.4797, -31.5035, -21.4797, -148, 288, 44.3914, 30.0716, -44.3914, -30.0716, -244, 224, 0, 0, 0, 0, -180, 32, -85.9188, 4.29594, 85.9188, -4.29594, -52, -64, 0, 0, 0, 0, 108, 32, -31.5035, -15.7518, 31.5035, 15.7518, 300, 32, 25.7756, -44.3914, -25.7756, 44.3914, 332, 192, 0, 0, 0, 0, 76, 256, 0, 0, 0, 0, -148, 256, 45.8233, -35.7995, -45.8233, 35.7995, -340, 256, 0, 0, 0, 0, -404, 384, 0, 0, 0, 0, -372, 480, 0, 0, 0, 0, -308, 544, -31.5036, -2.86396, 31.5036, 2.86396, 12, 576, -1.43198, 111.694, 1.43198, -111.694, 396, 512, 0, 0, 0, 0, -372, -32, 0, 0, 0, 0, -372, -32 )
+}
+
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_horizontal_guides_": [ 992.0, 96.0 ],
+"_edit_horizontal_guides_": [ 992.0, 154.001 ],
 "_edit_vertical_guides_": [ 544.0, 1376.0, 960.0 ]
 }
 
-[node name="Arena" parent="." instance=ExtResource( 2 )]
+[node name="GodMode" parent="." instance=ExtResource( 2 )]
+
+[node name="Arena" parent="." instance=ExtResource( 3 )]
 show_behind_parent = true
 
-[node name="PowerupManager" parent="." instance=ExtResource( 3 )]
-PowerupSpawnProbability = 0.5
+[node name="PowerupManager" parent="." instance=ExtResource( 4 )]
+PowerupSpawnProbability = 0.3
 
 [node name="BoardSpawnPoint" type="Node2D" parent="."]
 position = Vector2( 960, 991.699 )
@@ -42,7 +51,7 @@ position = Vector2( 960, 972 )
 
 [node name="LevelRoot" type="Node2D" parent="."]
 
-[node name="EnemiesManager" parent="." instance=ExtResource( 4 )]
+[node name="EnemiesManager" parent="." instance=ExtResource( 5 )]
 
 [node name="DeathArea" type="Area2D" parent="."]
 editor/display_folded = true
@@ -77,14 +86,39 @@ collision_mask = 512
 position = Vector2( 960, 64 )
 shape = SubResource( 3 )
 
-[node name="UI" parent="." instance=ExtResource( 5 )]
+[node name="UI" parent="." instance=ExtResource( 6 )]
 
-[node name="Round" parent="." instance=ExtResource( 6 )]
+[node name="Round" parent="." instance=ExtResource( 7 )]
 margin_left = 789.503
 margin_top = 587.663
 margin_right = 1014.5
 margin_bottom = 677.663
 
-[node name="EnemiesPath" parent="." instance=ExtResource( 7 )]
-curve = ExtResource( 8 )
+[node name="EnemiesPath0" parent="." instance=ExtResource( 8 )]
+position = Vector2( 980, 561.187 )
+scale = Vector2( 1, 1.13427 )
+curve = SubResource( 4 )
+
+[node name="EnemiesPath1" parent="." instance=ExtResource( 8 )]
+position = Vector2( 1024, 448 )
+scale = Vector2( 1, 1.28 )
+
+[node name="WinDelay" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="ContinueScreen" parent="." instance=ExtResource( 9 )]
+visible = false
+margin_left = 754.0
+margin_top = 384.0
+margin_right = 754.0
+margin_bottom = 384.0
+
+[node name="VictoryScreen" parent="." instance=ExtResource( 10 )]
+visible = false
+margin_left = 523.63
+margin_top = 424.303
+margin_right = 523.63
+margin_bottom = 424.303
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]
+[connection signal="timeout" from="WinDelay" to="." method="OnWin"]

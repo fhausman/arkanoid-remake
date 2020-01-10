@@ -53,11 +53,13 @@
     <Compile Include="Src\Arena.cs" />
     <Compile Include="Src\BoardExtend.cs" />
     <Compile Include="Src\Blast.cs" />
+    <Compile Include="Src\ContinueScreen.cs" />
     <Compile Include="Src\Credits.cs" />
     <Compile Include="Src\DoubleBlast.cs" />
     <Compile Include="Src\EnemiesManager.cs" />
     <Compile Include="Src\Enemy.cs" />
     <Compile Include="Src\Glue.cs" />
+    <Compile Include="Src\GodMode.cs" />
     <Compile Include="Src\GoldenBlock.cs" />
     <Compile Include="Src\MainMenu.cs" />
     <Compile Include="Src\Multiball.cs" />

@@ -1,5 +1,64 @@
 using Godot;
 using System.Collections.Generic;
+
+public class EnemyMoveUp : IState
+{
+    private StateMachine stateMachine;
+    private Enemy enemy;
+    private float speed;
+    private Vector2 dir = Vector2.Up;
+    private Vector2 previousHorizontalDir = Vector2.Right;
+
+    public EnemyMoveUp(Enemy enemy, StateMachine stateMachine, float speed)
+    {
+        this.enemy = enemy;
+        this.stateMachine = stateMachine;
+        this.speed = speed;
+    }
+
+    public void Exit()
+    {
+    }
+
+    public void HandleInput()
+    {
+    }
+
+    public void Init(params object[] args)
+    {
+        if(args.Length > 0)
+        {
+            previousHorizontalDir = (Vector2) args[0];
+        }
+    }
+
+    public void PhysicsProcess(float dt)
+    {
+        if(enemy.SideChecker.AreBothSidesBlocked())
+        {
+            var col = enemy.MoveAndCollide(dir*speed*dt);
+            
+        }
+        else
+        {
+            Vector2 dir = previousHorizontalDir;
+            if(enemy.SideChecker.IsLeftSideBlocked())
+            {
+                dir = Vector2.Right;
+            }
+            else if(enemy.SideChecker.IsRightSideBlocked())
+            {
+                dir = Vector2.Left;
+            }
+
+            stateMachine.ChangeState(nameof(EnemyMoveSteady), dir, true);
+        }
+    }
+
+    public void Process(float dt)
+    {
+    }
+}
 public class EnemyMoveSteady : IState
 {
     private StateMachine stateMachine;
@@ -7,6 +66,7 @@ public class EnemyMoveSteady : IState
     private float speed;
     private Vector2 dir = Vector2.Down;
     private Vector2 previousHorizontalDir = Vector2.Right;
+    private bool forceHorizontal = false;
 
     public EnemyMoveSteady(Enemy enemy, StateMachine stateMachine, float speed)
     {
@@ -25,6 +85,18 @@ public class EnemyMoveSteady : IState
 
     public virtual void Init(params object[] args)
     {
+        if(args.Length > 0)
+        {
+            dir = (Vector2) args[0];
+            forceHorizontal = (bool) args[1];
+        }
+    }
+
+    private bool CanMoveDownwards()
+    {
+        return !forceHorizontal &&
+                dir != Vector2.Down &&
+                enemy.BelowArea.GetOverlappingBodies().Count == 0;
     }
 
     public virtual void PhysicsProcess(float dt)
@@ -32,14 +104,19 @@ public class EnemyMoveSteady : IState
         var col = enemy.MoveAndCollide(dir*speed*dt);
         if(col != null)
         {
-            if(col.Collider is Board || col.ColliderShape is Ball)
+            forceHorizontal = false;
+            if(col.Collider is Board)
             {
                enemy.OnHit();
                return;
             }
-            else if(col.Collider is Enemy && dir == Vector2.Zero)
+            else if(col.Collider is Enemy && dir == Vector2.Down)
             {
                 return;
+            }
+            else if(dir == Vector2.Down && enemy.SideChecker.AreBothSidesBlocked())
+            {
+                stateMachine.ChangeState(nameof(EnemyMoveUp), previousHorizontalDir);
             }
 
             //if was moving down move horizontally in previous direction
@@ -48,7 +125,7 @@ public class EnemyMoveSteady : IState
                 -dir : previousHorizontalDir;
         }
         //if nothing below move down
-        else if(dir != Vector2.Down && enemy.BelowArea.GetOverlappingBodies().Count == 0)
+        else if(CanMoveDownwards())
         {
             previousHorizontalDir = dir;
             dir = Vector2.Down;
@@ -57,7 +134,8 @@ public class EnemyMoveSteady : IState
 
     public virtual void Process(float dt)
     {
-        if(enemy.GlobalPosition.y > 640)
+        var crazyPosition = MainScene.CurrentLevel != Lvl.LEVEL2 ? 480 : 640;
+        if(enemy.GlobalPosition.y > crazyPosition)
         {
             stateMachine.ChangeState(nameof(CrazyMode));
         }
@@ -134,6 +212,35 @@ public class CrazyMode : IState
     }
 }
 
+public class SideChecker
+{
+    Node2D mainNode;
+    Area2D leftSide;
+    Area2D rightSide;
+
+    public SideChecker(Node2D node)
+    {
+        mainNode = node;
+        leftSide = node.GetNode<Area2D>("Left");
+        rightSide = node.GetNode<Area2D>("Right");
+    }
+
+    public bool IsLeftSideBlocked()
+    {
+        return leftSide.GetOverlappingBodies().Count > 0;
+    }
+
+    public bool IsRightSideBlocked()
+    {
+        return rightSide.GetOverlappingBodies().Count > 0;
+    }
+
+    public bool AreBothSidesBlocked()
+    {
+        return IsLeftSideBlocked() && IsRightSideBlocked();
+    }
+}
+
 public class Enemy : KinematicBody2D, IHittable
 {
     [Export]
@@ -142,6 +249,7 @@ public class Enemy : KinematicBody2D, IHittable
     public string EnemyType { get; set; } = "folded";
     public Area2D BelowArea { get; set; }
     public Node2D FollowNode { get; set; }
+    public SideChecker SideChecker { get; set; }
     private StateMachine stateMachine = new StateMachine();
     private AnimationPlayer animation;
     private Sprite triangle;
@@ -149,6 +257,7 @@ public class Enemy : KinematicBody2D, IHittable
     private Sprite folded;
     private Sprite origami;
     private Dictionary<string, Sprite> animations;
+    private static int NumSpawned = 0;
 
     public void OnHit()
     {
@@ -171,15 +280,24 @@ public class Enemy : KinematicBody2D, IHittable
         }
     }
 
+    private Node2D GetFollowingPoint()
+    {
+        var str = GD.Str("../../EnemiesPath", NumSpawned%2, "/PathFollow/FollowingPoint");
+        return GetNode<Node2D>(str);
+    }
+
     public override void _Ready()
     {
+        NumSpawned++;
         stateMachine.Add(nameof(EmptyState), new EmptyState());
         stateMachine.Add(nameof(EnemyMoveSteady), new EnemyMoveSteady(this, stateMachine, MoveSpeed));
+        stateMachine.Add(nameof(EnemyMoveUp), new EnemyMoveUp(this, stateMachine, MoveSpeed));
         stateMachine.Add(nameof(CrazyMode), new CrazyMode(this, 4*MoveSpeed));
         stateMachine.ChangeState(nameof(EnemyMoveSteady));
 
         BelowArea = GetNode<Area2D>("Area2D");
-        FollowNode = GetNode<Node2D>("../../EnemiesPath/PathFollow/FollowingPoint");
+        FollowNode = GetFollowingPoint();
+        SideChecker = new SideChecker(GetNode<Node2D>("SideChecker"));
 
         animation = GetNode<AnimationPlayer>("AnimationPlayer");
         triangle = GetNode<Sprite>("Triangle");

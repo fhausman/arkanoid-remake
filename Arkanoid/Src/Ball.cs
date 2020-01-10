@@ -15,7 +15,11 @@ public class Moving : IState
     public void Init(params object[] args) { Dir = (Vector2) args[0]; }
     public void Exit() {}
     public void HandleInput() {}
-    public void Process(float dt) {}
+    public void Process(float dt)
+    {
+        if(Dir == Vector2.Left || Dir == Vector2.Right)
+            Dir = Bounce.RotateVector(Dir, 5.0f);
+    }
 
     public void PhysicsProcess(float dt)
     {
@@ -24,12 +28,10 @@ public class Moving : IState
         {
             if(col.Collider is Board board)
             {
-                if(col.ColliderShape.Get("name").ToString() != "col")
-                    return;
-
                 if(ball.GlueToBoard)
                 {
-                    ball.SetAttached(Vector2.Zero, ball.Position);
+                    var newBallX = Ball.ClampToBoardFlatPart(ball.Position.x, board);
+                    ball.SetAttached(Vector2.Zero, new Vector2(newBallX, ball.Position.y));
                     return;
                 }
 
@@ -43,7 +45,8 @@ public class Moving : IState
             if(col.Collider is IHittable obj)
             {
                 obj.OnHit();
-                ball.SpeedUp(ball.BlockHitSpeedUp);
+                if(!(obj is GoldenBlock))
+                    ball.SpeedUp(ball.BlockHitSpeedUp);
             }
         }
     }
@@ -53,7 +56,7 @@ public class Attached : IState
 {
     private Ball ball;
     private Board board;
-    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.Extents.x * 0.05f; }}
+    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * 0.05f; }}
     public Vector2 Dir { get; set; } = Vector2.Zero;
     public Vector2 AttachPosition { get; set; } = Vector2.Zero;
 
@@ -127,14 +130,19 @@ public class Ball : KinematicBody2D
     public Board Board { get; set; }
     public float CurrentSpeed { get; private set; } = 0.0f;
     public Vector2 StartingDir { private get; set; } = Vector2.Zero;
-    public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; }
+    public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; set {  stateMachine.GetState<Moving>().Dir = value; } }
     public Vector2 GetExtents { get => shape.GetExtents(); }
     public bool MovingAtStart { get; set; } = false;
     public bool GlueToBoard { get; set; } = false;
 
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
+    private Timer attachTimer;
 
+    public static float ClampToBoardFlatPart(float x, Board board)
+    {
+        return Mathf.Clamp(x, board.Middle.x - 51.0f, board.Middle.x + 49.0f);
+    }
     public void SpeedUp(float speedUp)
     {
         GD.Print("Speeding up! ", speedUp);
@@ -147,14 +155,21 @@ public class Ball : KinematicBody2D
         CurrentSpeed = speed;
     }
 
-    public Attached SetAttached(Vector2 dir, Vector2 attachPos)
+    public void SetAttached(Vector2 dir, Vector2 attachPos)
     {
-        return (Attached) stateMachine.ChangeState(nameof(Attached), dir, attachPos);
+        attachTimer.Start();
+        stateMachine.ChangeState(nameof(Attached), dir, attachPos);
     }
 
-    public Moving SetMoving(Vector2 dir)
+    public void SetMoving(Vector2 dir)
     {
-        return (Moving) stateMachine.ChangeState(nameof(Moving), dir);
+        attachTimer.Stop();
+        stateMachine.ChangeState(nameof(Moving), dir);
+    }
+
+    public void SetMoving()
+    {
+        SetMoving(Bounce.AngleToDir(Bounce.FirstAngle));
     }
 
     public void ResetState()
@@ -182,6 +197,7 @@ public class Ball : KinematicBody2D
 
     public override void _Ready()
     {
+        attachTimer = GetNode<Timer>("AttachTimer");
         stateMachine.Add(nameof(Moving), new Moving(this));
         stateMachine.Add(nameof(Attached), new Attached(this, Board));
         if(MovingAtStart)
