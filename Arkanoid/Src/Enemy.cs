@@ -112,6 +112,7 @@ public class EnemyMoveSteady : IState
             }
             else if(col.Collider is Enemy && dir == Vector2.Down)
             {
+                enemy.MoveAndCollide(Vector2.Up*speed*dt);
                 return;
             }
             else if(dir == Vector2.Down && enemy.SideChecker.AreBothSidesBlocked())
