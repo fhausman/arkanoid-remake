@@ -250,6 +250,7 @@ public class Enemy : KinematicBody2D, IHittable
     public Area2D BelowArea { get; set; }
     public Node2D FollowNode { get; set; }
     public SideChecker SideChecker { get; set; }
+    public AudioManager audio;
     private StateMachine stateMachine = new StateMachine();
     private AnimationPlayer animation;
     private Sprite triangle;
@@ -270,6 +271,7 @@ public class Enemy : KinematicBody2D, IHittable
         SetCollisionLayer(0);
         SetCollisionMask(0);
         animation.Play("death");
+        audio.EnemyDeath();
     }
 
     public void OnAnimationFinished(string name)
@@ -298,6 +300,8 @@ public class Enemy : KinematicBody2D, IHittable
         BelowArea = GetNode<Area2D>("Area2D");
         FollowNode = GetFollowingPoint();
         SideChecker = new SideChecker(GetNode<Node2D>("SideChecker"));
+
+        audio = GetNode<AudioManager>("../../AudioManager");
 
         animation = GetNode<AnimationPlayer>("AnimationPlayer");
         triangle = GetNode<Sprite>("Triangle");
