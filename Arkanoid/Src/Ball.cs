@@ -15,7 +15,11 @@ public class Moving : IState
     public void Init(params object[] args) { Dir = (Vector2) args[0]; }
     public void Exit() {}
     public void HandleInput() {}
-    public void Process(float dt) {}
+    public void Process(float dt)
+    {
+        if(Dir == Vector2.Left || Dir == Vector2.Right)
+            Dir = Bounce.RotateVector(Dir, 5.0f);
+    }
 
     public void PhysicsProcess(float dt)
     {
