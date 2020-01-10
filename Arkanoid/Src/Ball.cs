@@ -43,7 +43,8 @@ public class Moving : IState
             if(col.Collider is IHittable obj)
             {
                 obj.OnHit();
-                ball.SpeedUp(ball.BlockHitSpeedUp);
+                if(!(obj is GoldenBlock))
+                    ball.SpeedUp(ball.BlockHitSpeedUp);
             }
         }
     }
