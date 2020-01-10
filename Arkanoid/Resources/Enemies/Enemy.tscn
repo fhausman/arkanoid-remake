@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Src/Enemy.cs" type="Script" id=1]
 [ext_resource path="res://Art/enemies/latajek_1_sheet.png" type="Texture" id=2]
@@ -41,7 +41,7 @@ tracks/1/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=4]
 resource_name = "folded"
 length = 0.96
 loop = true
@@ -58,7 +58,7 @@ tracks/0/keys = {
 "values": [ 0, 11 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=5]
 resource_name = "origami"
 length = 0.64
 loop = true
@@ -75,8 +75,7 @@ tracks/0/keys = {
 "values": [ 0, 7 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "square"
+[sub_resource type="Animation" id=6]
 length = 0.72
 loop = true
 tracks/0/type = "value"
@@ -92,7 +91,7 @@ tracks/0/keys = {
 "values": [ 0, 11 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=7]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -107,6 +106,9 @@ tracks/0/keys = {
 "update": 0,
 "values": [ 0, 9 ]
 }
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 10, 28.1895 )
 
 [node name="Enemy" type="KinematicBody2D" groups=[
 "ENEMIES",
@@ -161,8 +163,22 @@ shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/death = SubResource( 3 )
-anims/folded = SubResource( 6 )
-anims/origami = SubResource( 7 )
-anims/square = SubResource( 5 )
-anims/triangle = SubResource( 4 )
+anims/folded = SubResource( 4 )
+anims/origami = SubResource( 5 )
+anims/square = SubResource( 6 )
+anims/triangle = SubResource( 7 )
+
+[node name="SideChecker" type="Node2D" parent="."]
+
+[node name="Left" type="Area2D" parent="SideChecker"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SideChecker/Left"]
+position = Vector2( -38.3345, 7.62939e-006 )
+shape = SubResource( 8 )
+
+[node name="Right" type="Area2D" parent="SideChecker"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SideChecker/Right"]
+position = Vector2( 38.5384, 7.62939e-006 )
+shape = SubResource( 8 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]
