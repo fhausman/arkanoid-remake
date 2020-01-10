@@ -57,13 +57,14 @@ public class PowerupManager : Node2D
 
     static private PackedScene DrawPowerUp(Dictionary<PackedScene, float> availablePowerUps)
     {
+        randGen.Randomize();
         var range = availablePowerUps.Values.Sum(p => p);
         var num = randGen.RandfRange(0.0f, range);
         var sum = 0.0f;
         foreach(var powerUp in availablePowerUps)
         {
             var prob = powerUp.Value;
-            if(sum <= num || num < sum + prob)
+            if(sum <= num && num < sum + prob)
             {
                 return powerUp.Key;
             }
@@ -116,13 +117,13 @@ public class PowerupManager : Node2D
     {
         return new Dictionary<PackedScene, float>()
         {
-            {laser, 16.8f},
-            {multiball, 16.8f},
-            {boardExtension, 16.8f},
-            {slowdown, 16.8f},
-            {glue, 16.8f},
-            {teleport, 8.0f},
-            {extraLife, 8.0f}
+            {laser, 0.168f},
+            {multiball, 0.168f},
+            {boardExtension, 0.168f},
+            {slowdown, 0.168f},
+            {glue, 0.168f},
+            {teleport, 0.08f},
+            {extraLife, 0.08f}
         };
     }
 
