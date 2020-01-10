@@ -61,9 +61,6 @@ class LevelManager
 
             scene.GetNode("LevelRoot").AddChild(levelInstance);
         }
-
-        if(!scene.Audio.IsMusicPlaying())
-            scene.Audio.StartPlayingMusic();
     }
 
     public void FinishLoading()

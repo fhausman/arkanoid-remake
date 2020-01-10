@@ -31,6 +31,10 @@ public class Round : Control
 
     public void ShowReady()
     {
+        var audio = GetNode<AudioManager>("../AudioManager");
+        if(!audio.IsMusicPlaying())
+            audio.StartPlayingMusic();
+        
         ready.Text = "READY";
     }
 
