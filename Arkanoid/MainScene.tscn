@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Src/MainScene.cs" type="Script" id=1]
 [ext_resource path="res://Resources/GodMode.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Resources/UI/Round.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Resources/Arena/EnemiesPath.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Resources/UI/ContinueScreen.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Resources/UI/VictoryScreen.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 576, 64 )
@@ -27,9 +28,10 @@ _data = {
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_horizontal_guides_": [ 992.0, 96.0 ],
+"_edit_horizontal_guides_": [ 992.0, 154.001 ],
 "_edit_vertical_guides_": [ 544.0, 1376.0, 960.0 ]
 }
+Level = 4
 
 [node name="GodMode" parent="." instance=ExtResource( 2 )]
 
@@ -112,5 +114,12 @@ margin_left = 754.0
 margin_top = 384.0
 margin_right = 754.0
 margin_bottom = 384.0
+
+[node name="VictoryScreen" parent="." instance=ExtResource( 10 )]
+visible = false
+margin_left = 523.63
+margin_top = 424.303
+margin_right = 523.63
+margin_bottom = 424.303
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]
 [connection signal="timeout" from="WinDelay" to="." method="OnWin"]

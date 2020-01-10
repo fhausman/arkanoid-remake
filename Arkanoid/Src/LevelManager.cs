@@ -84,7 +84,13 @@ class LevelManager
     public void AdvanceToNextLevel()
     {
         Cleanup();
-        StartLoading(++currentLevel);
+        ++currentLevel;
+        if((int) currentLevel > 4)
+        {
+            scene.OnVictory();
+            return;
+        }
+        StartLoading(currentLevel);
     }
 
     public void SoftReload()

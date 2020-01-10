@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=2]
+
+[sub_resource type="DynamicFontData" id=13]
+font_path = "res://Art/font/Mood_01-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=14]
+size = 78
+font_data = SubResource( 13 )
+
+[sub_resource type="Theme" id=15]
+default_font = SubResource( 14 )
+
+[sub_resource type="DynamicFont" id=16]
+size = 54
+font_data = SubResource( 13 )
+
+[sub_resource type="Theme" id=17]
+default_font = SubResource( 16 )
+
+[node name="VictoryScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.43201
+margin_right = -1.43201
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 530.0
+margin_top = 447.0
+margin_right = 1390.0
+margin_bottom = 633.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_right = 860.0
+margin_bottom = 107.0
+theme = SubResource( 15 )
+custom_colors/font_color = Color( 0.996078, 0, 0.654902, 1 )
+text = "CONGRATULATIONS!
+YOU SURVIVED"
+align = 1
+
+[node name="Score" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 111.0
+margin_right = 860.0
+margin_bottom = 186.0
+theme = SubResource( 17 )
+text = "SCORE: 20000
+NEW HIGHSCORE!!!                        "
+align = 1
