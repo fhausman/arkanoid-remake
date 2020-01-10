@@ -52,7 +52,7 @@ public class Attached : IState
 {
     private Ball ball;
     private Board board;
-    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * board.Extents.x * 0.05f; }}
+    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * 0.05f; }}
     public Vector2 Dir { get; set; } = Vector2.Zero;
     public Vector2 AttachPosition { get; set; } = Vector2.Zero;
 
@@ -90,7 +90,7 @@ public class Attached : IState
             new Vector2(board_pos.x + AttachPosition.x - GetVelocityOffset, new_y),
             dt*ball.SlideSpeed).x;
  
-        ball.SetPosition(new Vector2(Ball.ClampToBoardFlatPart(new_x, board), new_y));
+        ball.SetPosition(new Vector2(new_x, new_y));
     }
 
     private Vector2 GetDispatchDir()
