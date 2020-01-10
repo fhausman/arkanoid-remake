@@ -13,21 +13,29 @@ public class Block : StaticBody2D, IHittable
     public int Points { get; set; } = 100;
 
     public MainScene scene;
+    protected AudioManager audio;
 
     public override void _Ready()
     {
         scene = GetNode<MainScene>("/root/Main");
+        audio = scene.GetNode<AudioManager>("AudioManager");
+
         Points += ((int) MainScene.CurrentLevel)*Points;
     }
 
     public virtual void OnHit()
     {
         if(!Destructable)
+        {
+            audio.NotDestructibleHit();
             return;
+        }
 
         NumOfHits--;
         if(NumOfHits <= 0)
         {
+            audio.DestroyHit();
+
             scene.Score += Points;
             PowerupManager.SpawnPowerup(Position + new Vector2(32, 16));
             Free();

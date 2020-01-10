@@ -14,6 +14,9 @@ public class SilverBlock : Block
     public override void OnHit()
     {
         animationPlayer.Play("damaged");
+        if(NumOfHits > 1)
+            audio.NotDestructibleHit();
+            
         base.OnHit();
     }
 }
