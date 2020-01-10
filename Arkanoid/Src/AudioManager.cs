@@ -12,6 +12,7 @@ public class AudioManager : Node2D
     AudioStreamPlayer2D music;
     AudioStreamPlayer2D teleport;
     AudioStreamPlayer2D boardExtend;
+    AudioStreamPlayer2D powerUp;
     AudioStream teleportOpen;
     AudioStream teleportWarp;
 
@@ -72,6 +73,11 @@ public class AudioManager : Node2D
         boardExtend.Play();
     }
 
+    public void PowerUp()
+    {
+        powerUp.Play();
+    }
+
     public override void _Ready()
     {
         blockHit = GetNode<AudioStreamPlayer2D>("BlockHit");    
@@ -83,6 +89,7 @@ public class AudioManager : Node2D
         music = GetNode<AudioStreamPlayer2D>("Music");
         boardExtend = GetNode<AudioStreamPlayer2D>("BoardExtend");
         teleport = GetNode<AudioStreamPlayer2D>("Teleport");
+        powerUp = GetNode<AudioStreamPlayer2D>("PowerUp");
         teleportOpen = (AudioStream) GD.Load("res://Sounds/teleport_open.wav");
         teleportWarp = (AudioStream) GD.Load("res://Sounds/teleport.wav");
     }

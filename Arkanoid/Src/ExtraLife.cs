@@ -8,6 +8,7 @@ public class ExtraLife : BasePowerUp
     public override void OnCollect()
     {
         scene.AddExtraLife();
+        scene.GetNode<AudioManager>("AudioManager").PowerUp();
         base.OnCollect();
     }
 
