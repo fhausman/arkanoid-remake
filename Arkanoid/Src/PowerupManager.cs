@@ -132,6 +132,40 @@ public class PowerupManager : Node2D
         powerupManager.powerUpsProbability = powerupManager.GetAllAvailablePowerUps();
     }
 
+    public static Laser SpawnLaser()
+    {
+        return (Laser) powerupManager.laser.Instance();
+    }
+
+    public static Multiball SpawnMultiball()
+    {
+        return (Multiball) powerupManager.multiball.Instance();
+    }
+
+    public static ExtraLife SpawnExtraLife()
+    {
+        return (ExtraLife) powerupManager.extraLife.Instance();
+    }
+
+    public static BoardExtend SpawnExtension()
+    {
+        return (BoardExtend) powerupManager.boardExtension.Instance();
+    }
+
+    public static Slowdown SpawnSlowdown()
+    {
+        return (Slowdown) powerupManager.slowdown.Instance();
+    }
+
+    public static Glue SpawnGlue()
+    {
+        return (Glue) powerupManager.glue.Instance();
+    }
+
+    public static Teleport SpawnTeleport()
+    {
+        return (Teleport) powerupManager.teleport.Instance();
+    }
     public override void _Ready()
     {
         powerupManager = this;

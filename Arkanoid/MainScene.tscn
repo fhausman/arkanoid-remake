@@ -34,6 +34,7 @@ __meta__ = {
 }
 
 [node name="GodMode" parent="." instance=ExtResource( 2 )]
+position = Vector2( 960.002, 322.001 )
 
 [node name="Arena" parent="." instance=ExtResource( 3 )]
 show_behind_parent = true
