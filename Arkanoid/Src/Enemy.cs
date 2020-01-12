@@ -182,10 +182,16 @@ public class CrazyMode : IState
         var col = enemy.MoveAndCollide(velocity*dt);
         if(col != null)
         {
-            if(col.Collider is Board || col.Collider is Ball)
+            if(col.Collider is Board)
             {
                 enemy.OnHit();
-                return;
+            }
+            else if(col.Collider is Ball ball)
+            {
+                if(ball.CurrentState is Attached)
+                {
+                    enemy.OnHit();
+                }
             }
         }
     }

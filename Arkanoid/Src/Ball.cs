@@ -135,6 +135,7 @@ public class Ball : KinematicBody2D
     public Vector2 GetExtents { get => shape.GetExtents(); }
     public bool MovingAtStart { get; set; } = false;
     public bool GlueToBoard { get; set; } = false;
+    public IState CurrentState { get => stateMachine.GetState(); }
     public AudioManager Audio;
 
 
