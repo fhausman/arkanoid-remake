@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Threading;
 
 public class EnemyMoveUp : IState
 {
@@ -89,6 +90,14 @@ public class EnemyMoveSteady : IState
         {
             dir = (Vector2) args[0];
             forceHorizontal = (bool) args[1];
+            if(forceHorizontal)
+            {
+                new System.Threading.Thread(() =>
+                {
+                    System.Threading.Thread.Sleep(1000);
+                    forceHorizontal = false;
+                }).Start();
+            }
         }
     }
 
