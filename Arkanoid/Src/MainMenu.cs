@@ -24,6 +24,7 @@ public class MainMenu : Control
     public void OnCreditsPressed()
     {
         AddChild(credits.Instance());
+        GetNode<Button>("VBoxContainer/Credits").ReleaseFocus();
     }
 
     public void OnFocusEnter()

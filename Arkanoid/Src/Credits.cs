@@ -8,6 +8,7 @@ public class Credits : Control
         if(e.IsActionPressed("ui_cancel"))
         {
             QueueFree();
+            GetNode<Button>("../VBoxContainer/Credits").GrabFocus();
         }
     }
 }
