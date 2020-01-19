@@ -35,7 +35,7 @@ public class Block : StaticBody2D, IHittable
             audio.DestroyHit();
 
             scene.Score += Points;
-            PowerupManager.SpawnPowerup(Position + new Vector2(32, 16));
+            PowerupManager.SpawnPowerup(GlobalPosition + new Vector2(32, 16));
             Free();
             scene.CheckIfPlayerDestroyedAllBlocks();
         }
