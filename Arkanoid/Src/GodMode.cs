@@ -1,10 +1,9 @@
 using Godot;
-using System;
 
 public class GodMode : Node2D
 {
-    Timer keyDelay;
-    bool enableInput = true;
+    private Timer keyDelay;
+    private bool enableInput = true;
 
     public bool GodModeEnabled { get; private set; } = false;
 
