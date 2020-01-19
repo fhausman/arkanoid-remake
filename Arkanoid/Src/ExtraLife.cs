@@ -1,9 +1,6 @@
-using Godot;
-using System;
-
 public class ExtraLife : BasePowerUp
 {
-    MainScene scene;
+    private MainScene scene;
 
     public override void OnCollect()
     {
