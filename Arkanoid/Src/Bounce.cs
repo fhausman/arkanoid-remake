@@ -1,12 +1,7 @@
 using Godot;
-using System;
 
-public static class Bounce
+public static class Utils
 {
-    public const float FirstAngle = 60.0f;
-    public const float SecondAngle = 40.0f;
-    public const float ThirdAngle = 20.0f;
-
     public static float DegreesToRadians(float angle)
     {
         return Mathf.Pi * angle / 180.0f;
@@ -29,6 +24,13 @@ public static class Bounce
 
         return newVec;
     }
+}
+
+public static class Bounce
+{
+    public const float FirstAngle = 60.0f;
+    public const float SecondAngle = 40.0f;
+    public const float ThirdAngle = 20.0f;
 
     public static Vector2 BoardBounce(Ball ball, Vector2 board_pos, Vector2 board_extents, Vector2 col_pos)
     {
@@ -42,21 +44,21 @@ public static class Bounce
             if(col_pos.x < board_middle + board_extents.x * 0.60f)
             {
                 GD.Print("First Angle");
-                bounce_dir = AngleToDir(FirstAngle);
+                bounce_dir = Utils.AngleToDir(FirstAngle);
                 ball.SpeedUp(ball.FirstAngleSpeedUp);
             }
             //second angle
             else if(col_pos.x < board_middle + board_extents.x)
             {
                 GD.Print("Second Angle");
-                bounce_dir = AngleToDir(SecondAngle);
+                bounce_dir = Utils.AngleToDir(SecondAngle);
                 ball.SpeedUp(ball.SecondAngleSpeedUp);
             }
             //thrid angle (hit in side of board)
             else
             {
                 GD.Print("Third Angle");
-                bounce_dir = AngleToDir(ThirdAngle);
+                bounce_dir = Utils.AngleToDir(ThirdAngle);
                 ball.SpeedUp(ball.ThirdAngleSpeedUp);
             }
         }
@@ -67,21 +69,21 @@ public static class Bounce
             if(col_pos.x > board_middle - board_extents.x * 0.60f)
             {
                 GD.Print("First Angle");
-                bounce_dir = AngleToDir(180.0f - FirstAngle);
+                bounce_dir = Utils.AngleToDir(180.0f - FirstAngle);
                 ball.SpeedUp(ball.FirstAngleSpeedUp);
             }
             //second angle
             else if(col_pos.x > board_pos.x)
             {
                 GD.Print("Second Angle");
-                bounce_dir = AngleToDir(180.0f - SecondAngle);
+                bounce_dir = Utils.AngleToDir(180.0f - SecondAngle);
                 ball.SpeedUp(ball.SecondAngleSpeedUp);
             }
             //thrid angle (hit in side of board)
             else
             {
                 GD.Print("Third Angle");
-                bounce_dir = AngleToDir(180.0f - ThirdAngle);
+                bounce_dir = Utils.AngleToDir(180.0f - ThirdAngle);
                 ball.SpeedUp(ball.ThirdAngleSpeedUp);
             }
         }

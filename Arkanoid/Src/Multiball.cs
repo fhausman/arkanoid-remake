@@ -14,7 +14,7 @@ public class Multiball : BasePowerUp
     {
         var extraBall = (Ball) ballScene.Instance();
         extraBall.MovingAtStart = true;
-        extraBall.StartingDir = Bounce.RotateVector(ball.CurrentDir, angleOffset);
+        extraBall.StartingDir = Utils.RotateVector(ball.CurrentDir, angleOffset);
         extraBall.Board = scene.GetNode<Board>("Board");
         extraBall.Position = ball.Position;
         scene.AddChild(extraBall);

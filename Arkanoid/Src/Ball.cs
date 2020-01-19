@@ -18,7 +18,7 @@ public class Moving : IState
     public void Process(float dt)
     {
         if (Dir == Vector2.Left || Dir == Vector2.Right)
-            Dir = Bounce.RotateVector(Dir, 5.0f);
+            Dir = Utils.RotateVector(Dir, 5.0f);
     }
 
     public void PhysicsProcess(float dt)
@@ -189,7 +189,7 @@ public class Ball : KinematicBody2D
 
     public void SetMoving()
     {
-        SetMoving(Bounce.AngleToDir(Bounce.FirstAngle));
+        SetMoving(Utils.AngleToDir(Bounce.FirstAngle));
     }
 
     public void ResetState()
@@ -197,7 +197,7 @@ public class Ball : KinematicBody2D
         ResetPowerups();
         ResetSpeed();
         Position = Board.Middle;
-        SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), Position);
+        SetAttached(Utils.AngleToDir(Bounce.FirstAngle), Position);
     }
 
     public void ResetSpeed()
@@ -210,7 +210,7 @@ public class Ball : KinematicBody2D
     {
         if (stateMachine.GetState() is Attached)
         {
-            SetMoving(Bounce.AngleToDir(Bounce.FirstAngle));
+            SetMoving(Utils.AngleToDir(Bounce.FirstAngle));
         }
         GlueToBoard = false;
     }
@@ -229,7 +229,7 @@ public class Ball : KinematicBody2D
         }
         else
         {
-            SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), Board.Middle);
+            SetAttached(Utils.AngleToDir(Bounce.FirstAngle), Board.Middle);
         }
 
         SetSpeed(InitialSpeed);
