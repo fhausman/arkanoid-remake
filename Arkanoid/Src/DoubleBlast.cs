@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class DoubleBlast : Node2D
 {
@@ -7,6 +6,7 @@ public class DoubleBlast : Node2D
     private Node2D rightBlast;
     private AnimationPlayer animation;
     private bool hitted = false;
+    
     public void OnHit()
     {
         hitted = true;
