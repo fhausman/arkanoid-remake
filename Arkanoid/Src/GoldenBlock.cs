@@ -1,9 +1,8 @@
 using Godot;
-using System;
 
 public class GoldenBlock : Block
 {
-    AnimationPlayer animation;
+    private AnimationPlayer animation;
     public override void _Ready()
     {
         animation = GetNode<AnimationPlayer>("AnimationPlayer");
