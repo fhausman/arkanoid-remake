@@ -1,9 +1,8 @@
 using Godot;
-using System;
 
 public class SilverBlock : Block
 {
-    AnimationPlayer animationPlayer;
+    private AnimationPlayer animationPlayer;
 
     public override void _Ready()
     {
