@@ -76,8 +76,6 @@ class LevelManager
         scene.AddChild(ballInstance);
         boardInstance.Spawn();
 
-        scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
-
         enemiesManager.Reset();
         Unpause();
     }
@@ -132,7 +130,7 @@ class LevelManager
             CleanGroup(group);
         }
     }
-    
+
      private void CleanGroup(string group)
     {
         var tree = scene.GetTree();

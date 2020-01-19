@@ -4,14 +4,14 @@ using System;
 
 public class MainScene : Node2D
 {
+    static public Lvl CurrentLevel { get; set; }
+
     [Export]
     public Lvl Level { get; set; } = Lvl.LEVEL1;
-    static public Lvl CurrentLevel { get; set; }
     public int NumberOfLives { get; set; } = 2;
     public int Score { get; set; } = 0;
-    public Node2D Blocks { private get; set; }
-    public AudioManager Audio { get; private set; }
-    private int highScore { get; set; } = 0;
+    private int highScore = 0;
+    private bool gameFinished = false;
     private Control ui;
     private Control livesContainer;
     private PackedScene boardIcon;
@@ -21,7 +21,6 @@ public class MainScene : Node2D
     private LevelManager levelManager;
     private Timer winDelay;
     private GodMode gm;
-    private bool gameFinished = false;
 
     void DecreaseNumberOfLifeIcons()
     {
@@ -42,7 +41,7 @@ public class MainScene : Node2D
 
     public void CheckIfPlayerDestroyedAllBlocks()
     {
-        var blocks_count = Blocks.GetChildren().Cast<Block>().Count(b => b.Destructable);
+        var blocks_count = GetNode<Node2D>("LevelRoot/Blocks").GetChildren().Cast<Block>().Count(b => b.Destructable);
         GD.Print("Checkin... ", blocks_count);
         if(blocks_count == 0)
         {
@@ -171,7 +170,6 @@ public class MainScene : Node2D
         highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
         highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, highScore);
         gm = GetNode<GodMode>("GodMode");
-        Audio = GetNode<AudioManager>("AudioManager");
 
         levelManager.StartLoading(Level);
 
