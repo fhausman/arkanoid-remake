@@ -1,27 +1,25 @@
 using Godot;
-using System;
 
 public class Multiball : BasePowerUp
 {
-    MainScene scene;
-    Ball ball;
-    PackedScene ballScene;
-
     [Export]
     public float AngleBetweenBalls = 10.0f;
+    private MainScene scene;
+    private Ball ball;
+    private PackedScene ballScene;
 
-    void SpawnBall(Ball existingBall, float angleOffset)
+    private void SpawnBall(Ball existingBall, float angleOffset)
     {
         var extraBall = (Ball) ballScene.Instance();
         extraBall.MovingAtStart = true;
-        extraBall.StartingDir = Bounce.RotateVector(ball.CurrentDir, angleOffset);
+        extraBall.StartingDir = Utils.RotateVector(ball.CurrentDir, angleOffset);
         extraBall.Board = scene.GetNode<Board>("Board");
         extraBall.Position = ball.Position;
         scene.AddChild(extraBall);
         extraBall.SetSpeed(ball.CurrentSpeed);
     }
 
-    void SpawnBalls()
+    private void SpawnBalls()
     {
         foreach(var i in new int[]{-1, 1})
         {

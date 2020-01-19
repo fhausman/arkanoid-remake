@@ -13,16 +13,16 @@ public enum Lvl
 class LevelManager
 {
     static public LevelManager Instance { get; private set; } = null;
-    MainScene scene;
-    Round round;
-    EnemiesManager enemiesManager;
-    PackedScene ball;
-    Ball ballInstance;
-    PackedScene board;
-    Board boardInstance;
-    Node2D levelInstance;
-    Lvl currentLevel;
-    Vector2 levelLoadingPoint;
+    private MainScene scene;
+    private Round round;
+    private EnemiesManager enemiesManager;
+    private PackedScene ball;
+    private Ball ballInstance;
+    private PackedScene board;
+    private Board boardInstance;
+    private Node2D levelInstance;
+    private Lvl currentLevel;
+    private Vector2 levelLoadingPoint;
     Dictionary<Lvl, string> levels = new Dictionary<Lvl, string>()
     {
         {Lvl.LEVEL1, "1 level.tscn"},
@@ -76,8 +76,6 @@ class LevelManager
         scene.AddChild(ballInstance);
         boardInstance.Spawn();
 
-        scene.Blocks = scene.GetNode<Node2D>("LevelRoot/Blocks");
-
         enemiesManager.Reset();
         Unpause();
     }
@@ -98,15 +96,6 @@ class LevelManager
     {
         Cleanup(false);
         StartLoading(currentLevel, false);
-    }
-    
-    private void CleanGroup(string group)
-    {
-        var tree = scene.GetTree();
-        foreach(Node2D obj in tree.GetNodesInGroup(group))
-        {
-            obj.QueueFree();
-        }
     }
 
     public void Pause()
@@ -139,6 +128,15 @@ class LevelManager
         foreach(var group in groups)
         {
             CleanGroup(group);
+        }
+    }
+
+     private void CleanGroup(string group)
+    {
+        var tree = scene.GetTree();
+        foreach(Node2D obj in tree.GetNodesInGroup(group))
+        {
+            obj.QueueFree();
         }
     }
 }

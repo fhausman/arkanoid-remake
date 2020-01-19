@@ -1,20 +1,19 @@
 using Godot;
-using System;
 
 public class AudioManager : Node2D
 {
-    AudioStreamPlayer2D blockHit;
-    AudioStreamPlayer2D undestructableHit;
-    AudioStreamPlayer2D boardHit;
-    AudioStreamPlayer2D laserShot;
-    AudioStreamPlayer2D deathSound;
-    AudioStreamPlayer2D enemyDeath;
-    AudioStreamPlayer2D music;
-    AudioStreamPlayer2D teleport;
-    AudioStreamPlayer2D boardExtend;
-    AudioStreamPlayer2D powerUp;
-    AudioStream teleportOpen;
-    AudioStream teleportWarp;
+    private AudioStreamPlayer2D blockHit;
+    private AudioStreamPlayer2D undestructableHit;
+    private AudioStreamPlayer2D boardHit;
+    private AudioStreamPlayer2D laserShot;
+    private AudioStreamPlayer2D deathSound;
+    private AudioStreamPlayer2D enemyDeath;
+    private AudioStreamPlayer2D music;
+    private AudioStreamPlayer2D teleport;
+    private AudioStreamPlayer2D boardExtend;
+    private AudioStreamPlayer2D powerUp;
+    private AudioStream teleportOpen;
+    private AudioStream teleportWarp;
 
     public void DestroyHit()
     {
@@ -80,8 +79,8 @@ public class AudioManager : Node2D
 
     public override void _Ready()
     {
-        blockHit = GetNode<AudioStreamPlayer2D>("BlockHit");    
-        undestructableHit = GetNode<AudioStreamPlayer2D>("UndestructableHit");    
+        blockHit = GetNode<AudioStreamPlayer2D>("BlockHit");
+        undestructableHit = GetNode<AudioStreamPlayer2D>("UndestructableHit");
         boardHit = GetNode<AudioStreamPlayer2D>("BoardHit");
         laserShot = GetNode<AudioStreamPlayer2D>("LaserShot");
         deathSound = GetNode<AudioStreamPlayer2D>("DeathSound");
@@ -90,6 +89,7 @@ public class AudioManager : Node2D
         boardExtend = GetNode<AudioStreamPlayer2D>("BoardExtend");
         teleport = GetNode<AudioStreamPlayer2D>("Teleport");
         powerUp = GetNode<AudioStreamPlayer2D>("PowerUp");
+        
         teleportOpen = (AudioStream) GD.Load("res://Sounds/teleport_open.wav");
         teleportWarp = (AudioStream) GD.Load("res://Sounds/teleport.wav");
     }

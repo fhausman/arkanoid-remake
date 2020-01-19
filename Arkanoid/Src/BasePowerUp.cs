@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public abstract class BasePowerUp : KinematicBody2D
 {
@@ -26,6 +25,5 @@ public abstract class BasePowerUp : KinematicBody2D
     {
         animation = GetNode<AnimationPlayer>("PowerUpAnimation/TypeAnimation");
         PauseMode = PauseModeEnum.Stop;
-
     }
 }

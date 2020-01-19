@@ -5,24 +5,23 @@ using System.Linq;
 public class PowerupManager : Node2D
 {
     [Export(PropertyHint.Range, "0,1")]
-    public float PowerupSpawnProbability = 0.0f;
-    private PackedScene laser;
-    private PackedScene multiball;
-    private PackedScene extraLife;
-    private PackedScene boardExtension;
-    private PackedScene slowdown;
-    private PackedScene glue;
-    private PackedScene teleport;
-    private Dictionary<PackedScene, float> powerUpsProbability;
-    private bool IsMultiballActive { get => scene.GetTree().GetNodesInGroup("BALLS").Count > 1; }
-    private bool IsAnyPowerUpOnScene { get => scene.GetTree().GetNodesInGroup("POWERUPS").Count > 0; }
-
+    public float PowerupSpawnProbability { get; set; } = 0.0f;
+    static private PackedScene laser;
+    static private PackedScene multiball;
+    static private PackedScene extraLife;
+    static private PackedScene boardExtension;
+    static private PackedScene slowdown;
+    static private PackedScene glue;
+    static private PackedScene teleport;
+    static private Dictionary<PackedScene, float> powerUpsProbability;
     static private PowerupManager powerupManager;
     static private MainScene scene;
     static private Arena arena;
     static private Vector2 levelSpawnPosition;
     static private RandomNumberGenerator randGen = new RandomNumberGenerator();
     static public bool IsTeleportActive { get; private set; } = false;
+    static private bool IsMultiballActive { get => scene.GetTree().GetNodesInGroup("BALLS").Count > 1; }
+    static private bool IsAnyPowerUpOnScene { get => scene.GetTree().GetNodesInGroup("POWERUPS").Count > 0; }
     
     static public void ActivateTeleport()
     {
@@ -39,18 +38,18 @@ public class PowerupManager : Node2D
     static public void SpawnPowerup(Vector2 blockPosition)
     {
         randGen.Randomize();
-        if(powerupManager.IsMultiballActive == false &&
-            powerupManager.IsAnyPowerUpOnScene == false &&
+        if(IsMultiballActive == false &&
+            IsAnyPowerUpOnScene == false &&
             randGen.RandfRange(0.0f, 1.0f) < powerupManager.PowerupSpawnProbability)
         {
             PackedScene powerUp = DrawPowerUp(GetAvailablePowerups());
             var instance = powerUp.Instance() as Node2D;
             if(instance is ExtraLife || instance is Teleport)
             {
-                powerupManager.powerUpsProbability.Remove(powerUp);
+                powerUpsProbability.Remove(powerUp);
             }
 
-            instance.Position = levelSpawnPosition + blockPosition;
+            instance.Position = blockPosition;
             scene.AddChild(instance);
         }
     }
@@ -77,22 +76,22 @@ public class PowerupManager : Node2D
 
     static private Dictionary<PackedScene, float> GetAvailablePowerups()
     {
-        var activePowerUps = new Dictionary<PackedScene, float>(powerupManager.powerUpsProbability);
+        var activePowerUps = new Dictionary<PackedScene, float>(powerUpsProbability);
         var ball = (Ball) scene.GetTree().GetNodesInGroup("BALLS")[0];
         var board = scene.GetNode<Board>("Board");
 
         if(ball.GlueToBoard)
         {
-            activePowerUps.Remove(powerupManager.glue);
+            activePowerUps.Remove(glue);
         }
         else if(board.IsLaserActive)
         {
-            activePowerUps.Remove(powerupManager.laser);
+            activePowerUps.Remove(laser);
         }
         else if(board.IsExtended)
         {
             GD.Print("Fuck off");
-            activePowerUps.Remove(powerupManager.boardExtension);
+            activePowerUps.Remove(boardExtension);
         }
 
         return activePowerUps;
@@ -113,7 +112,7 @@ public class PowerupManager : Node2D
         board.ResetPowerups();
     }
 
-    public Dictionary<PackedScene, float> GetAllAvailablePowerUps()
+    static public Dictionary<PackedScene, float> GetAllAvailablePowerUps()
     {
         return new Dictionary<PackedScene, float>()
         {
@@ -129,42 +128,42 @@ public class PowerupManager : Node2D
 
     static public void ResetState()
     {
-        powerupManager.powerUpsProbability = powerupManager.GetAllAvailablePowerUps();
+        powerUpsProbability = GetAllAvailablePowerUps();
     }
 
     public static Laser SpawnLaser()
     {
-        return (Laser) powerupManager.laser.Instance();
+        return (Laser) laser.Instance();
     }
 
     public static Multiball SpawnMultiball()
     {
-        return (Multiball) powerupManager.multiball.Instance();
+        return (Multiball) multiball.Instance();
     }
 
     public static ExtraLife SpawnExtraLife()
     {
-        return (ExtraLife) powerupManager.extraLife.Instance();
+        return (ExtraLife) extraLife.Instance();
     }
 
     public static BoardExtend SpawnExtension()
     {
-        return (BoardExtend) powerupManager.boardExtension.Instance();
+        return (BoardExtend) boardExtension.Instance();
     }
 
     public static Slowdown SpawnSlowdown()
     {
-        return (Slowdown) powerupManager.slowdown.Instance();
+        return (Slowdown) slowdown.Instance();
     }
 
     public static Glue SpawnGlue()
     {
-        return (Glue) powerupManager.glue.Instance();
+        return (Glue) glue.Instance();
     }
 
     public static Teleport SpawnTeleport()
     {
-        return (Teleport) powerupManager.teleport.Instance();
+        return (Teleport) teleport.Instance();
     }
     public override void _Ready()
     {
@@ -181,7 +180,5 @@ public class PowerupManager : Node2D
         teleport = GD.Load<PackedScene>("res://Resources/PowerUps/Teleport.tscn");
 
         powerUpsProbability = GetAllAvailablePowerUps();
-
-        levelSpawnPosition = GetNode<Node2D>("/root/Main/LevelSpawnPoint").Position;
     }
 }

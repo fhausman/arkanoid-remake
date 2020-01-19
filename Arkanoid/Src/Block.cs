@@ -5,15 +5,13 @@ public class Block : StaticBody2D, IHittable
 {
     [Export]
     public bool Destructable { get; set; } = true;
-
     [Export]
     public int NumOfHits { get; set; } = 1;
-
     [Export]
     public int Points { get; set; } = 100;
-
-    public MainScene scene;
     protected AudioManager audio;
+    private MainScene scene;
+
 
     public override void _Ready()
     {
@@ -37,7 +35,7 @@ public class Block : StaticBody2D, IHittable
             audio.DestroyHit();
 
             scene.Score += Points;
-            PowerupManager.SpawnPowerup(Position + new Vector2(32, 16));
+            PowerupManager.SpawnPowerup(GlobalPosition + new Vector2(32, 16));
             Free();
             scene.CheckIfPlayerDestroyedAllBlocks();
         }

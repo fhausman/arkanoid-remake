@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
-using System.Threading;
 
+#region Enemy states
 public class EnemyMoveUp : IState
 {
     private StateMachine stateMachine;
@@ -17,13 +17,9 @@ public class EnemyMoveUp : IState
         this.speed = speed;
     }
 
-    public void Exit()
-    {
-    }
-
-    public void HandleInput()
-    {
-    }
+    public void Exit() {}
+    public void HandleInput() {}
+    public void Process(float dt) {}
 
     public void Init(params object[] args)
     {
@@ -55,16 +51,12 @@ public class EnemyMoveUp : IState
             stateMachine.ChangeState(nameof(EnemyMoveSteady), dir, true);
         }
     }
-
-    public void Process(float dt)
-    {
-    }
 }
 public class EnemyMoveSteady : IState
 {
     private StateMachine stateMachine;
     private Enemy enemy;
-    private float speed;
+    private float speed = 0.0f;
     private Vector2 dir = Vector2.Down;
     private Vector2 previousHorizontalDir = Vector2.Right;
     private bool forceHorizontal = false;
@@ -76,13 +68,8 @@ public class EnemyMoveSteady : IState
         this.speed = speed;
     }
 
-    public virtual void Exit()
-    {
-    }
-
-    public virtual void HandleInput()
-    {
-    }
+    public void Exit() {}
+    public void HandleInput() {}
 
     public virtual void Init(params object[] args)
     {
@@ -155,7 +142,7 @@ public class EnemyMoveSteady : IState
 public class CrazyMode : IState
 {
     private Enemy enemy;
-    private float speed;
+    private float speed = 0.0f;
     private Vector2 velocity = Vector2.Zero;
     public CrazyMode(Enemy enemy, float speed)
     {
@@ -163,13 +150,9 @@ public class CrazyMode : IState
         this.speed = speed;
     }
 
-    public void Exit()
-    {
-    }
-
-    public void HandleInput()
-    {
-    }
+    public void Exit() {}
+    public void HandleInput() {}
+    public void Process(float dt) {}
 
     public void Init(params object[] args)
     {
@@ -205,10 +188,6 @@ public class CrazyMode : IState
         }
     }
 
-    public void Process(float dt)
-    {
-    }
-
     private Vector2 ArriveTo(
         Vector2 velocity,
         Vector2 globalPosition,
@@ -227,6 +206,7 @@ public class CrazyMode : IState
         return velocity + steering;
     }
 }
+#endregion
 
 public class SideChecker
 {
@@ -266,7 +246,7 @@ public class Enemy : KinematicBody2D, IHittable
     public Area2D BelowArea { get; set; }
     public Node2D FollowNode { get; set; }
     public SideChecker SideChecker { get; set; }
-    public AudioManager audio;
+    private AudioManager audio;
     private MainScene scene;
     private StateMachine stateMachine = new StateMachine();
     private AnimationPlayer animation;

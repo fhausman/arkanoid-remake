@@ -1,13 +1,12 @@
 using Godot;
-using System;
 
 public class MainMenu : Control
 {
-    PackedScene mainScene;
-    PackedScene credits;
-    AudioStreamPlayer2D menuSound;
-    AudioStreamPlayer2D startSound;
-    bool startGame = false;
+    private PackedScene mainScene;
+    private PackedScene credits;
+    private AudioStreamPlayer2D menuSound;
+    private AudioStreamPlayer2D startSound;
+    private bool startGame = false;
 
     public void OnQuitPressed()
     {

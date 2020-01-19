@@ -12,44 +12,61 @@ public class Moving : IState
         this.ball = ball;
     }
 
-    public void Init(params object[] args) { Dir = (Vector2) args[0]; }
-    public void Exit() {}
-    public void HandleInput() {}
+    public void Init(params object[] args) { Dir = (Vector2)args[0]; }
+    public void Exit() { }
+    public void HandleInput() { }
     public void Process(float dt)
     {
-        if(Dir == Vector2.Left || Dir == Vector2.Right)
-            Dir = Bounce.RotateVector(Dir, 5.0f);
+        if (Dir == Vector2.Left || Dir == Vector2.Right)
+            Dir = Utils.RotateVector(Dir, 5.0f);
     }
 
     public void PhysicsProcess(float dt)
     {
-        var col = ball.MoveAndCollide(Dir*ball.CurrentSpeed*dt);
-        if(col != null)
+        var col = ball.MoveAndCollide(Dir * ball.CurrentSpeed * dt);
+        if (col != null)
         {
-            if(col.Collider is Board board)
+            if (col.Collider is Board board)
             {
-                if(ball.GlueToBoard)
+                if (ball.GlueToBoard)
                 {
-                    var newBallX = Ball.ClampToBoardFlatPart(ball.Position.x, board);
-                    ball.SetAttached(Vector2.Zero, new Vector2(newBallX, ball.Position.y));
+                    AttachBallToBoard(board);
                     return;
                 }
-                
+
                 ball.Audio.BoardHit();
-                Dir = Bounce.BoardBounce(ball, board.Position, board.Extents, col.Position);
+                Dir = BoardBounce(col, board);
             }
             else
             {
-                Dir = Dir.Bounce(col.GetNormal());
+                Dir = NaturalBounce(col);
             }
 
-            if(col.Collider is IHittable obj)
+            if (col.Collider is IHittable obj)
             {
                 obj.OnHit();
-                if(!(obj is GoldenBlock))
+                if (!(obj is GoldenBlock))
                     ball.SpeedUp(ball.BlockHitSpeedUp);
             }
         }
+    }
+
+    private void AttachBallToBoard(Board board)
+    {
+        var newBallX = Ball.ClampToBoardFlatPart(ball.Position.x, board);
+        ball.SetAttached(Vector2.Zero, new Vector2(newBallX, ball.Position.y));
+    }
+
+    //the angle of incidence is equal to the angle of reflection
+    private Vector2 NaturalBounce(KinematicCollision2D col)
+    {
+        return Dir.Bounce(col.GetNormal());
+    }
+
+    //bouncing from the board depends on collision place
+    private Vector2 BoardBounce(KinematicCollision2D col, Board board)
+    {
+        return Bounce.BoardBounce(ball, board.Position, board.Extents, col.Position);
     }
 }
 
@@ -57,7 +74,7 @@ public class Attached : IState
 {
     private Ball ball;
     private Board board;
-    private float GetVelocityOffset { get { return (board.Velocity.x / board.Speed) * 0.05f; }}
+    private float velocityOffset { get => Mathf.Sign(board.Velocity.x) * 0.05f; }
     public Vector2 Dir { get; set; } = Vector2.Zero;
     public Vector2 AttachPosition { get; set; } = Vector2.Zero;
 
@@ -67,8 +84,8 @@ public class Attached : IState
         this.board = board;
     }
 
-    public void Exit() {}
-    public void Process(float dt) {}
+    public void Exit() { }
+    public void Process(float dt) { }
 
     public void Init(params object[] args)
     {
@@ -78,7 +95,7 @@ public class Attached : IState
 
     public void HandleInput()
     {
-        if(Input.IsActionPressed("ui_accept"))
+        if (Input.IsActionPressed("ui_accept"))
         {
             ball.SetMoving(GetDispatchDir());
         }
@@ -90,17 +107,17 @@ public class Attached : IState
         var board_width = board.Extents.x;
         var ball_height = ball.GetExtents.y;
 
-        var new_y = board_pos.y - ball_height*2 + 8.0f; //todo: dispose magic numbers
+        var new_y = board_pos.y - ball_height;
         var new_x = ball.Position.LinearInterpolate(
-            new Vector2(board_pos.x + AttachPosition.x - GetVelocityOffset, new_y),
-            dt*ball.SlideSpeed).x;
- 
+            new Vector2(board_pos.x + AttachPosition.x - velocityOffset, new_y),
+            dt * ball.SlideSpeed).x;
+
         ball.SetPosition(new Vector2(new_x, new_y));
     }
 
     private Vector2 GetDispatchDir()
     {
-        if(ball.GlueToBoard)
+        if (ball.GlueToBoard)
         {
             return Bounce.BoardBounce(ball, board.Position, board.Extents, ball.Position);
         }
@@ -128,17 +145,15 @@ public class Ball : KinematicBody2D
     public float ThirdAngleSpeedUp { get; set; } = 0.0f;
     [Export]
     public float BlockHitSpeedUp { get; set; } = 0.0f;
-    public Board Board { get; set; }
     public float CurrentSpeed { get; private set; } = 0.0f;
     public Vector2 StartingDir { private get; set; } = Vector2.Zero;
-    public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; set {  stateMachine.GetState<Moving>().Dir = value; } }
+    public Vector2 CurrentDir { get => stateMachine.GetState<Moving>().Dir; set { stateMachine.GetState<Moving>().Dir = value; } }
     public Vector2 GetExtents { get => shape.GetExtents(); }
     public bool MovingAtStart { get; set; } = false;
     public bool GlueToBoard { get; set; } = false;
     public IState CurrentState { get => stateMachine.GetState(); }
-    public AudioManager Audio;
-
-
+    public AudioManager Audio { get; set; }
+    public Board Board { get; set; }
     private StateMachine stateMachine = new StateMachine();
     private RectangleShape2D shape;
     private Timer attachTimer;
@@ -174,7 +189,7 @@ public class Ball : KinematicBody2D
 
     public void SetMoving()
     {
-        SetMoving(Bounce.AngleToDir(Bounce.FirstAngle));
+        SetMoving(Utils.AngleToDir(Bounce.FirstAngle));
     }
 
     public void ResetState()
@@ -182,7 +197,7 @@ public class Ball : KinematicBody2D
         ResetPowerups();
         ResetSpeed();
         Position = Board.Middle;
-        SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), Position);
+        SetAttached(Utils.AngleToDir(Bounce.FirstAngle), Position);
     }
 
     public void ResetSpeed()
@@ -193,9 +208,9 @@ public class Ball : KinematicBody2D
 
     public void ResetPowerups()
     {
-        if(stateMachine.GetState() is Attached)
+        if (stateMachine.GetState() is Attached)
         {
-            SetMoving(Bounce.AngleToDir(Bounce.FirstAngle));
+            SetMoving(Utils.AngleToDir(Bounce.FirstAngle));
         }
         GlueToBoard = false;
     }
@@ -205,20 +220,20 @@ public class Ball : KinematicBody2D
         attachTimer = GetNode<Timer>("AttachTimer");
         stateMachine.Add(nameof(Moving), new Moving(this));
         stateMachine.Add(nameof(Attached), new Attached(this, Board));
-        
+
         Audio = GetNode<AudioManager>("../AudioManager");
 
-        if(MovingAtStart)
+        if (MovingAtStart)
         {
             SetMoving(StartingDir);
         }
         else
         {
-            SetAttached(Bounce.AngleToDir(Bounce.FirstAngle), Board.Middle);
+            SetAttached(Utils.AngleToDir(Bounce.FirstAngle), Board.Middle);
         }
 
         SetSpeed(InitialSpeed);
-        shape = (RectangleShape2D) this.GetNode<CollisionShape2D>("col").GetShape();
+        shape = (RectangleShape2D)this.GetNode<CollisionShape2D>("col").GetShape();
 
         PauseMode = PauseModeEnum.Stop;
     }

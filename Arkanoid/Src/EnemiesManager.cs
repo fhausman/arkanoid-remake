@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+
 public struct LevelInfo
 {
     public string enemyType;
@@ -17,16 +18,16 @@ public struct LevelInfo
 public class EnemiesManager : Node2D
 {
     [Export]
-    public int MaxEnemiesOnLevel = 3;
-    public string EnemyToSpawn = "triangle";
+    public int MaxEnemiesOnLevel { get; set; }= 3;
+    public string EnemyToSpawn { get; set; } = "triangle";
     private int enemiesAmountOnLevel = 1;
+    private int spawnedCounter = 0;
     private Arena arena;
     private PackedScene enemyScene;
     private Timer spawnTimer;
     private Timer enableTimer;
     private Timer maxTimer;
     private Node2D levelRoot;
-    private int spawnedCounter = 0;
 
     Dictionary<Lvl, LevelInfo> enemiesInfo = new Dictionary<Lvl, LevelInfo>()
     {

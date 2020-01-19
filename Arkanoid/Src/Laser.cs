@@ -1,5 +1,3 @@
-using Godot;
-
 public class Laser : BasePowerUp
 {
      public override void OnCollect()
