@@ -1,16 +1,14 @@
 using Godot;
-using System;
 
 public class Multiball : BasePowerUp
 {
-    MainScene scene;
-    Ball ball;
-    PackedScene ballScene;
-
     [Export]
     public float AngleBetweenBalls = 10.0f;
+    private MainScene scene;
+    private Ball ball;
+    private PackedScene ballScene;
 
-    void SpawnBall(Ball existingBall, float angleOffset)
+    private void SpawnBall(Ball existingBall, float angleOffset)
     {
         var extraBall = (Ball) ballScene.Instance();
         extraBall.MovingAtStart = true;
@@ -21,7 +19,7 @@ public class Multiball : BasePowerUp
         extraBall.SetSpeed(ball.CurrentSpeed);
     }
 
-    void SpawnBalls()
+    private void SpawnBalls()
     {
         foreach(var i in new int[]{-1, 1})
         {
