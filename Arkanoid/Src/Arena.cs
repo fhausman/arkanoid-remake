@@ -17,7 +17,7 @@ public class Arena : Node2D
         audio.OpenTeleport();
         OpenGate(gateTeleport);
     }
-    
+
     public void CloseTeleport()
     {
         CloseGate(gateTeleport);
