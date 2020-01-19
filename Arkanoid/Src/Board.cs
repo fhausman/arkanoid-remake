@@ -1,12 +1,17 @@
 using Godot;
 
 #region Board States
+public static class BoardInput
+{
+    public static bool LeftPressed { get => Input.IsActionPressed("ui_left"); }
+    public static bool RightPressed { get => Input.IsActionPressed("ui_right"); }
+    public static bool ActionPressed { get => Input.IsActionPressed("ui_accept"); }
+}
 public class Idle : IState
 {
     private Board board;
     private StateMachine stateMachine;
-    private Vector2 dir { get; } = new Vector2(0,0);
-
+    private Vector2 dir = Vector2.Zero;
 
     public Idle(Board board, StateMachine stateMachine)
     {
@@ -21,8 +26,8 @@ public class Idle : IState
 
     public void HandleInput()
     {
-        var left_pressed = Input.IsActionPressed("ui_left");
-        var right_pressed = Input.IsActionPressed("ui_right");
+        var left_pressed = BoardInput.LeftPressed;
+        var right_pressed = BoardInput.RightPressed;
         
         if(left_pressed && right_pressed)
             return;
@@ -73,7 +78,7 @@ public class MoveBase
 public class MoveLeft : MoveBase, IState
 {
     private Board board;
-    private Vector2 dir { get; } = new Vector2(-1, 0);
+    private Vector2 dir = Vector2.Left;
 
     public MoveLeft(Board board, StateMachine stateMachine)
     {
@@ -87,10 +92,7 @@ public class MoveLeft : MoveBase, IState
 
     public void HandleInput()
     {
-        var left_pressed = Input.IsActionPressed("ui_left");
-        var right_pressed = Input.IsActionPressed("ui_right");
-
-        if(!left_pressed || right_pressed)
+        if(!BoardInput.LeftPressed || BoardInput.RightPressed)
             stateMachine.ChangeState(nameof(Idle));
     }
 
@@ -103,7 +105,7 @@ public class MoveLeft : MoveBase, IState
 public class MoveRight : MoveBase, IState
 {
     private Board board;
-    private Vector2 dir { get; } = new Vector2(1, 0);
+    private Vector2 dir = Vector2.Right;
 
     public MoveRight(Board board, StateMachine stateMachine)
     {
@@ -117,10 +119,7 @@ public class MoveRight : MoveBase, IState
 
     public void HandleInput()
     {
-        var left_pressed = Input.IsActionPressed("ui_left");
-        var right_pressed = Input.IsActionPressed("ui_right");
-
-        if(!right_pressed || left_pressed)
+        if(!BoardInput.RightPressed || BoardInput.LeftPressed)
             stateMachine.ChangeState(nameof(Idle));
     }
 
@@ -133,21 +132,16 @@ public class MoveRight : MoveBase, IState
 public class Warping : IState
 {
     private Board board;
-    private float WarpSpeed = 100;
+    private float WarpSpeed = 100.0f;
 
     public Warping(Board board)
     {
         this.board = board;
     }
 
-    public void Exit()
-    {
-    }
-
-    public void HandleInput()
-    {
-    }
-
+    public void Exit() {}
+    public void HandleInput() {}
+    public void Process(float dt) {}
     public void Init(params object[] args)
     {
         board.StartWarp();
@@ -157,13 +151,10 @@ public class Warping : IState
     {
         board.Position += Vector2.Right*WarpSpeed*dt;
     }
-
-    public void Process(float dt)
-    {
-    }
 }
 #endregion
 
+#region Laser
 public class BlastManager
 {
     private Board board;
@@ -211,17 +202,18 @@ public class BlastManager
         scene.AddChild(blastInstance);
     }
 }
+#endregion
 
 public class Board : KinematicBody2D
 {
     [Export]
     public float Speed { get; set; } = 0.0f;
-    public Vector2 Dir { get; set; } = new Vector2(0,0);
+    public Vector2 Dir { get; set; } = Vector2.Zero;
     public Vector2 Velocity { get => Speed*Dir; }
     public Vector2 Extents { get => shape.GetExtents()*col.Scale; }
     public Vector2 Middle { get => Position; }
-    public bool IsLaserActive { get => laserActivated; }
-    public bool IsExtended { get => extended; }
+    public bool IsLaserActive { get; private set; } = false;
+    public bool IsExtended { get; private set; } = false;
     private StateMachine stateMachine = new StateMachine();
     private BlastManager blastManager;
     private RectangleShape2D shape;
@@ -229,9 +221,7 @@ public class Board : KinematicBody2D
     private Timer warpTimer;
     private AnimationPlayer animation;
     private Node2D spawnPoint;
-    public AudioManager audio;
-    private bool extended { get; set; } = false;
-    private bool laserActivated { get; set; } = false;
+    private AudioManager audio;
 
     public void Extend()
     {
@@ -240,25 +230,25 @@ public class Board : KinematicBody2D
             audio.Extend();
             animation.Play("extend");
         }
-        extended = true;
+        IsExtended = true;
     }
 
     public void Shrink()
     {
         animation.Play("shrink");
-        extended = false;
+        IsExtended = false;
     }
 
     public void EnableLaser()
     {
-        laserActivated = true;
+        IsLaserActive = true;
         if(animation.CurrentAnimation != "shrink")
             animation.Play("laserActivate");
     }
 
     public void DisableLaser()
     {
-        laserActivated = false;
+        IsLaserActive = false;
         animation.Play("laserDeactivate");
     }
 
@@ -288,9 +278,9 @@ public class Board : KinematicBody2D
 
     public void ResetPowerups()
     {
-        if(extended)
+        if(IsExtended)
             Shrink();
-        else if(laserActivated)
+        else if(IsLaserActive)
             DisableLaser();
 
         blastManager.LaserReady();
@@ -330,7 +320,7 @@ public class Board : KinematicBody2D
         }
         else if(name == "shrink")
         {
-            if(laserActivated)
+            if(IsLaserActive)
                 animation.Play("laserActivate");
         }
         else if(name == "laserActivate")
@@ -339,7 +329,7 @@ public class Board : KinematicBody2D
         }
         else if(name == "laserDeactivate")
         {
-            if(extended)
+            if(IsExtended)
             {
                 audio.Extend();
                 animation.Play("extend");
@@ -376,7 +366,7 @@ public class Board : KinematicBody2D
 
     public override void _Process(float dt)
     {
-        if(laserActivated)
+        if(IsLaserActive)
         {
             ShootLaser();
         }
