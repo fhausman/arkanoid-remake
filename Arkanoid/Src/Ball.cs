@@ -74,7 +74,7 @@ public class Attached : IState
 {
     private Ball ball;
     private Board board;
-    private float velocityOffset { get => (board.Velocity.x / board.Speed) * 0.05f; }
+    private float velocityOffset { get => Mathf.Sign(board.Velocity.x) * 0.05f; }
     public Vector2 Dir { get; set; } = Vector2.Zero;
     public Vector2 AttachPosition { get; set; } = Vector2.Zero;
 
