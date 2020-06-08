@@ -91,10 +91,10 @@ shape = SubResource( 3 )
 [node name="UI" parent="." instance=ExtResource( 6 )]
 
 [node name="Round" parent="." instance=ExtResource( 7 )]
-margin_left = 800.553
-margin_top = 652.733
-margin_right = 1025.55
-margin_bottom = 742.733
+margin_left = 803.203
+margin_top = 756.084
+margin_right = 1028.2
+margin_bottom = 846.084
 
 [node name="EnemiesPath0" parent="." instance=ExtResource( 8 )]
 position = Vector2( 980, 561.187 )
@@ -111,10 +111,10 @@ one_shot = true
 
 [node name="ContinueScreen" parent="." instance=ExtResource( 9 )]
 visible = false
-margin_left = 754.0
-margin_top = 384.0
-margin_right = 754.0
-margin_bottom = 384.0
+margin_left = 826.919
+margin_top = 795.224
+margin_right = 826.919
+margin_bottom = 795.224
 
 [node name="VictoryScreen" parent="." instance=ExtResource( 10 )]
 visible = false
@@ -124,5 +124,6 @@ margin_right = 523.63
 margin_bottom = 424.303
 
 [node name="AudioManager" parent="." instance=ExtResource( 11 )]
+position = Vector2( 1.02667, 0 )
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]
 [connection signal="timeout" from="WinDelay" to="." method="OnWin"]
