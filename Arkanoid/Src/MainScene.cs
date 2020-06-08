@@ -119,7 +119,8 @@ public class MainScene : Node2D
             if(Score > highScore)
                 SaveHighscore(Score);
 
-            levelManager.Cleanup();
+            levelManager.Pause();
+            //levelManager.Cleanup();
             var continueScreen = GetNode<Control>("ContinueScreen");
             continueScreen.Visible = true;
             continueScreen.GetNode<Timer>("Countdown").Start();
