@@ -1,6 +1,7 @@
 using Godot;
 using System.Linq;
 using System;
+using static Godot.RichTextLabel;
 
 public class MainScene : Node2D
 {
@@ -31,6 +32,11 @@ public class MainScene : Node2D
     void IncreaseNumberOfLifeIcons()
     {
         livesContainer.AddChild(boardIcon.Instance());
+    }
+
+    void SetHighscoreText(int score)
+    {
+        highScoreLabel.Text = GD.Str(score);
     }
 
     public void AddExtraLife()
@@ -169,9 +175,8 @@ public class MainScene : Node2D
         highScore = GetHighscore();
         scoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("Score");
         highScoreLabel = GetNode<Control>("UI").GetNode<RichTextLabel>("HighScore");
-        highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, highScore);
         gm = GetNode<GodMode>("GodMode");
-
+        SetHighscoreText(highScore);
         levelManager.StartLoading(Level);
 
         PauseMode = PauseModeEnum.Process;
@@ -179,9 +184,9 @@ public class MainScene : Node2D
 
     public override void _Process(float delta)
     {
-        scoreLabel.Text = GD.Str("SCORE: ", Score);
+        scoreLabel.BbcodeText = GD.Str("[right]", Score, "[/right]");
         if(Score > highScore)
-            highScoreLabel.Text = GD.Str("HIGH SCORE: ", System.Environment.NewLine, Score);
+            SetHighscoreText(Score);
     }
 
     public override void _Input(InputEvent e)

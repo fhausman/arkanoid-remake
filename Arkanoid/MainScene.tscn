@@ -110,6 +110,7 @@ wait_time = 0.5
 one_shot = true
 
 [node name="ContinueScreen" parent="." instance=ExtResource( 9 )]
+visible = false
 margin_left = 826.919
 margin_top = 795.224
 margin_right = 826.919
@@ -123,5 +124,6 @@ margin_right = 523.63
 margin_bottom = 424.303
 
 [node name="AudioManager" parent="." instance=ExtResource( 11 )]
+position = Vector2( 1.02667, 0 )
 [connection signal="body_entered" from="DeathArea" to="." method="OnDeathAreaEntered"]
 [connection signal="timeout" from="WinDelay" to="." method="OnWin"]

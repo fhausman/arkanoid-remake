@@ -1,6 +1,29 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Resources/UI/FontTheme.tres" type="Theme" id=1]
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Art/font/Mood_01-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=6]
+size = 30
+extra_spacing_char = 2
+font_data = SubResource( 1 )
+
+[sub_resource type="Theme" id=7]
+default_font = SubResource( 6 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = SubResource( 1 )
+
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 60
+font_data = SubResource( 1 )
+
+[sub_resource type="Theme" id=5]
+default_font = SubResource( 4 )
 
 [node name="UI" type="Control"]
 margin_right = 1920.0
@@ -21,20 +44,43 @@ rect_scale = Vector2( 0.5, 0.5 )
 size_flags_stretch_ratio = 0.0
 custom_constants/separation = 1
 
-[node name="Score" type="RichTextLabel" parent="."]
-margin_left = 576.0
-margin_top = 59.0
-margin_right = 928.0
-margin_bottom = 99.0
-theme = ExtResource( 1 )
-custom_colors/default_color = Color( 0.992157, 0, 0.654902, 1 )
-text = "PLACEHOLDER TEXT"
-
 [node name="HighScore" type="RichTextLabel" parent="."]
-margin_left = 928.0
-margin_top = 59.0
-margin_right = 1280.0
-margin_bottom = 130.0
-theme = ExtResource( 1 )
+margin_left = 633.707
+margin_top = 59.789
+margin_right = 985.707
+margin_bottom = 130.789
+theme = SubResource( 7 )
 custom_colors/default_color = Color( 0.992157, 0, 0.654902, 1 )
-text = "PLACEHOLDER TEXT"
+text = "0123456789"
+
+[node name="Best" type="RichTextLabel" parent="."]
+margin_left = 573.117
+margin_top = 61.4023
+margin_right = 925.117
+margin_bottom = 132.402
+theme = SubResource( 3 )
+custom_colors/default_color = Color( 0.227451, 0.92549, 0.988235, 1 )
+text = "BEST"
+
+[node name="Score" type="RichTextLabel" parent="."]
+margin_left = 680.313
+margin_top = 75.95
+margin_right = 1111.31
+margin_bottom = 171.95
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 5 )
+custom_colors/default_color = Color( 0.992157, 0, 0.654902, 1 )
+bbcode_enabled = true
+bbcode_text = "[right]0[/right]"
+meta_underlined = false
+text = "0"
+scroll_active = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 835.049
+margin_top = 95.9499
+margin_right = 1266.15
+margin_bottom = 192.09
+alignment = 2
