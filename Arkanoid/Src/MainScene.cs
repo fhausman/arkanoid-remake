@@ -159,6 +159,8 @@ public class MainScene : Node2D
 
     public override void _Ready()
     {
+        Input.SetMouseMode(Input.MouseMode.Hidden);
+
         levelManager = LevelManager.Init(this, GetNode<Round>("Round"));
         winDelay = GetNode<Timer>("WinDelay");
 

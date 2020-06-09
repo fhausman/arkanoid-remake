@@ -33,6 +33,8 @@ public class MainMenu : Control
 
     public override void _Ready()
     {
+        Input.SetMouseMode(Input.MouseMode.Hidden);
+
         mainScene = GD.Load<PackedScene>("MainScene.tscn");
         credits = GD.Load<PackedScene>("Credits.tscn");
         menuSound = GetNode<AudioStreamPlayer2D>("MenuSound");

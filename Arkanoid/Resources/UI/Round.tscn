@@ -20,7 +20,7 @@ margin_bottom = 132.0
 alignment = 1
 
 [node name="Text" type="Label" parent="VBoxContainer"]
-margin_top = 21.0
+margin_top = 24.0
 margin_right = 338.0
 margin_bottom = 64.0
 theme = ExtResource( 2 )
@@ -31,7 +31,7 @@ align = 1
 [node name="Ready" type="Label" parent="VBoxContainer"]
 margin_top = 68.0
 margin_right = 338.0
-margin_bottom = 111.0
+margin_bottom = 108.0
 theme = ExtResource( 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "READY"
