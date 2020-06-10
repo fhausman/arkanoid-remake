@@ -67,7 +67,7 @@ margin_right = 1094.0
 margin_bottom = 596.0
 alignment = 1
 
-[node name="Animated Game Over" parent="CenterContainer/VBoxContainer" instance=ExtResource( 2 )]
+[node name="AnimatedGameOver" parent="CenterContainer/VBoxContainer" instance=ExtResource( 2 )]
 position = Vector2( 134, -79.684 )
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]

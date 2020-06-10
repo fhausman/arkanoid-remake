@@ -131,6 +131,7 @@ public class MainScene : Node2D
             continueScreen.Visible = true;
             continueScreen.GetNode<Timer>("Countdown").Start();
             continueScreen.GetNode<Control>("CenterContainer/VBoxContainer/HBoxContainer/YES").GrabFocus();
+            continueScreen.GetNode<AnimationPlayer>("CenterContainer/VBoxContainer/AnimatedGameOver/AnimationPlayer").Play("intro");
         }
     }
 
